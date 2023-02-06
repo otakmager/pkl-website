@@ -1648,8 +1648,10 @@ h6 .badge {
 .btn-secondary,
 .btn-secondary.disabled {
     box-shadow: 0 2px 6px #e1e5e8;
-    background-color: #cdd3d8;
-    border-color: #cdd3d8;
+    background-color: #858b8f;
+    border-color: #858b8f;
+    /* background-color: #cdd3d8;
+    border-color: #cdd3d8; */
     color: #fff;
 }
 .btn-secondary:hover,

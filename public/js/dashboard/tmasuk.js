@@ -66,6 +66,18 @@ $(document).ready(function () {
     );
 
     // ====================================================================================
+    // 3. Single Datepicker
+    // ====================================================================================
+    $('input[name="tanggal"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        opens: "left",
+        drops: "up",
+        minYear: 2017,
+        maxYear: parseInt(moment().add(10, "years").format("YYYY"), 10),
+        locale: { format: "DD/MM/YYYY" },
+    });
+    // ====================================================================================
     // Pagination + Sorting + Filtering + Searching
     // ====================================================================================
     // 1. Ajax Fetch Data

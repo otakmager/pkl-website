@@ -6,6 +6,7 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap-multiselect/css/bootstrap-multiselect.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
 @endpush
 
 
@@ -16,8 +17,8 @@
                 <h1>Transaksi Masuk</h1>
             </div>
             <div class="section-body">
-                <button type="button" class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#addModal"><i class="fas fa-plus"></i> Tambah Transaksi Masuk</button>
-                @include('dashboard.modal.add-tmasuk')
+                <button class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#addModal"><i class="fas fa-plus"></i> Tambah Transaksi Masuk</button>
+                
                 <div class="row mt-3">
                     <div class="col-12">
                         <div class="card">
@@ -108,6 +109,7 @@
                 </div>
             </div>
         </section>
+        @include('dashboard.modal.add-tmasuk')
     </div>
 @endsection
 
@@ -115,3 +117,8 @@
     <!-- JS Libraies -->
     <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script>    
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('library/prismjs/prism.js') }}"></script>
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('js/dashboard/tmasuk.js') }}"></script>
+    <script src="{{ asset('js/dashboard/tmasuk/modal.js') }}"></script>
+@endpush

@@ -7,6 +7,8 @@ use App\Models\TMasuk;
 use App\Http\Requests\StoreTMasukRequest;
 use App\Http\Requests\UpdateTMasukRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 class TMasukController extends Controller
 {
@@ -80,7 +82,17 @@ class TMasukController extends Controller
      */
     public function store(StoreTMasukRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:100',
+            'label' => 'required',
+            'nominal' => 'required',
+            'tanggal' => 'required',
+        ]);
+        $validatedData['slug'] = Hash::make("tmasuk" . $validatedData['label'] . Str::random(16) . $validatedData['tanggal']);
+        dd($validatedData);
+
+        TMasuk::create($validatedData);
+        return redirect('/tmasuk')->with('success', 'New post has been added!');
     }
 
     /**
