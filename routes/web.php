@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MAkunController;
 use App\Http\Controllers\TMasukController;
 use App\Http\Controllers\TKeluarController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,18 @@ use App\Http\Controllers\TKeluarController;
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| Login Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/login', [LoginController::class, 'index']);
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Routes
+|--------------------------------------------------------------------------
+*/
 Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
