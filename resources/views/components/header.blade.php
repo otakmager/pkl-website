@@ -14,16 +14,17 @@
                 <img alt="image"
                     src="{{ asset('img/avatar.png') }}"
                     class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, Dimas Wahyu Ardiyanto</div>
+                <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::check() ? auth()->user()->name : 'UserNotLoginYet' }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="features-profile.html"
-                    class="dropdown-item has-icon">
-                    <i class="far fa-user"></i> Profile
-                <a href="#"
-                    class="dropdown-item has-icon text-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+                <a href="features-profile.html" class="dropdown-item has-icon"> <i class="far fa-user"></i> Profile</a>
+                <form action="/logout" method="post" id="header_logout">
+                    @csrf
+                    <a href="javascript:{}" onclick="document.getElementById('header_logout').submit();"
+                        class="dropdown-item has-icon text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </form>
             </div>
         </li>
     </ul>

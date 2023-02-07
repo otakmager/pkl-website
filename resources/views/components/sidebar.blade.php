@@ -45,10 +45,16 @@
         </ul>
 
         <div class="hide-sidebar-mini mt-3 mb-3 p-3">
-            <a href="#"
+            {{-- <a href="/logout"
                 class="btn btn-danger btn-lg btn-block btn-icon-split">
                 <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
+            </a> --}}
+            <form action="/logout" method="post" id="sidebar_logout">
+                @csrf
+                <button type="submit" class="btn btn-danger btn-lg btn-block btn-icon-split">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
         </div>
     </aside>
 </div>

@@ -19,7 +19,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }
-        return back()->with('loginError', 'Login failed');
+        return back()->with('loginError', 'Email atau kata sandi salah!');
     }
     public function logout(Request $request){
         Auth::logout();

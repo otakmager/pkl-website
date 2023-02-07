@@ -21,10 +21,12 @@ use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
-| Login Routes
+| Authentication Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/logout', [LoginController::class, 'logout']);
 
 /*
 |--------------------------------------------------------------------------
