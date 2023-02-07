@@ -68,7 +68,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 3. Single Datepicker
     // ====================================================================================
-    $('input[name="tanggal"]').daterangepicker({
+    $("#addtanggal").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         opens: "left",
@@ -77,6 +77,8 @@ $(document).ready(function () {
         maxYear: parseInt(moment().add(10, "years").format("YYYY"), 10),
         locale: { format: "DD/MM/YYYY" },
     });
+    // ====================================================================================
+
     // ====================================================================================
     // Pagination + Sorting + Filtering + Searching
     // ====================================================================================
@@ -311,5 +313,96 @@ $(document).ready(function () {
             end_date
         );
     });
+    // ====================================================================================
+
+    // ====================================================================================
+    // Ajax Add Data
+    // ====================================================================================
+    $("#btnadd").on("click", function () {
+        console.log($("#addname").val());
+        console.log($("#addlabel").val());
+        console.log($("#addnominal").val());
+        console.log($("#addtanggal").val());
+    });
+    // $("#btnadd").click(function (e) {
+    //     e.preventDefault();
+
+    //     //define variable
+    //     let name = $("#addname").val();
+    //     let label = $("#addlabel").val();
+    //     let nominal = $("#addnominal").val();
+    //     let tanggal = $("#addtanggal").val();
+    //     let token = $("#csrf-token").val();
+
+    //     //ajax
+    //     // $.ajax({
+    //     //     url: `/tmasuk/store_ajax`,
+    //     //     type: "POST",
+    //     //     cache: false,
+    //     //     data: {
+    //     //         name: name,
+    //     //         label: label,
+    //     //         nominal: nominal,
+    //     //         tanggal: tanggal,
+    //     //         _token: token,
+    //     //     },
+    //     //     success: function (response) {
+    //     //         //show success message
+    //     //         Swal.fire({
+    //     //             type: "success",
+    //     //             icon: "success",
+    //     //             title: `${response.message}`,
+    //     //             showConfirmButton: false,
+    //     //             timer: 3000,
+    //     //         });
+
+    //     //         //data post
+    //     //         let post = `
+    //     //             <tr">
+    //     //                 <td>${response.data.name}</td>
+    //     //                 <td>${response.data.label}</td>
+    //     //                 <td>${response.data.nominal}</td>
+    //     //                 <td>${response.data.tanggal}</td>
+    //     //                 <td class="text-center">
+    //     //                     <a href="javascript:void(0)" id="btn-edit-post"" class="btn btn-primary btn-sm">EDIT</a>
+    //     //                     <a href="javascript:void(0)" id="btn-delete-post"" class="btn btn-danger btn-sm">DELETE</a>
+    //     //                 </td>
+    //     //             </tr>
+    //     //         `;
+
+    //     //         //append to table
+    //     //         $("#table-data").prepend(post);
+
+    //     //         //clear form
+    //     //         $("#addname").val("");
+    //     //         $("#addlabel").val("");
+    //     //         $("#addnominal").val("");
+    //     //         $("#addtanggal").val("");
+
+    //     //         //close modal
+    //     //         $("#addmodal").modal("hide");
+    //     //     },
+    //     //     error: function (error) {
+    //     //         if (error.responseJSON.title[0]) {
+    //     //             //show alert
+    //     //             $("#alert-title").removeClass("d-none");
+    //     //             $("#alert-title").addClass("d-block");
+
+    //     //             //add message to alert
+    //     //             $("#alert-title").html(error.responseJSON.title[0]);
+    //     //         }
+
+    //     //         if (error.responseJSON.content[0]) {
+    //     //             //show alert
+    //     //             $("#alert-content").removeClass("d-none");
+    //     //             $("#alert-content").addClass("d-block");
+
+    //     //             //add message to alert
+    //     //             $("#alert-content").html(error.responseJSON.content[0]);
+    //     //         }
+    //     //     },
+    //     // });
+    // });
+
     // ====================================================================================
 });

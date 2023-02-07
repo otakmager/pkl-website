@@ -95,7 +95,7 @@
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>                                        
-                                        <tbody>@include('dashboard.fetch.tmasuk-data')</tbody>      
+                                        <tbody id="table-data">@include('dashboard.fetch.tmasuk-data')</tbody>      
                                     </table>
                                 </div>
                                 <form>
@@ -118,7 +118,8 @@
     <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script>    
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('library/prismjs/prism.js') }}"></script>
+    {{-- <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script> --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/dashboard/tmasuk.js') }}"></script>
-    <script src="{{ asset('js/dashboard/tmasuk/modal.js') }}"></script>
 @endpush

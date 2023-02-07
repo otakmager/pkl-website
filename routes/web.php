@@ -37,8 +37,6 @@ Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/tmasuk/tmasuk_ajax', [TMasukController::class, 'tmasuk_ajax'])->name('tmasuk.ajax');
-// Route::get('/tmasuk/search', [TMasukController::class, 'search'])->name('tmasuk.search');
-// Route::get('tmasuk/list', [TMasukController::class, 'tableMaker'])->name('tmasuk.list');
 Route::resource('/tmasuk', TMasukController::class);
 Route::resource('/tkeluar', TKeluarController::class);
 Route::resource('/label', LabelController::class);

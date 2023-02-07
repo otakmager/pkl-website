@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateTMasukRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 class TMasukController extends Controller
 {
@@ -77,22 +78,36 @@ class TMasukController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTMasukRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTMasukRequest $request)
-    {
+    public function store(Request $request)
+    {        
+        // dump($request);
+        // die();
+        // $maxData = 5;
+        // $tmasuks = TMasuk::latest()->paginate($maxData);
+        // return view('dashboard.tmasuk', [
+        //     'tmasuks' => $tmasuks,
+        //     'maxData' => 5,
+        // ]);
         $validatedData = $request->validate([
             'name' => 'required|max:100',
             'label' => 'required',
             'nominal' => 'required',
             'tanggal' => 'required',
         ]);
+        $validatedData['tanggal'] = Carbon::parse($validatedData['tanggal'])->format('Y-m-d');
         $validatedData['slug'] = Hash::make("tmasuk" . $validatedData['label'] . Str::random(16) . $validatedData['tanggal']);
-        dd($validatedData);
 
-        TMasuk::create($validatedData);
-        return redirect('/tmasuk')->with('success', 'New post has been added!');
+        // Create instance
+        $tmasuk = TMasuk::create($validatedData);
+        $maxData = 5;
+        $tmasuks = TMasuk::latest()->paginate($maxData);
+        return view('dashboard.tmasuk', [
+            'tmasuks' => $tmasuks,
+            'maxData' => 5,
+        ]);
     }
 
     /**
