@@ -15,7 +15,7 @@
             <div class="section-body">
                 <div class="card">
                     <div class="card-body">
-                        <h3 style="color: #1a1c2b">Hi, Selamat Datang Dimas!</h3>
+                        <h3 style="color: #1a1c2b">Hi, Selamat Datang {{ Auth::check() ? auth()->user()->name : 'UserNotLoginYet' }}!</h3>
                         <p class="mt-3 text-justify" style="color:#111111">Di aplikasi ini, Anda dapat menginputkan 
                             <a href="{{ url('tmasuk') }}">transaksi masuk</a> dan <a href="{{ url('tkeluar') }}">transaksi keluar</a> 
                             sesuai format formulir yang disediakan. Jika Anda tidak sengaja atau ingin memulihkan data yang dihapus, 
