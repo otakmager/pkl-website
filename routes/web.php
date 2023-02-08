@@ -36,6 +36,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/dashboard/dashboardData', [DashboardController::class, 'dashboardData']);
 Route::get('/tmasuk/tmasuk_ajax', [TMasukController::class, 'tmasuk_ajax'])->name('tmasuk.ajax');
 Route::resource('/tmasuk', TMasukController::class);
 Route::resource('/tkeluar', TKeluarController::class);
