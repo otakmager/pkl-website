@@ -49,8 +49,8 @@
                         <div class="card-header">
                             <h4>Sisa Uang</h4>
                         </div>
-                        <div class="card-body">
-                            - Rp 124.576.321,00
+                        <div class="card-body" id="sisaUang">
+                            Rp x.xxx.xxx,00
                         </div>
                     </div>
                 </div>

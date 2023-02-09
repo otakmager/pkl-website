@@ -147,7 +147,8 @@ class DashboardController extends Controller
             array_push($dataKeluarSetahun, intval($value['total']));
         }
             
-        
+        // Sisa uang
+        $sisaUang = TMasuk::sum('nominal') - TKeluar::sum('nominal');
 
         return response()->json([
             'masukHari' => $masukHari,
@@ -162,6 +163,7 @@ class DashboardController extends Controller
             'labelSetahun' => $labelSetahun,
             'dataMasukSetahun' => $dataMasukSetahun,
             'dataKeluarSetahun' => $dataKeluarSetahun,
+            'sisaUang' => $sisaUang,
         ]);
     }
 }
