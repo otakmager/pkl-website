@@ -160,6 +160,10 @@ class DashboardController extends Controller
                             ->sum('nominal'));
         $chartMasukMinggu = $dataMasuk4Week[3];
         $chartKeluarMinggu = $dataKeluar4Week[3];
+        $chartMasukTahun = intval(TMasuk::whereYear('tanggal', $now->year)
+                            ->sum('nominal'));
+        $chartKeluarTahun = intval(TKeluar::whereYear('tanggal', $now->year)
+                            ->sum('nominal'));
 
         return response()->json([
             'masukHari' => $masukHari,
@@ -179,6 +183,8 @@ class DashboardController extends Controller
             'chartKeluarBulan' => $chartKeluarBulan,
             'chartMasukMinggu' => $chartMasukMinggu,
             'chartKeluarMinggu' => $chartKeluarMinggu,
+            'chartMasukTahun' => $chartMasukTahun,
+            'chartKeluarTahun' => $chartKeluarTahun,
         ]);
     }
 }

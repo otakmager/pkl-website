@@ -106,10 +106,12 @@
                         <h4>Pie Chart</h4>            
                         <div class="card-header-action">
                             <div class="btn-group">
-                                <a href="#"
-                                    class="btn btn-primary">Bulan</a>
-                                <a href="#"
-                                    class="btn btn-light">Minggu</a>
+                                <a href="javascript:{}"
+                                    class="btn btn-primary" id="btnChartTahun">Tahun</a>
+                                <a href="javascript:{}"
+                                    class="btn btn-light" id="btnChartBulan">Bulan</a>
+                                <a href="javascript:{}"
+                                    class="btn btn-light" id="btnChartMinggu">Minggu</a>
                             </div>
                         </div>
                     </div>

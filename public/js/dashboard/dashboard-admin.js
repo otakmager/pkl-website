@@ -140,28 +140,81 @@ $(document).ready(function () {
                 data: dataSeminggu,
                 options: options,
             });
+            // ====================================================================================
+            // Grafik Pie Chart
+            // ====================================================================================
+            var ctx = document.getElementById("myChart-pie").getContext("2d");
+            var myPieChart = new Chart(ctx, {
+                type: "pie",
+                data: {
+                    datasets: [
+                        {
+                            data: [
+                                data["chartMasukTahun"],
+                                data["chartKeluarTahun"],
+                            ],
+                            backgroundColor: ["#6777ef", "#fc544b"],
+                            label: "Dataset 1",
+                        },
+                    ],
+                    labels: ["Pemasukan", "Pengeluaran"],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: "bottom",
+                    },
+                },
+            });
+            function updatePieChart(dataMasuk, dataKeluar) {
+                myPieChart.data.datasets[0].data = [dataMasuk, dataKeluar];
+                myPieChart.update();
+            }
+            $("#btnChartBulan").click(function () {
+                updatePieChart(
+                    data["chartMasukBulan"],
+                    data["chartKeluarBulan"]
+                );
+                $("#btnChartBulan")
+                    .removeClass("btn-light")
+                    .addClass("btn-primary");
+                $("#btnChartMinggu")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+                $("#btnChartTahun")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+            });
+            $("#btnChartMinggu").click(function () {
+                updatePieChart(
+                    data["chartMasukMinggu"],
+                    data["chartKeluarMinggu"]
+                );
+                $("#btnChartMinggu")
+                    .removeClass("btn-light")
+                    .addClass("btn-primary");
+                $("#btnChartBulan")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+                $("#btnChartTahun")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+            });
+            $("#btnChartTahun").click(function () {
+                updatePieChart(
+                    data["chartMasukTahun"],
+                    data["chartKeluarTahun"]
+                );
+                $("#btnChartMinggu")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+                $("#btnChartBulan")
+                    .removeClass("btn-primary")
+                    .addClass("btn-light");
+                $("#btnChartTahun")
+                    .removeClass("btn-light")
+                    .addClass("btn-primary");
+            });
         },
     });
-});
-
-// Pie Chart
-var ctx = document.getElementById("myChart-pie").getContext("2d");
-var myChart = new Chart(ctx, {
-    type: "pie",
-    data: {
-        datasets: [
-            {
-                data: [1080, 2048],
-                backgroundColor: ["#6777ef", "#fc544b"],
-                label: "Dataset 1",
-            },
-        ],
-        labels: ["Pemasukan", "Pengeluaran"],
-    },
-    options: {
-        responsive: true,
-        legend: {
-            position: "bottom",
-        },
-    },
 });
