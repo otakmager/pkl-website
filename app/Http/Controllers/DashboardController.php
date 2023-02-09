@@ -150,6 +150,17 @@ class DashboardController extends Controller
         // Sisa uang
         $sisaUang = TMasuk::sum('nominal') - TKeluar::sum('nominal');
 
+        // Chart Pie
+        $now = Carbon::now();
+        $chartMasukBulan = intval(TMasuk::whereMonth('tanggal', $now->month)
+                            ->whereYear('tanggal', $now->year)
+                            ->sum('nominal'));
+        $chartKeluarBulan = intval(TKeluar::whereMonth('tanggal', $now->month)
+                            ->whereYear('tanggal', $now->year)
+                            ->sum('nominal'));
+        $chartMasukMinggu = $dataMasuk4Week[3];
+        $chartKeluarMinggu = $dataKeluar4Week[3];
+
         return response()->json([
             'masukHari' => $masukHari,
             'keluarHari' => $keluarHari,
@@ -164,6 +175,10 @@ class DashboardController extends Controller
             'dataMasukSetahun' => $dataMasukSetahun,
             'dataKeluarSetahun' => $dataKeluarSetahun,
             'sisaUang' => $sisaUang,
+            'chartMasukBulan' => $chartMasukBulan,
+            'chartKeluarBulan' => $chartKeluarBulan,
+            'chartMasukMinggu' => $chartMasukMinggu,
+            'chartKeluarMinggu' => $chartKeluarMinggu,
         ]);
     }
 }
