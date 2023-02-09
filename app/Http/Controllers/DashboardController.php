@@ -24,6 +24,9 @@ class DashboardController extends Controller
     }
 
     public function dashboardData(Request $request){
+        // Pakai Bahasa Indonesia tapi kurang baku (Solusi Carbon tidak berfungsi)
+        DB::select(DB::raw("SET lc_time_names = 'id_ID'"));
+
         // Transaksi Hari Ini
         $masukHari = (int) TMasuk::whereDate('tanggal', '=', date('Y-m-d'))->sum('nominal');
         $keluarHari = (int) TKeluar::whereDate('tanggal', '=', date('Y-m-d'))->sum('nominal');
@@ -92,8 +95,6 @@ class DashboardController extends Controller
             ->orderBy("week", "DESC")
             ->get();
 
-
-
         // Transaksi Setahun Terakhir
         $masukSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_masuks.nominal), 0) AS total, month_date FROM months LEFT JOIN t_masuks ON months.month_date BETWEEN DATE_SUB(t_masuks.tanggal, INTERVAL DAY(t_masuks.tanggal) - 1 DAY) AND LAST_DAY(t_masuks.tanggal) GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
             ->select("month_year", DB::raw("SUM(total) as total"))
@@ -106,16 +107,61 @@ class DashboardController extends Controller
             ->orderBy("month_date")
             ->get();
         
+        // Parsing Seminggu
+        $labelSeminggu = [];
+        $dataMasukSeminggu = [];
+        $dataKeluarSeminggu = [];
+        foreach ($masukSeminggu as $value) {
+            $value = (array) $value;
+            array_push($labelSeminggu, $value['hari_tanggal']);
+            array_push($dataMasukSeminggu, intval($value['total']));
+        }
+        foreach ($keluarSeminggu as $value) {
+            $value = (array) $value;
+            array_push($dataKeluarSeminggu, intval($value['total']));
+        }
+        // Parsing 4 week
+        $label4Week = [];
+        $dataMasuk4Week = [];
+        $dataKeluar4Week = [];
+        foreach ($masuk4Week as $value) {
+            $value = (array) $value;
+            array_push($label4Week, $value['start_date'] . " sd ". $value['end_date']);
+            array_push($dataMasuk4Week, intval($value['total']));
+        }
+        foreach ($keluar4Week as $value) {
+            $value = (array) $value;
+            array_push($dataKeluar4Week, intval($value['total']));
+        }
+        // Parsing Data Setahun
+        $labelSetahun = [];
+        $dataMasukSetahun = [];
+        $dataKeluarSetahun = [];
+        foreach ($masukSetahun as $value) {
+            $value = (array) $value;
+            array_push($labelSetahun, $value['month_year']);
+            array_push($dataMasukSetahun, intval($value['total']));
+        }
+        foreach ($keluarSetahun as $value) {
+            $value = (array) $value;
+            array_push($dataKeluarSetahun, intval($value['total']));
+        }
+            
+        
 
         return response()->json([
             'masukHari' => $masukHari,
             'keluarHari' => $keluarHari,
-            'masukSeminggu' => $masukSeminggu,
+            'labelSeminggu' => $labelSeminggu,
+            'dataMasukSeminggu' => $dataMasukSeminggu,
+            'dataKeluarSeminggu' => $dataKeluarSeminggu,
             'keluarSeminggu' => $keluarSeminggu,
-            'masuk4Week' => $masuk4Week,
-            'keluar4Week' => $keluar4Week,
-            'masukSetahun' => $masukSetahun,
-            'keluarSetahun' => $keluarSetahun,
+            'label4Week' => $label4Week,
+            'dataMasuk4Week' => $dataMasuk4Week,
+            'dataKeluar4Week' => $dataKeluar4Week,
+            'labelSetahun' => $labelSetahun,
+            'dataMasukSetahun' => $dataMasukSetahun,
+            'dataKeluarSetahun' => $dataKeluarSetahun,
         ]);
     }
 }

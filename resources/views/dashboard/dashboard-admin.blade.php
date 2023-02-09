@@ -19,8 +19,8 @@
                         <div class="card-header">
                             <h4>Uang Masuk Hari Ini</h4>
                         </div>
-                        <div class="card-body">
-                            Rp 4.576.321,00
+                        <div class="card-body" id="masukHari">
+                            Rp x.xxx.xxx,00
                         </div>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                         <div class="card-header">
                             <h4>Uang Keluar Hari Ini</h4>
                         </div>
-                        <div class="card-body">
-                            Rp 4.576.321,00
+                        <div class="card-body" id="keluarHari">
+                            Rp x.xxx.xxx,00
                         </div>
                     </div>
                 </div>
@@ -73,15 +73,15 @@
                             height="158"></canvas>
                     </div>
                 </div>
-                {{-- Info 1 Bulanan --}}
+                {{-- Info 4 Week --}}
                 <div class="card">
                     <div class="card-header">
-                        <h4>Pemasukan vs Pengeluaran 1 Bulan Terakhir</h4>
+                        <h4>Pemasukan vs Pengeluaran 4 Minggu Terakhir</h4>
                         <div class="card-header-action">
                         </div>
                     </div>
                     <div class="card-body">
-                        <canvas id="myChart-bulanan"
+                        <canvas id="myChart-4Week"
                             height="158"></canvas>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <canvas id="myChart-week"
+                        <canvas id="myChart-Seminggu"
                             height="158"></canvas>
                     </div>
                 </div>
