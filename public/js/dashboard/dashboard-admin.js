@@ -61,6 +61,20 @@ $(document).ready(function () {
                         },
                     ],
                 },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var value =
+                                data.datasets[tooltipItem.datasetIndex].data[
+                                    tooltipItem.index
+                                ];
+                            value = value.toString();
+                            value = value.split(/(?=(?:...)*$)/);
+                            value = value.join(".");
+                            return "Pemasukan: Rp " + value + ",00";
+                        },
+                    },
+                },
             };
             // ====================================================================================
             // Grafik 1 Tahun Terakhir
@@ -163,6 +177,23 @@ $(document).ready(function () {
                     responsive: true,
                     legend: {
                         position: "bottom",
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var label = data.labels[tooltipItem.index];
+                                var value =
+                                    data.datasets[0].data[tooltipItem.index];
+                                return (
+                                    label +
+                                    ": Rp " +
+                                    value
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                                    ",00"
+                                );
+                            },
+                        },
                     },
                 },
             });
