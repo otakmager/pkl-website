@@ -28,11 +28,71 @@ class DashboardController extends Controller
         $masukHari = (int) TMasuk::whereDate('tanggal', '=', date('Y-m-d'))->sum('nominal');
         $keluarHari = (int) TKeluar::whereDate('tanggal', '=', date('Y-m-d'))->sum('nominal');
 
-        // Transaksi Seminngu
+        // Transaksi Seminggu
         $masukSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_masuks.nominal), 0) AS total FROM days LEFT JOIN t_masuks ON DATE(day_date) = t_masuks.tanggal GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
                         ->get();
         $keluarSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_keluars.nominal), 0) AS total FROM days LEFT JOIN t_keluars ON DATE(day_date) = t_keluars.tanggal GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
                         ->get();
+
+        // Transaksi 4 Minggu
+        $masuk4Week = DB::table(DB::raw("(SELECT
+                1 AS week,
+                DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY) AS start_date,
+                DATE_ADD(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 6 DAY) AS end_date
+                UNION ALL
+                SELECT
+                2 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 7 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 1 DAY)
+                UNION ALL
+                SELECT
+                3 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 14 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 8 DAY)
+                UNION ALL
+                SELECT
+                4 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 21 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 15 DAY)
+                ) AS q"))
+            ->selectRaw("week, DATE_FORMAT(start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(end_date, '%d-%m-%Y') AS end_date, COALESCE(SUM(nominal),0) AS total")
+            ->leftJoin('t_masuks', function ($join) {
+            $join->on('t_masuks.tanggal', '>=', 'q.start_date')
+            ->on('t_masuks.tanggal', '<=', 'q.end_date');
+            })
+            ->groupBy("week", "start_date", "end_date")
+            ->orderBy("week", "DESC")
+            ->get();
+        $keluar4Week = DB::table(DB::raw("(SELECT
+                1 AS week,
+                DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY) AS start_date,
+                DATE_ADD(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 6 DAY) AS end_date
+                UNION ALL
+                SELECT
+                2 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 7 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 1 DAY)
+                UNION ALL
+                SELECT
+                3 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 14 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 8 DAY)
+                UNION ALL
+                SELECT
+                4 AS week,
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 21 DAY),
+                DATE_SUB(DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE())) DAY), INTERVAL 15 DAY)
+                ) AS q"))
+            ->selectRaw("week, DATE_FORMAT(start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(end_date, '%d-%m-%Y') AS end_date, COALESCE(SUM(nominal),0) AS total")
+            ->leftJoin('t_keluars', function ($join) {
+            $join->on('t_keluars.tanggal', '>=', 'q.start_date')
+            ->on('t_keluars.tanggal', '<=', 'q.end_date');
+            })
+            ->groupBy("week", "start_date", "end_date")
+            ->orderBy("week", "DESC")
+            ->get();
+
+
 
         // Transaksi Setahun Terakhir
         $masukSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_masuks.nominal), 0) AS total, month_date FROM months LEFT JOIN t_masuks ON months.month_date BETWEEN DATE_SUB(t_masuks.tanggal, INTERVAL DAY(t_masuks.tanggal) - 1 DAY) AND LAST_DAY(t_masuks.tanggal) GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
@@ -52,6 +112,8 @@ class DashboardController extends Controller
             'keluarHari' => $keluarHari,
             'masukSeminggu' => $masukSeminggu,
             'keluarSeminggu' => $keluarSeminggu,
+            'masuk4Week' => $masuk4Week,
+            'keluar4Week' => $keluar4Week,
             'masukSetahun' => $masukSetahun,
             'keluarSetahun' => $keluarSetahun,
         ]);
