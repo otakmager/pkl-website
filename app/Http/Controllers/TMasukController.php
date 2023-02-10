@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 class TMasukController extends Controller
 {
     /**
@@ -83,31 +84,41 @@ class TMasukController extends Controller
      */
     public function store(Request $request)
     {        
-        // dump($request);
-        // die();
-        // $maxData = 5;
-        // $tmasuks = TMasuk::latest()->paginate($maxData);
-        // return view('dashboard.tmasuk', [
-        //     'tmasuks' => $tmasuks,
-        //     'maxData' => 5,
-        // ]);
-        $validatedData = $request->validate([
+        //define validation rules
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
             'label' => 'required',
             'nominal' => 'required',
             'tanggal' => 'required',
         ]);
-        $validatedData['tanggal'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal'])->format('Y-m-d');
-        $validatedData['slug'] = Hash::make("tmasuk" . $validatedData['label'] . Str::random(16) . $validatedData['tanggal']);
 
-        // Create instance
-        $tmasuk = TMasuk::create($validatedData);
-        $maxData = 5;
-        $tmasuks = TMasuk::latest()->paginate($maxData);
-        return view('dashboard.tmasuk', [
-            'tmasuks' => $tmasuks,
-            'maxData' => 5,
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //create post
+        $tmasuk = TMasuk::create([
+            'name'     => $request->name, 
+            'label'   => $request->label,
+            'nominal'   => $request->nominal,
+            'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
+            'slug'   => Hash::make("tmasuk" . $request->label . Str::random(16) . $request->tanggal),
         ]);
+
+        //return response
+        if ($tmasuk) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Disimpan!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Disimpan!',
+            ]);
+        }
+    
     }
 
     /**

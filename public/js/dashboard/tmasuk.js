@@ -324,85 +324,90 @@ $(document).ready(function () {
         console.log($("#addnominal").val());
         console.log($("#addtanggal").val());
     });
-    // $("#btnadd").click(function (e) {
-    //     e.preventDefault();
-
-    //     //define variable
-    //     let name = $("#addname").val();
-    //     let label = $("#addlabel").val();
-    //     let nominal = $("#addnominal").val();
-    //     let tanggal = $("#addtanggal").val();
-    //     let token = $("#csrf-token").val();
-
-    //     //ajax
-    //     // $.ajax({
-    //     //     url: `/tmasuk/store_ajax`,
-    //     //     type: "POST",
-    //     //     cache: false,
-    //     //     data: {
-    //     //         name: name,
-    //     //         label: label,
-    //     //         nominal: nominal,
-    //     //         tanggal: tanggal,
-    //     //         _token: token,
-    //     //     },
-    //     //     success: function (response) {
-    //     //         //show success message
-    //     //         Swal.fire({
-    //     //             type: "success",
-    //     //             icon: "success",
-    //     //             title: `${response.message}`,
-    //     //             showConfirmButton: false,
-    //     //             timer: 3000,
-    //     //         });
-
-    //     //         //data post
-    //     //         let post = `
-    //     //             <tr">
-    //     //                 <td>${response.data.name}</td>
-    //     //                 <td>${response.data.label}</td>
-    //     //                 <td>${response.data.nominal}</td>
-    //     //                 <td>${response.data.tanggal}</td>
-    //     //                 <td class="text-center">
-    //     //                     <a href="javascript:void(0)" id="btn-edit-post"" class="btn btn-primary btn-sm">EDIT</a>
-    //     //                     <a href="javascript:void(0)" id="btn-delete-post"" class="btn btn-danger btn-sm">DELETE</a>
-    //     //                 </td>
-    //     //             </tr>
-    //     //         `;
-
-    //     //         //append to table
-    //     //         $("#table-data").prepend(post);
-
-    //     //         //clear form
-    //     //         $("#addname").val("");
-    //     //         $("#addlabel").val("");
-    //     //         $("#addnominal").val("");
-    //     //         $("#addtanggal").val("");
-
-    //     //         //close modal
-    //     //         $("#addmodal").modal("hide");
-    //     //     },
-    //     //     error: function (error) {
-    //     //         if (error.responseJSON.title[0]) {
-    //     //             //show alert
-    //     //             $("#alert-title").removeClass("d-none");
-    //     //             $("#alert-title").addClass("d-block");
-
-    //     //             //add message to alert
-    //     //             $("#alert-title").html(error.responseJSON.title[0]);
-    //     //         }
-
-    //     //         if (error.responseJSON.content[0]) {
-    //     //             //show alert
-    //     //             $("#alert-content").removeClass("d-none");
-    //     //             $("#alert-content").addClass("d-block");
-
-    //     //             //add message to alert
-    //     //             $("#alert-content").html(error.responseJSON.content[0]);
-    //     //         }
-    //     //     },
-    //     // });
-    // });
+    function reloadPage() {
+        var search = $("#search").val();
+        var column_name = $("#hidden_column_name").val();
+        var sort_type = $("#hidden_sort_type").val();
+        var page = $("#hidden_page").val();
+        var max_data = $("#max_data option:selected").val();
+        var label_selected = $("#label option:selected");
+        var label_data = $("#label").val();
+        if (label_selected.length < 1) {
+            $("#label").multiselect("selectAll", false);
+            $("#label").multiselect("updateButtonText");
+            label_data = $("#label").val();
+        }
+        var str_date = defStrDate;
+        var end_date = defEndDate;
+        if (toggleStatus == true) {
+            var dateString = $("#date_filter").val();
+            var dateArray = dateString.split(" - ");
+            str_date = moment(dateArray[0], "D MMMM YYYY").format("YYYY-MM-DD");
+            end_date = moment(dateArray[1], "D MMMM YYYY").format("YYYY-MM-DD");
+        }
+        fetch_data(
+            page,
+            sort_type,
+            column_name,
+            search,
+            max_data,
+            label_data,
+            str_date,
+            end_date
+        );
+    }
+    $("#addModal").submit(function (e) {
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('input[name="_token"]').val(),
+            },
+        });
+        let data = {
+            name: $("#addname").val(),
+            label: $("#addlabel").val(),
+            nominal: $("#addnominal").val(),
+            tanggal: $("#addtanggal").val(),
+            _token: $('input[name="_token"]').val(),
+        };
+        console.log(data);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/tmasuk",
+        //     data: data,
+        //     success: function (data) {
+        //         console.log(data);
+        //     },
+        // });
+        $.ajax({
+            type: "POST",
+            url: "/tmasuk",
+            data: data,
+            // contentType: false,
+            // processData: false,
+            success: function (data) {
+                // $("#addModal").modal("hide");
+                // $("form").trigger("reset");
+                console.log(data);
+                if (data.success) {
+                    $("#modal-add").modal("hide");
+                    $("#modal-add").trigger("reset");
+                    Swal.fire({
+                        title: "Success",
+                        text: "Data stored successfully",
+                        type: "success",
+                        timer: 30000,
+                    });
+                    reloadPage();
+                }
+            },
+            error: function (data) {
+                $("#addModal").modal("hide");
+                $("form").trigger("reset");
+                console.log(data);
+            },
+        });
+    });
 
     // ====================================================================================
 });

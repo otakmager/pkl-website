@@ -7,14 +7,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/tmasuk" method="POST">
-                @csrf
+            <form>
+                {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {{-- @csrf --}}
                 {{-- <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" id="csrf-token"/> --}}
                 <div class="modal-body">                    
                     <div class="form-group">
                         <label>Nama Transaksi</label>
                         <input type="text" class="form-control @error('nameTransaksi')is-invalid @enderror" id="addname" name="name" maxlength="100" required value="{{ old('nameTransaksi') }}">
-                        @error('nameTransaksi')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        {{-- @error('nameTransaksi')<div class="invalid-feedback">{{ $message }}</div>@enderror --}}
                     </div>
                     <div class="form-group">
                         <label>Label</label>
@@ -29,12 +31,12 @@
                     <div class="form-group">
                         <label>Nominal</label>
                         <input type="number" class="form-control @error('nominal')is-invalid @enderror" id="addnominal" name="nominal" min="1" required value="{{ old('nominal') }}">
-                        @error('nominal')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        {{-- @error('nominal')<div class="invalid-feedback">{{ $message }}</div>@enderror --}}
                     </div>
                     <div class="form-group">
                         <label>Tanggal</label>
                         <input type="text" class="form-control @error('tanggal')is-invalid @enderror" id="addtanggal" name="tanggal" required value="{{ old('tanggal') }}">
-                        @error('tanggal')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        {{-- @error('tanggal')<div class="invalid-feedback">{{ $message }}</div>@enderror --}}
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
