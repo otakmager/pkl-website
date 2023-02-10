@@ -82,7 +82,7 @@ $(document).ready(function () {
     // ====================================================================================
     // Pagination + Sorting + Filtering + Searching
     // ====================================================================================
-    // 1. Ajax Fetch Data
+    // 1-a. Ajax Fetch Data
     // ====================================================================================
     function fetch_data(
         page,
@@ -118,9 +118,9 @@ $(document).ready(function () {
         });
     }
     // ====================================================================================
-    // 2. Search + Max Data + Label
+    // 1-b. Ajax Reload Table
     // ====================================================================================
-    $(document).on("keyup change", "#search, #max_data, #label", function () {
+    function reloadPage() {
         var search = $("#search").val();
         var column_name = $("#hidden_column_name").val();
         var sort_type = $("#hidden_sort_type").val();
@@ -151,6 +151,12 @@ $(document).ready(function () {
             str_date,
             end_date
         );
+    }
+    // ====================================================================================
+    // 2. Search + Max Data + Label
+    // ====================================================================================
+    $(document).on("keyup change", "#search, #max_data, #label", function () {
+        reloadPage();
     });
     // ====================================================================================
     // 3. Sorting
@@ -318,44 +324,6 @@ $(document).ready(function () {
     // ====================================================================================
     // Ajax Add Data
     // ====================================================================================
-    $("#btnadd").on("click", function () {
-        console.log($("#addname").val());
-        console.log($("#addlabel").val());
-        console.log($("#addnominal").val());
-        console.log($("#addtanggal").val());
-    });
-    function reloadPage() {
-        var search = $("#search").val();
-        var column_name = $("#hidden_column_name").val();
-        var sort_type = $("#hidden_sort_type").val();
-        var page = $("#hidden_page").val();
-        var max_data = $("#max_data option:selected").val();
-        var label_selected = $("#label option:selected");
-        var label_data = $("#label").val();
-        if (label_selected.length < 1) {
-            $("#label").multiselect("selectAll", false);
-            $("#label").multiselect("updateButtonText");
-            label_data = $("#label").val();
-        }
-        var str_date = defStrDate;
-        var end_date = defEndDate;
-        if (toggleStatus == true) {
-            var dateString = $("#date_filter").val();
-            var dateArray = dateString.split(" - ");
-            str_date = moment(dateArray[0], "D MMMM YYYY").format("YYYY-MM-DD");
-            end_date = moment(dateArray[1], "D MMMM YYYY").format("YYYY-MM-DD");
-        }
-        fetch_data(
-            page,
-            sort_type,
-            column_name,
-            search,
-            max_data,
-            label_data,
-            str_date,
-            end_date
-        );
-    }
     $("#addModal").submit(function (e) {
         e.preventDefault();
         $.ajaxSetup({
@@ -370,44 +338,29 @@ $(document).ready(function () {
             tanggal: $("#addtanggal").val(),
             _token: $('input[name="_token"]').val(),
         };
-        console.log(data);
-        // $.ajax({
-        //     type: "POST",
-        //     url: "/tmasuk",
-        //     data: data,
-        //     success: function (data) {
-        //         console.log(data);
-        //     },
-        // });
         $.ajax({
             type: "POST",
             url: "/tmasuk",
             data: data,
-            // contentType: false,
-            // processData: false,
             success: function (data) {
-                // $("#addModal").modal("hide");
-                // $("form").trigger("reset");
-                console.log(data);
                 if (data.success) {
-                    $("#modal-add").modal("hide");
-                    $("#modal-add").trigger("reset");
-                    Swal.fire({
-                        title: "Success",
-                        text: "Data stored successfully",
-                        type: "success",
-                        timer: 30000,
+                    $("#addModal").modal("hide");
+                    $("#addForm").trigger("reset");
+                    swal({
+                        title: "Sukses!",
+                        text: data.message,
+                        icon: "success",
+                        timer: 10000,
                     });
                     reloadPage();
                 }
             },
             error: function (data) {
                 $("#addModal").modal("hide");
-                $("form").trigger("reset");
+                $("#addForm").trigger("reset");
                 console.log(data);
             },
         });
     });
-
     // ====================================================================================
 });

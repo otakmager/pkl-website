@@ -1,5 +1,5 @@
 @foreach ($tmasuks as $tmasuk)            
-    <tr class="text-center">
+    <tr class="text-center" id="{{ $tmasuk->slug }}">
     <td>{{ isset($page)? $maxData*($page-1)+$loop->iteration : $loop->iteration }}</td>
     <td>{{ $tmasuk->name }}</td>
     <td>{{ $tmasuk->label }}</td>
