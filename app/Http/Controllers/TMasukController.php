@@ -117,8 +117,7 @@ class TMasukController extends Controller
                 'success' => false,
                 'message' => 'Data Gagal Disimpan!',
             ]);
-        }
-    
+        }    
     }
 
     /**
@@ -129,7 +128,12 @@ class TMasukController extends Controller
      */
     public function show(TMasuk $tMasuk)
     {
-        //
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Data Post',
+            'data'    => $tMasuk  
+        ]); 
     }
 
     /**
@@ -146,13 +150,46 @@ class TMasukController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTMasukRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @param  \App\Models\TMasuk  $tMasuk
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTMasukRequest $request, TMasuk $tMasuk)
+    public function update(Request $request, TMasuk $tMasuk)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100',
+            'label' => 'required',
+            'nominal' => 'required',
+            'tanggal' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //create post
+        $tMasuk->update([
+            'name'     => $request->name, 
+            'label'   => $request->label,
+            'nominal'   => $request->nominal,
+            'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
+        ]);
+
+        //return response
+        if ($tMasuk) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Diperbarui!',
+                'data' => $tMasuk,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Diperbarui!',
+            ]);
+        }    
     }
 
     /**

@@ -68,7 +68,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 3. Single Datepicker
     // ====================================================================================
-    $("#addtanggal").daterangepicker({
+    $("#addtanggal, #edittanggal").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         opens: "left",

@@ -109,6 +109,7 @@
             </div>
         </section>
         @include('dashboard.modal.add-tmasuk')
+        @include('dashboard.modal.edit-tmasuk')
     </div>
 @endsection
 
