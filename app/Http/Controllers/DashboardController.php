@@ -164,6 +164,17 @@ class DashboardController extends Controller
                             ->sum('nominal'));
         $chartKeluarTahun = intval(TKeluar::whereYear('tanggal', $now->year)
                             ->sum('nominal'));
+        
+        // Label
+        // $now = Carbon::now();
+        // $startOfWeek = $now->startOfWeek();
+        // $startOfMonth = $now->startOfMonth();
+        // $startOfYear = $now->startOfYear();
+        // $data = TMasuk::selectRaw("sum(case when day(tanggal) = day('$now') and month(tanggal) = month('$now') and year(tanggal) = year('$now') then nominal end) as hari_ini,
+        //                    sum(case when tanggal >= '$startOfWeek' and tanggal <= '$now' then nominal end) as minggu_ini,
+        //                    sum(case when month(tanggal) = month('$now') and year(tanggal) = year('$now') then nominal end) as bulan_ini,
+        //                    sum(case when year(tanggal) = year('$now') then nominal end) as tahun_ini")
+        //         ->first();
 
         return response()->json([
             'masukHari' => $masukHari,
@@ -185,6 +196,7 @@ class DashboardController extends Controller
             'chartKeluarMinggu' => $chartKeluarMinggu,
             'chartMasukTahun' => $chartMasukTahun,
             'chartKeluarTahun' => $chartKeluarTahun,
+            // 'data' => $data,
         ]);
     }
 }

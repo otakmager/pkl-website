@@ -97,7 +97,7 @@ class TMasukController extends Controller
             'nominal' => 'required',
             'tanggal' => 'required',
         ]);
-        $validatedData['tanggal'] = Carbon::parse($validatedData['tanggal'])->format('Y-m-d');
+        $validatedData['tanggal'] = Carbon::createFromFormat('d/m/Y', $validatedData['tanggal'])->format('Y-m-d');
         $validatedData['slug'] = Hash::make("tmasuk" . $validatedData['label'] . Str::random(16) . $validatedData['tanggal']);
 
         // Create instance
