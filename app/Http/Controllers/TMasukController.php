@@ -126,14 +126,10 @@ class TMasukController extends Controller
      * @param  \App\Models\TMasuk  $tMasuk
      * @return \Illuminate\Http\Response
      */
-    public function show(TMasuk $tMasuk)
+    public function show(TMasuk $tmasuk)
     {
         //return response
-        return response()->json([
-            'success' => true,
-            'message' => 'Detail Data Post',
-            'data'    => $tMasuk  
-        ]); 
+        return response()->json($tmasuk);
     }
 
     /**
@@ -142,7 +138,7 @@ class TMasukController extends Controller
      * @param  \App\Models\TMasuk  $tMasuk
      * @return \Illuminate\Http\Response
      */
-    public function edit(TMasuk $tMasuk)
+    public function edit(TMasuk $tmasuk)
     {
         //
     }
@@ -154,8 +150,12 @@ class TMasukController extends Controller
      * @param  \App\Models\TMasuk  $tMasuk
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TMasuk $tMasuk)
+    public function update(Request $request, TMasuk $tmasuk)
     {
+        return response()->json([
+            'request' => $request,
+            'tmasuk' => $tmasuk,
+        ]);
         //define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
@@ -170,7 +170,7 @@ class TMasukController extends Controller
         }
 
         //create post
-        $tMasuk->update([
+        $tmasuk->update([
             'name'     => $request->name, 
             'label'   => $request->label,
             'nominal'   => $request->nominal,
@@ -178,11 +178,11 @@ class TMasukController extends Controller
         ]);
 
         //return response
-        if ($tMasuk) {
+        if ($tmasuk) {
             return response()->json([
                 'success' => true,
                 'message' => 'Data Berhasil Diperbarui!',
-                'data' => $tMasuk,
+                'data' => $tmasuk,
             ]);
         } else {
             return response()->json([
@@ -198,7 +198,7 @@ class TMasukController extends Controller
      * @param  \App\Models\TMasuk  $tMasuk
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TMasuk $tMasuk)
+    public function destroy(TMasuk $tmasuk)
     {
         //
     }

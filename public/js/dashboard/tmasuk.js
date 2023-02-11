@@ -322,7 +322,9 @@ $(document).ready(function () {
     // ====================================================================================
 
     // ====================================================================================
-    // Ajax Add Data
+    // Insert, Edit, and Delete
+    // ====================================================================================
+    // 1. Insert Data
     // ====================================================================================
     $("#addModal").submit(function (e) {
         e.preventDefault();
@@ -362,5 +364,67 @@ $(document).ready(function () {
             },
         });
     });
+    // ====================================================================================
+    // 2. Fetch Detail Data
+    // ====================================================================================
+    $(document).on("click", "#btn-edit-tmasuk", function () {
+        var id = $(this).data("id");
+
+        $.ajax({
+            url: "tmasuk/" + id,
+            type: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                $("#editModal").modal("show");
+                $("#editname").val(data.name);
+                $("#editlabel").val(data.label);
+                $("#editnominal").val(data.nominal);
+                $("#edittanggal").val(
+                    moment(data.tanggal, "YYYY-MM-DD").format("DD/MM/YYYY")
+                );
+                // $("#edittanggal")
+                //     .data("daterangepicker")
+                //     .setDate(moment(data.tanggal, "YYYY-MM-DD").toDate());
+            },
+            error: function () {
+                alert("Tidak dapat menampilkan data!");
+            },
+        });
+    });
+    // ====================================================================================
+    // 3. Update Data
+    // ====================================================================================
+    $("#editForm").on("submit", function (e) {
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('input[name="_token"]').val(),
+            },
+        });
+        let data = {
+            name: $("#addname").val(),
+            label: $("#addlabel").val(),
+            nominal: $("#addnominal").val(),
+            tanggal: $("#addtanggal").val(),
+            _token: $('input[name="_token"]').val(),
+        };
+        console.log(data._token);
+        var id = $("#btn-edit-tmasuk").data("id");
+        $.ajax({
+            url: "tmasuk/" + id,
+            type: "PUT",
+            data: data,
+            success: function (data) {
+                console.log(data);
+                $("#editModal").modal("hide");
+                // location.reload();
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mengubah data!");
+            },
+        });
+    });
+
     // ====================================================================================
 });
