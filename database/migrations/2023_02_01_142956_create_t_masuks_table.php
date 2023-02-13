@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('label');
             $table->bigInteger('nominal');
             $table->date('tanggal');
+            $table->foreignId('label_id');
             $table->timestamps();
         });
     }
