@@ -17,11 +17,9 @@
                     <div class="form-group">
                         <label>Label</label>
                         <select type="text" class="form-control" id="editlabel" name="label" required>
-                            <option value="Reparasi">Reparasi</option>
-                            <option value="Jualan">Jualan</option>
-                            <option value="Donasi">Donasi</option>
-                            <option value="Kas">Kas</option>
-                            <option value="Hibah">Hibah</option>
+                            @foreach ($labels as $label)
+                            <option value="{{ $label->id }}">{{ $label->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">

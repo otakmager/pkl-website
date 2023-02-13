@@ -141,7 +141,6 @@ $(document).ready(function () {
             str_date = moment(dateArray[0], "D MMMM YYYY").format("YYYY-MM-DD");
             end_date = moment(dateArray[1], "D MMMM YYYY").format("YYYY-MM-DD");
         }
-        console.log("label data: " + label_data);
         fetch_data(
             page,
             sort_type,
@@ -380,7 +379,9 @@ $(document).ready(function () {
             success: function (data) {
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
-                $("#editlabel").val(data.label);
+                $("#editlabel")
+                    .find("option[value='" + data.label + "']")
+                    .prop("selected", true);
                 $("#editnominal").val(data.nominal);
                 $("#edittanggal").val(
                     moment(data.tanggal, "YYYY-MM-DD").format("DD/MM/YYYY")

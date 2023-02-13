@@ -40,7 +40,6 @@ class TMasukController extends Controller
      */
     public function tmasuk_ajax(Request $request){
         if(request()->ajax()) {
-            // return response()->json($request);
             $sort_by = $request->get('sortby');
             $sort_type = $request->get('sorttype');
             $search = $request->get('search');
@@ -105,7 +104,7 @@ class TMasukController extends Controller
         //create post
         $tmasuk = TMasuk::create([
             'name'     => $request->name, 
-            'label'   => $request->label,
+            'label_id'   => $request->label,
             'nominal'   => $request->nominal,
             'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
             'slug'   => Hash::make("tmasuk" . $request->label . Str::random(16) . $request->tanggal),
@@ -173,7 +172,7 @@ class TMasukController extends Controller
         //create post
         $tmasuk->update([
             'name'     => $request->name, 
-            'label'   => $request->label,
+            'label_id'   => $request->label,
             'nominal'   => $request->nominal,
             'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
         ]);
