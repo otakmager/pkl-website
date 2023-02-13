@@ -382,9 +382,6 @@ $(document).ready(function () {
                 $("#edittanggal").val(
                     moment(data.tanggal, "YYYY-MM-DD").format("DD/MM/YYYY")
                 );
-                // $("#edittanggal")
-                //     .data("daterangepicker")
-                //     .setDate(moment(data.tanggal, "YYYY-MM-DD").toDate());
             },
             error: function () {
                 alert("Tidak dapat menampilkan data!");
@@ -398,18 +395,17 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajaxSetup({
             headers: {
-                "X-CSRF-TOKEN": $('input[name="_token"]').val(),
+                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
             },
         });
-        let data = {
-            name: $("#addname").val(),
-            label: $("#addlabel").val(),
-            nominal: $("#addnominal").val(),
-            tanggal: $("#addtanggal").val(),
-            _token: $('input[name="_token"]').val(),
-        };
-        console.log(data._token);
         var id = $("#btn-edit-tmasuk").data("id");
+        let data = {
+            name: $("#editname").val(),
+            label: $("#editlabel").val(),
+            nominal: $("#editnominal").val(),
+            tanggal: $("#edittanggal").val(),
+            _token: $('input[name="_token"][id="tokenEdit"]').val(),
+        };
         $.ajax({
             url: "tmasuk/" + id,
             type: "PUT",
@@ -417,7 +413,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 $("#editModal").modal("hide");
-                // location.reload();
+                location.reload();
             },
             error: function (data) {
                 console.log(data);
