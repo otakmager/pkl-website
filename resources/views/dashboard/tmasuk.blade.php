@@ -52,11 +52,9 @@
                                     <label class="mt-2 mr-1" for="label">Label: </label>
                                     <div class="example-optionClass-container">
                                         <select id="label" class="form-control mx-1" name="multiselect[]" multiple="multiple">
-                                            <option value="Reparasi">Reparasi</option>
-                                            <option value="Jualan">Jualan</option>
-                                            <option value="Donasi">Donasi</option>
-                                            <option value="Kas">Kas</option>
-                                            <option value="Hibah">Hibah</option>
+                                            @foreach ($labels as $label)
+                                            <option value="{{ $label->id }}">{{ $label->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>        
                                 </div>                                

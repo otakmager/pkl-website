@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 // use App\DataTables\TMasukDataTable;
 use App\Models\TMasuk;
+use App\Models\Label;
 use App\Http\Requests\StoreTMasukRequest;
 use App\Http\Requests\UpdateTMasukRequest;
 use Illuminate\Http\Request;
@@ -23,8 +24,10 @@ class TMasukController extends Controller
     {
         $maxData = 5;
         $tmasuks = TMasuk::latest()->paginate($maxData);
+        $labels = Label::where('jenis', 0)->get();
         return view('dashboard.tmasuk', [
             'tmasuks' => $tmasuks,
+            'labels' => $labels,
             'maxData' => 5,
         ]);
     }
@@ -37,6 +40,7 @@ class TMasukController extends Controller
      */
     public function tmasuk_ajax(Request $request){
         if(request()->ajax()) {
+            // return response()->json($request);
             $sort_by = $request->get('sortby');
             $sort_type = $request->get('sorttype');
             $search = $request->get('search');
@@ -44,12 +48,13 @@ class TMasukController extends Controller
             $maxData= (int)$request->get('maxdata');
             $labels = $request->get('labeldata');
             $labels = explode(',', $labels);
+            $labels = array_map('intval', $labels);
             $strDate = $request->get('strdate');
             $endDate = $request->get('enddate');
 
             $tmasuks = TMasuk::
                 where(function($query) use ($search, $labels, $strDate, $endDate) {
-                    $query->whereIn('label', $labels)
+                    $query->whereIn('label_id', $labels)
                             ->where(function($query) use ($search) {
                                 $query->where('name', 'like', '%' .$search. '%')
                                 ->orWhere('nominal', 'like', '%' .$search. '%');

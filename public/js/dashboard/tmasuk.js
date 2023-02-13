@@ -141,6 +141,7 @@ $(document).ready(function () {
             str_date = moment(dateArray[0], "D MMMM YYYY").format("YYYY-MM-DD");
             end_date = moment(dateArray[1], "D MMMM YYYY").format("YYYY-MM-DD");
         }
+        console.log("label data: " + label_data);
         fetch_data(
             page,
             sort_type,
