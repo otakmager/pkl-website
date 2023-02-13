@@ -9,4 +9,8 @@ class TKeluar extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function Label(){
+        return $this->belongsTo(Label::class);
+    }
 }

@@ -9,4 +9,11 @@ class Label extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function TMasuk(){
+        return $this->hasMany(TMasuk::class);
+    }
+    public function TKeluar(){
+        return $this->hasMany(TKeluar::class);
+    }
 }
