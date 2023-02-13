@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use Carbon\Carbon;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TMasuk>
  */
@@ -16,12 +16,14 @@ class TMasukFactory extends Factory
      */
     public function definition()
     {
+        $startDate = Carbon::createFromDate(2022, 1, 1);
+        $endDate = Carbon::createFromDate(2023, 2, 13);
         return [
             'name' => fake()->words(mt_rand(1,3), true),
             'slug' => fake()->unique()->slug(),
-            'label' => 'Reparasi',
-            'nominal' => 10000,
-            'tanggal' => now(),
+            'label_id' => mt_rand(1,3),
+            'nominal' => mt_rand(10000,200000),
+            'tanggal' => $this->faker->dateTimeBetween($startDate, $endDate),
         ];
     }
 }

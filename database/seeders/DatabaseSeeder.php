@@ -45,6 +45,11 @@ class DatabaseSeeder extends Seeder
             'jenis' => 0,
         ]);
         Label::create([
+            'name' => 'Kas',
+            'slug' => 'kas',
+            'jenis' => 0,
+        ]);
+        Label::create([
             'name' => 'Gaji',
             'slug' => 'gaji',
             'jenis' => 1,
@@ -54,8 +59,13 @@ class DatabaseSeeder extends Seeder
             'slug' => 'beli-alat-bahan',
             'jenis' => 1,
         ]);
+        Label::create([
+            'name' => 'Donasi',
+            'slug' => 'donasi',
+            'jenis' => 1,
+        ]);
         User::factory(3)->create();
-        TMasuk::factory(30)->create();
-        TKeluar::factory(30)->create();
+        TMasuk::factory(60)->create();
+        TKeluar::factory(60)->create();
     }
 }

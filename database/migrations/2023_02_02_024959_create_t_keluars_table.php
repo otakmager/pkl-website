@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('t_keluars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug');
-            $table->string('label');
+            $table->string('slug')->unique();
             $table->bigInteger('nominal');
             $table->date('tanggal');
             $table->foreignId('label_id');
