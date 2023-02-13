@@ -2,7 +2,7 @@
     <tr class="text-center" id="{{ $tmasuk->id }}">
     <td id="nomor">{{ isset($page)? $maxData*($page-1)+$loop->iteration : $loop->iteration }}</td>
     <td>{{ $tmasuk->name }}</td>
-    <td>{{ $tmasuk->label }}</td>
+    <td>{{ $tmasuk->label->name }}</td>
     <td>@currency($tmasuk->nominal)</td>
     <td>{{ date('d/m/Y', strtotime($tmasuk->tanggal)) }}</td>
     <td class="text-center">
