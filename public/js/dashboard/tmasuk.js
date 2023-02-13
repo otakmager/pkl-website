@@ -367,8 +367,10 @@ $(document).ready(function () {
     // ====================================================================================
     // 2. Fetch Detail Data
     // ====================================================================================
+    let edit_id;
     $(document).on("click", "#btn-edit-tmasuk", function () {
-        var id = $(this).data("id");
+        let id = $(this).data("id");
+        edit_id = id;
 
         $.ajax({
             url: "tmasuk/" + id,
@@ -398,7 +400,7 @@ $(document).ready(function () {
                 "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
             },
         });
-        var id = $("#btn-edit-tmasuk").data("id");
+        var id = edit_id;
         var nomor = $("#" + id)
             .find("#nomor")
             .text();
@@ -414,14 +416,13 @@ $(document).ready(function () {
             type: "PUT",
             data: data,
             success: function (data) {
-                console.log(data);
                 swal({
                     title: "Sukses!",
                     text: data.message,
                     icon: "success",
                     timer: 10000,
                 });
-                //data post
+                //replace tr
                 let tmasuk =
                     `
                 <tr class="text-center" id="${data.data.id}">
@@ -451,7 +452,6 @@ $(document).ready(function () {
                 $(`#${data.data.id}`).replaceWith(tmasuk);
                 $("#editModal").modal("hide");
                 $("#editForm").trigger("reset");
-                // location.reload();
             },
             error: function (data) {
                 console.log(data);

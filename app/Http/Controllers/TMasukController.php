@@ -177,13 +177,13 @@ class TMasukController extends Controller
         if ($tmasuk) {
             return response()->json([
                 'success' => true,
-                'message' => 'Data Berhasil Diperbarui!',
+                'message' => 'Data Berhasil Diubah!',
                 'data' => $tmasuk,
             ]);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Data Gagal Diperbarui!',
+                'message' => 'Data Gagal Diubah!',
             ]);
         }    
     }

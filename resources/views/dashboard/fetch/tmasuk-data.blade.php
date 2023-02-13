@@ -7,11 +7,7 @@
     <td>{{ date('d/m/Y', strtotime($tmasuk->tanggal)) }}</td>
     <td class="text-center">
         <a href="javascript:void(0)" id="btn-edit-tmasuk" data-id="{{ $tmasuk->id }}" class="btn btn-icon icon-left btn-primary" ><i class="far fa-edit"></i> Edit</a>
-        <form action="#" method="post" class="d-inline">
-            @method('delete')
-            @csrf
-            <button class="btn btn-icon icon-left btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i> Hapus</button>
-        </form>
+        <a href="javascript:void(0)" id="btn-del-tmasuk" data-id="{{ $tmasuk->id }}" class="btn btn-icon icon-left btn-danger" ><i class="fas fa-trash"></i> Hapus</a>
     </td>
     </tr>
 @endforeach   
