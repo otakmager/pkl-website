@@ -152,10 +152,6 @@ class TMasukController extends Controller
      */
     public function update(Request $request, TMasuk $tmasuk)
     {
-        // return response()->json([
-        //     'request' => $request->all(),
-        //     'tmasuk' => $tmasuk,
-        // ]);
         //define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',

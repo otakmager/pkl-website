@@ -399,6 +399,9 @@ $(document).ready(function () {
             },
         });
         var id = $("#btn-edit-tmasuk").data("id");
+        var nomor = $("#" + id)
+            .find("#nomor")
+            .text();
         let data = {
             name: $("#editname").val(),
             label: $("#editlabel").val(),
@@ -412,8 +415,43 @@ $(document).ready(function () {
             data: data,
             success: function (data) {
                 console.log(data);
+                swal({
+                    title: "Sukses!",
+                    text: data.message,
+                    icon: "success",
+                    timer: 10000,
+                });
+                //data post
+                let tmasuk =
+                    `
+                <tr class="text-center" id="${data.data.id}">
+                <td>` +
+                    nomor +
+                    `</td>
+                <td>${data.data.name}</td>
+                <td>${data.data.label}</td>
+                <td>Rp` +
+                    data.data.nominal
+                        .toString()
+                        .split(/(?=(?:...)*$)/)
+                        .join(".") +
+                    `</td>
+                <td>` +
+                    moment(data.data.tanggal, "YYYY-MM-DD").format(
+                        "DD/MM/YYYY"
+                    ) +
+                    `</td>
+                <td class="text-center">
+                    <a href="javascript:void(0)" id="btn-edit-tmasuk" data-id="${data.data.id}" class="btn btn-icon icon-left btn-primary" ><i class="far fa-edit"></i> Edit</a>
+                    <a href="javascript:void(0)" id="btn-del-tmasuk" data-id="${data.data.id}" class="btn btn-icon icon-left btn-danger" ><i class="fas fa-trash"></i> Hapus</a>
+                </td>
+                </tr>
+                `;
+                //append to post data
+                $(`#${data.data.id}`).replaceWith(tmasuk);
                 $("#editModal").modal("hide");
-                location.reload();
+                $("#editForm").trigger("reset");
+                // location.reload();
             },
             error: function (data) {
                 console.log(data);

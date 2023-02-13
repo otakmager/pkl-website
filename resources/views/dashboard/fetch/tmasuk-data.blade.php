@@ -1,6 +1,6 @@
 @foreach ($tmasuks as $tmasuk)            
     <tr class="text-center" id="{{ $tmasuk->id }}">
-    <td>{{ isset($page)? $maxData*($page-1)+$loop->iteration : $loop->iteration }}</td>
+    <td id="nomor">{{ isset($page)? $maxData*($page-1)+$loop->iteration : $loop->iteration }}</td>
     <td>{{ $tmasuk->name }}</td>
     <td>{{ $tmasuk->label }}</td>
     <td>@currency($tmasuk->nominal)</td>
