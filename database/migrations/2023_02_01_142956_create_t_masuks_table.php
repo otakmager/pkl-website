@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->foreignId('label_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
