@@ -330,7 +330,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajaxSetup({
             headers: {
-                "X-CSRF-TOKEN": $('input[name="_token"]').val(),
+                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenAdd"]').val(),
             },
         });
         let data = {
@@ -338,7 +338,7 @@ $(document).ready(function () {
             label: $("#addlabel").val(),
             nominal: $("#addnominal").val(),
             tanggal: $("#addtanggal").val(),
-            _token: $('input[name="_token"]').val(),
+            _token: $('input[name="_token"][id="tokenAdd"]').val(),
         };
         $.ajax({
             type: "POST",
@@ -377,10 +377,11 @@ $(document).ready(function () {
             type: "GET",
             dataType: "JSON",
             success: function (data) {
+                console.log(data);
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
                 $("#editlabel")
-                    .find("option[value='" + data.label + "']")
+                    .find("option[value='" + data.label_id + "']")
                     .prop("selected", true);
                 $("#editnominal").val(data.nominal);
                 $("#edittanggal").val(
@@ -461,6 +462,64 @@ $(document).ready(function () {
             },
         });
     });
+    // ====================================================================================
+    // 3. Delete Data
+    // ====================================================================================
+    $(document).on("click", "#btn-del-tmasuk", function () {
+        let id = $(this).data("id");
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
 
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Data akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
+            icon: "warning",
+            // buttons: true,
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Hapus!",
+            },
+            dangerMode: true,
+        });
+
+        // Swal.fire({
+        //     title: 'Apakah Kamu Yakin?',
+        //     text: "ingin menghapus data ini!",
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     cancelButtonText: 'TIDAK',
+        //     confirmButtonText: 'YA, HAPUS!'
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+
+        //         console.log('test');
+
+        //         //fetch to delete data
+        //         $.ajax({
+
+        //             url: `/posts/${post_id}`,
+        //             type: "DELETE",
+        //             cache: false,
+        //             data: {
+        //                 "_token": token
+        //             },
+        //             success:function(response){
+
+        //                 //show success message
+        //                 Swal.fire({
+        //                     type: 'success',
+        //                     icon: 'success',
+        //                     title: `${response.message}`,
+        //                     showConfirmButton: false,
+        //                     timer: 3000
+        //                 });
+
+        //                 //remove post on table
+        //                 $(`#index_${post_id}`).remove();
+        //             }
+        //         });
+
+        //     }
+        // })
+    });
     // ====================================================================================
 });

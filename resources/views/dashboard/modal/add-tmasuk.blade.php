@@ -8,7 +8,7 @@
                 </button>
             </div>
             <form id="addForm">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenAdd">
                 <div class="modal-body">                    
                     <div class="form-group">
                         <label>Nama Transaksi</label>

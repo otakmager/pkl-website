@@ -201,6 +201,13 @@ class TMasukController extends Controller
      */
     public function destroy(TMasuk $tmasuk)
     {
-        //
+        $deletedTMasuk = TMasuk::findOrFail($tmasuk->id);
+        $deletedTMasuk->delete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Transaksi Masuk Berhasil Dihapus!\nData dapat dipulihkan kembali selama kurang dari 14 hari sejak dihapus.',
+        ]); 
     }
 }
