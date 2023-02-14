@@ -59,7 +59,7 @@ class TKeluarController extends Controller
                     })
                     ->orderBy($sort_by == 'label_id' ? 'labels.name' : $sort_by, $sort_type)->paginate($maxData);
 
-            return view('dashboard.fetch.tmasuk-data', [
+            return view('dashboard.fetch.tkeluar-data', [
                 'tkeluars' => $tkeluars,
                 'page' => $request->get('page'),
                 'maxData' =>$maxData,
