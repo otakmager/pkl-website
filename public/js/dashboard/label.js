@@ -193,7 +193,7 @@ $(document).ready(function () {
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
                 $("#editjenis")
-                    .find("option[value='" + data.label_id + "']")
+                    .find("option[value='" + data.jenis + "']")
                     .prop("selected", true);
             },
             error: function () {
@@ -217,7 +217,7 @@ $(document).ready(function () {
             .text();
         let data = {
             name: $("#editname").val(),
-            jenis: $("#addjenis").val(),
+            jenis: $("#editjenis").val(),
             _token: $('input[name="_token"][id="tokenEdit"]').val(),
         };
         $.ajax({
@@ -235,11 +235,15 @@ $(document).ready(function () {
                 let label =
                     `
                 <tr class="text-center" id="${data.data.id}">
-                <td>` +
+                <td id="nomor">` +
                     nomor +
                     `</td>
                 <td>${data.data.name}</td>
-                <td>${data.data.label}</td>
+                <td>` +
+                    (data.data.jenis == 0
+                        ? "Transaksi masuk"
+                        : "Transaksi keluar") +
+                    `</td>
                 <td class="text-center">
                     <a href="javascript:void(0)" id="btn-edit-label" data-id="${data.data.id}" class="btn btn-icon icon-left btn-primary" ><i class="far fa-edit"></i> Edit</a>
                     <a href="javascript:void(0)" id="btn-del-label" data-id="${data.data.id}" class="btn btn-icon icon-left btn-danger" ><i class="fas fa-trash"></i> Hapus</a>
@@ -266,7 +270,7 @@ $(document).ready(function () {
 
         swal({
             title: "Apakah Anda Yakin?",
-            text: "Data akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
+            text: "Data akan dihapus secara permanen.",
             icon: "warning",
             buttons: {
                 cancel: "Batal",

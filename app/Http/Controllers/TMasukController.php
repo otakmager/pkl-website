@@ -167,7 +167,7 @@ class TMasukController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //create post
+        //update post
         $tmasuk->update([
             'name'     => $request->name, 
             'label_id'   => $request->label,

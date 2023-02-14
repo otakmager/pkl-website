@@ -45,17 +45,6 @@ class LabelController extends Controller
             $labels = Label::where('name', 'like', '%' . $search . '%')->whereIn('jenis', $jenis)
                         ->orderBy($sort_by, $sort_type)->paginate($maxData);
 
-            // $tmasuks = Label::join('labels', 'labels.id', '=', 't_masuks.label_id')
-            //         ->select('t_masuks.*')
-            //         ->where(function($query) use ($search, $labels, $strDate, $endDate) {
-            //             $query->whereIn('t_masuks.label_id', $labels)
-            //                     ->where(function($query) use ($search) {
-            //                         $query->where('t_masuks.name', 'like', '%' .$search. '%')
-            //                         ->orWhere('t_masuks.nominal', 'like', '%' .$search. '%');
-            //                     })->whereBetween('t_masuks.tanggal', [$strDate, $endDate]);
-            //         })
-            //         ->orderBy($sort_by == 'label_id' ? 'labels.name' : $sort_by, $sort_type)->paginate($maxData);
-
             return view('dashboard.fetch.label-data', [
                 'labels' => $labels,
                 'page' => $request->get('page'),
@@ -82,7 +71,36 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100',
+            'jenis' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //create post
+        $label = Label::create([
+            'name'     => $request->name, 
+            'jenis'   => $request->jenis,
+            'slug'   => Hash::make("label" . $request->name . Str::random(16) . $request->jenis),
+        ]);
+
+        //return response
+        if ($label) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Disimpan!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Disimpan!',
+            ]);
+        }    
     }
 
     /**
@@ -93,7 +111,8 @@ class LabelController extends Controller
      */
     public function show(Label $label)
     {
-        //
+        //return response
+        return response()->json($label);
     }
 
     /**
@@ -116,7 +135,36 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100',
+            'jenis' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //update post
+        $label->update([
+            'name'     => $request->name, 
+            'jenis'   => $request->jenis,
+        ]);
+
+        //return response
+        if ($label) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Diubah!',
+                'data' => $label,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Diubah!',
+            ]);
+        }    
     }
 
     /**
@@ -127,6 +175,13 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        //
+        $deletedTLabel = Label::findOrFail($label->id);
+        $deletedTLabel->delete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data label berhasil dihapus",
+        ]); 
     }
 }

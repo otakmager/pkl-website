@@ -428,7 +428,7 @@ $(document).ready(function () {
                 let tkeluar =
                     `
                 <tr class="text-center" id="${data.data.id}">
-                <td>` +
+                <td id="nomor">` +
                     nomor +
                     `</td>
                 <td>${data.data.name}</td>

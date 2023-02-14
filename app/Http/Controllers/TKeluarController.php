@@ -99,16 +99,16 @@ class TKeluarController extends Controller
         }
 
         //create post
-        $tmasuk = TKeluar::create([
+        $tkeluar = TKeluar::create([
             'name'     => $request->name, 
             'label_id'   => $request->label,
             'nominal'   => $request->nominal,
             'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
-            'slug'   => Hash::make("tmasuk" . $request->label . Str::random(16) . $request->tanggal),
+            'slug'   => Hash::make("tkeluar" . $request->label . Str::random(16) . $request->tanggal),
         ]);
 
         //return response
-        if ($tmasuk) {
+        if ($tkeluar) {
             return response()->json([
                 'success' => true,
                 'message' => 'Data Berhasil Disimpan!',
@@ -166,7 +166,7 @@ class TKeluarController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //create post
+        //update post
         $tkeluar->update([
             'name'     => $request->name, 
             'label_id'   => $request->label,
