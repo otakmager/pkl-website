@@ -70,6 +70,8 @@ $(document).ready(function () {
             $("#jenis").multiselect("updateButtonText");
             jenis_data = $("#jenis").val();
         }
+        console.log(sort_type);
+        console.log(column_name);
         fetch_data(page, sort_type, column_name, search, max_data, jenis_data);
     }
     // ====================================================================================
@@ -81,7 +83,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 3. Sorting
     // ====================================================================================
-    $(document).on("click", ".tmasuk_sorting", function () {
+    $(document).on("click", ".label_sorting", function () {
         var column_name = $(this).data("column_name");
         var order_type = $(this).data("sorting_type");
         var reverse_order = "";
