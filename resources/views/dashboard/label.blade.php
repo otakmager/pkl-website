@@ -47,11 +47,11 @@
                                     <label class="mt-2" for="p"> entries</label>
                                 </div>
                             </div>
-                            <div class="row px-3">
-                                <div class="custom-control selectgroup col-lg-2 col-md-8 col-12 mr-2">
+                            <div class="row px-3 mb-2">
+                                <div class="custom-control selectgroup col-lg-5 col-md-8 col-12 mr-2">
                                     <label class="mt-2 mr-1" for="label">Jenis Transaksi: </label>
                                     <div class="example-optionClass-container">
-                                        <select id="label" class="form-control mx-1" name="multiselect[]" multiple="multiple">
+                                        <select id="jenis" class="form-control mx-1" name="multiselect[]" multiple="multiple">
                                             <option value="0">Transaksi Masuk</option>
                                             <option value="1">Transaksi Keluar</option>
                                         </select>
@@ -90,9 +90,8 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-    <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script>    
-    <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script> 
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <!-- Page Specific JS File -->
-    {{-- <script src="{{ asset('js/dashboard/label.js') }}"></script> --}}
+    <script src="{{ asset('js/dashboard/label.js') }}"></script>
 @endpush
