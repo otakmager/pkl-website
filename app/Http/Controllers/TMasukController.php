@@ -207,7 +207,7 @@ class TMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data Transaksi Masuk Berhasil Dihapus!\nData dapat dipulihkan kembali selama kurang dari 14 hari sejak dihapus.',
+            'message' => "Data transaksi masuk berhasil dihapus\ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
         ]); 
     }
 }

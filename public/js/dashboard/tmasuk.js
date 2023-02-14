@@ -377,7 +377,6 @@ $(document).ready(function () {
             type: "GET",
             dataType: "JSON",
             success: function (data) {
-                console.log(data);
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
                 $("#editlabel")
@@ -473,53 +472,36 @@ $(document).ready(function () {
             title: "Apakah Anda Yakin?",
             text: "Data akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
             icon: "warning",
-            // buttons: true,
             buttons: {
                 cancel: "Batal",
                 confirm: "Ya, Hapus!",
             },
             dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                //fetch to delete data
+                $.ajax({
+                    url: "tmasuk/" + id,
+                    type: "DELETE",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove post on table
+                        $("#" + id).remove();
+                    },
+                });
+            }
         });
-
-        // Swal.fire({
-        //     title: 'Apakah Kamu Yakin?',
-        //     text: "ingin menghapus data ini!",
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     cancelButtonText: 'TIDAK',
-        //     confirmButtonText: 'YA, HAPUS!'
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
-
-        //         console.log('test');
-
-        //         //fetch to delete data
-        //         $.ajax({
-
-        //             url: `/posts/${post_id}`,
-        //             type: "DELETE",
-        //             cache: false,
-        //             data: {
-        //                 "_token": token
-        //             },
-        //             success:function(response){
-
-        //                 //show success message
-        //                 Swal.fire({
-        //                     type: 'success',
-        //                     icon: 'success',
-        //                     title: `${response.message}`,
-        //                     showConfirmButton: false,
-        //                     timer: 3000
-        //                 });
-
-        //                 //remove post on table
-        //                 $(`#index_${post_id}`).remove();
-        //             }
-        //         });
-
-        //     }
-        // })
     });
     // ====================================================================================
 });
