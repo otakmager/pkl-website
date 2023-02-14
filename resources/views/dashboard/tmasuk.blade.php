@@ -21,9 +21,9 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <div class="card">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenCommon">
                             <div class="card-header">
                                 <h4>Tabel Transaksi Masuk</h4>
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenCommon">
                                 <div class="card-header-form">
                                     <form>
                                         <div class="input-group">

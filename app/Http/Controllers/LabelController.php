@@ -15,8 +15,11 @@ class LabelController extends Controller
      */
     public function index()
     {
+        $maxData = 5;
+        $labels = Label::latest()->paginate($maxData);
         return view('dashboard.label', [
-            'labels' => Label::all(),
+            'labels' => $labels,
+            'maxData' => 5,
         ]);
     }
 
