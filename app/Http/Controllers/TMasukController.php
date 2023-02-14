@@ -50,16 +50,17 @@ class TMasukController extends Controller
             $labels = array_map('intval', $labels);
             $strDate = $request->get('strdate');
             $endDate = $request->get('enddate');
-
-            $tmasuks = TMasuk::
-                where(function($query) use ($search, $labels, $strDate, $endDate) {
-                    $query->whereIn('label_id', $labels)
-                            ->where(function($query) use ($search) {
-                                $query->where('name', 'like', '%' .$search. '%')
-                                ->orWhere('nominal', 'like', '%' .$search. '%');
-                            })->whereBetween('tanggal', [$strDate, $endDate]);
-                })
-                ->orderBy($sort_by, $sort_type)->paginate($maxData);
+           
+            $tmasuks = TMasuk::join('labels', 'labels.id', '=', 't_masuks.label_id')
+                    ->select('t_masuks.*')
+                    ->where(function($query) use ($search, $labels, $strDate, $endDate) {
+                        $query->whereIn('t_masuks.label_id', $labels)
+                                ->where(function($query) use ($search) {
+                                    $query->where('t_masuks.name', 'like', '%' .$search. '%')
+                                    ->orWhere('t_masuks.nominal', 'like', '%' .$search. '%');
+                                })->whereBetween('t_masuks.tanggal', [$strDate, $endDate]);
+                    })
+                    ->orderBy($sort_by == 'label_id' ? 'labels.name' : $sort_by, $sort_type)->paginate($maxData);
 
             return view('dashboard.fetch.tmasuk-data', [
                 'tmasuks' => $tmasuks,

@@ -86,7 +86,7 @@
                                             <tr class="text-center">
                                                 <th>No.</th>
                                                 <th class="tmasuk_sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Nama</th>
-                                                <th class="tmasuk_sorting" data-sorting_type="asc" data-column_name="label" style="cursor: pointer">Label</th>
+                                                <th class="tmasuk_sorting" data-sorting_type="asc" data-column_name="label_id" style="cursor: pointer">Label</th>
                                                 <th class="tmasuk_sorting" data-sorting_type="asc" data-column_name="nominal" style="cursor: pointer">Nominal</th>
                                                 <th class="tmasuk_sorting" data-sorting_type="asc" data-column_name="tanggal" style="cursor: pointer">Tanggal</th>
                                                 <th>Aksi</th>
