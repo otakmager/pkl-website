@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 // use App\DataTables\TMasukDataTable;
 use App\Models\TMasuk;
 use App\Models\Label;
-use App\Http\Requests\StoreTMasukRequest;
-use App\Http\Requests\UpdateTMasukRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 class TMasukController extends Controller
 {
@@ -84,7 +81,7 @@ class TMasukController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Request  $request
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -128,7 +125,7 @@ class TMasukController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TMasuk  $tMasuk
+     * @param  \App\Models\TMasuk  $tmasuk
      * @return \Illuminate\Http\Response
      */
     public function show(TMasuk $tmasuk)
@@ -140,7 +137,7 @@ class TMasukController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TMasuk  $tMasuk
+     * @param  \App\Models\TMasuk  $tmasuk
      * @return \Illuminate\Http\Response
      */
     public function edit(TMasuk $tmasuk)
@@ -151,8 +148,8 @@ class TMasukController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Request  $request
-     * @param  \App\Models\TMasuk  $tMasuk
+     * @param  Request $request
+     * @param  \App\Models\TMasuk  $tmasuk
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, TMasuk $tmasuk)
@@ -196,7 +193,7 @@ class TMasukController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TMasuk  $tMasuk
+     * @param  \App\Models\TMasuk  $tmasuk
      * @return \Illuminate\Http\Response
      */
     public function destroy(TMasuk $tmasuk)

@@ -40,6 +40,7 @@ Route::get('/dashboard/dashboardData', [DashboardController::class, 'dashboardDa
 Route::get('/tmasuk/tmasuk_ajax', [TMasukController::class, 'tmasuk_ajax'])->name('tmasuk.ajax');
 Route::resource('/tmasuk', TMasukController::class);
 Route::resource('/tkeluar', TKeluarController::class);
+Route::get('/tkeluar/tkeluar_ajax', [TKeluarController::class, 'tkeluar_ajax'])->name('tkeluar.ajax');
 Route::resource('/label', LabelController::class);
 Route::get('/sampah', function () {
     return view('dashboard.sampah');
