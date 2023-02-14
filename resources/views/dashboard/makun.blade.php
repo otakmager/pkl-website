@@ -94,5 +94,5 @@
     <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script> 
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <!-- Page Specific JS File -->
-    {{-- <script src="{{ asset('js/dashboard/makun.js') }}"></script> --}}
+    <script src="{{ asset('js/dashboard/makun.js') }}"></script>
 @endpush
