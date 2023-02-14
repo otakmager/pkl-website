@@ -50,4 +50,6 @@ Route::get('/sampah', function () {
 Route::get('/download', function () {
     return view('dashboard.download');
 });
+
+Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax');
 Route::resource('/makun', MAkunController::class);

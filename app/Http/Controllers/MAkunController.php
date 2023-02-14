@@ -14,8 +14,11 @@ class MAkunController extends Controller
      */
     public function index()
     {
+        $maxData = 5;
+        $users = User::orderBy('level', 'asc')->latest()->paginate($maxData);
         return view('dashboard.makun', [
-            'users' => User::all(),
+            'users' => $users,
+            'maxData' => 5,
         ]);
     }
 
