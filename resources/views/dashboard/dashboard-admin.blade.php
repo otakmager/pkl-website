@@ -122,21 +122,22 @@
                 {{-- Top 5 Label Pemasukan --}}
                 <div class="card gradient-bottom">
                     <div class="card-header">
-                        <h4>Top 5 Label Pemasukan</h4>
+                        <h4>Top 5 Label Pemasukan</h4><br>
                         <div class="card-header-action dropdown">
                             <a href="#"
+                                id="chooseLabelMasuk"
                                 data-toggle="dropdown"
-                                class="btn btn-danger dropdown-toggle">Month</a>
+                                class="btn btn-danger dropdown-toggle">Bulan Ini</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <li class="dropdown-title">Select Period</li>
-                                <li><a href="#"
-                                        class="dropdown-item">Today</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item">Week</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item active">Month</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item">This Year</a></li>
+                                <li class="dropdown-title">Pilih Periode</li>
+                                <li><a href="javascript:{}" id="msk-bln-ini"
+                                        class="dropdown-item lb-masuk active">Bulan Ini</a></li>
+                                <li><a href="javascript:{}" id="msk-bln-kemarin"
+                                        class="dropdown-item lb-masuk">Bulan Kemarin</a></li>
+                                <li><a href="javascript:{}" id="msk-thn-ini"
+                                        class="dropdown-item lb-masuk">Tahun Ini</a></li>
+                                <li><a href="javascript:{}" id="msk-thn-kemarin"
+                                        class="dropdown-item lb-masuk">Tahun Kemarin</a></li>
                             </ul>
                         </div>
                     </div>
@@ -281,21 +282,22 @@
                 {{-- Top 5 Label Pengeluaran --}}
                 <div class="card gradient-bottom">
                     <div class="card-header">
-                        <h4>Top 5 Label Pengeluaran</h4>
+                        <h4>Top 5 Label Pengeluaran</h4><br>
                         <div class="card-header-action dropdown">
                             <a href="#"
+                                id="chooseLabelKeluar"
                                 data-toggle="dropdown"
-                                class="btn btn-danger dropdown-toggle">Month</a>
+                                class="btn btn-danger dropdown-toggle">Bulan Ini</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <li class="dropdown-title">Select Period</li>
-                                <li><a href="#"
-                                        class="dropdown-item">Today</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item">Week</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item active">Month</a></li>
-                                <li><a href="#"
-                                        class="dropdown-item">This Year</a></li>
+                                <li class="dropdown-title">Pilih Periode</li>
+                                <li><a href="javascript:{}" id="msk-bln-ini"
+                                        class="dropdown-item lb-keluar active">Bulan Ini</a></li>
+                                <li><a href="javascript:{}" id="msk-bln-kemarin"
+                                        class="dropdown-item lb-keluar">Bulan Kemarin</a></li>
+                                <li><a href="javascript:{}" id="msk-thn-ini"
+                                        class="dropdown-item lb-keluar">Tahun Ini</a></li>
+                                <li><a href="javascript:{}" id="msk-thn-kemarin"
+                                        class="dropdown-item lb-keluar">Tahun Kemarin</a></li>
                             </ul>
                         </div>
                     </div>

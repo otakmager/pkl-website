@@ -244,6 +244,28 @@ $(document).ready(function () {
                     .removeClass("btn-light")
                     .addClass("btn-primary");
             });
+            // ====================================================================================
+            // Top 5 Label Pemasukan
+            // ====================================================================================
+            $(".lb-masuk").on("click", function () {
+                // Menghapus kelas active dari semua item
+                $(".lb-masuk").removeClass("active");
+                // Menambahkan kelas active pada item yang dipilih
+                $(this).addClass("active");
+                // Mengubah teks pada #chooseLabelMasuk dengan teks dari item yang dipilih
+                $("#chooseLabelMasuk").text($(this).text());
+            });
+            // ====================================================================================
+            // Top 5 Label Pengeluaran
+            // ====================================================================================
+            $(".lb-keluar").on("click", function () {
+                // Menghapus kelas active dari semua item
+                $(".lb-keluar").removeClass("active");
+                // Menambahkan kelas active pada item yang dipilih
+                $(this).addClass("active");
+                // Mengubah teks pada #chooseLabelKeluar dengan teks dari item yang dipilih
+                $("#chooseLabelKeluar").text($(this).text());
+            });
         },
     });
 });
