@@ -1,10 +1,8 @@
 $(document).ready(function () {
-    console.log("hi");
     $.ajax({
         url: "/dashboard/dashboardData",
         type: "GET",
         success: function (data) {
-            // console.log(data);
             // ====================================================================================
             // Info Hari Ini
             // ====================================================================================

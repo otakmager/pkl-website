@@ -117,18 +117,17 @@ class MAkunController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $makun
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $makun)
     {
         // return response
-        return response()->json($user);
         return response()->json([
-            'id' => $user->id,
-            'username' => $user->username,
-            'name' => $user->name,
-            'email' => $user->email
+            'id' => $makun->id,
+            'username' => $makun->username,
+            'name' => $makun->name,
+            'email' => $makun->email
         ]);
     }
 
@@ -147,10 +146,10 @@ class MAkunController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $makun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $makun)
     {
         //define validation rules
         $validator = Validator::make($request->all(), [
@@ -163,12 +162,12 @@ class MAkunController extends Controller
         }
 
         //update post
-        $user->update([
+        $makun->update([
             'password'   => Hash::make($request->password)
         ]);
 
         //return response
-        if ($user) {
+        if ($makun) {
             return response()->json([
                 'success' => true,
                 'message' => 'Password Berhasil Diubah!',
@@ -184,12 +183,12 @@ class MAkunController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $makun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $makun)
     {
-        $deletedTUser = User::findOrFail($user->id);
+        $deletedTUser = User::findOrFail($makun->id);
         $deletedTUser->delete();
 
         //return response

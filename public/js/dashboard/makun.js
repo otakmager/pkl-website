@@ -70,8 +70,6 @@ $(document).ready(function () {
             $("#status").multiselect("updateButtonText");
             status_data = $("#status").val();
         }
-        console.log(sort_type);
-        console.log(column_name);
         fetch_data(page, sort_type, column_name, search, max_data, status_data);
     }
     // ====================================================================================
@@ -186,19 +184,15 @@ $(document).ready(function () {
     $(document).on("click", "#btn-reset-user", function () {
         let id = $(this).data("id");
         edit_id = id;
-        console.log("ID yang akan diedit: " + id);
 
         $.ajax({
             url: "makun/" + id,
             type: "GET",
             dataType: "JSON",
             success: function (data) {
-                console.log(data);
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
                 $("#editemail").val(data.email);
-                $("#editpassword").val();
-                $("#editrepassword").val();
             },
             error: function () {
                 alert("Tidak dapat menampilkan data!");
@@ -226,7 +220,8 @@ $(document).ready(function () {
             repassword: $("#editrepassword").val(),
             _token: $('input[name="_token"][id="tokenEdit"]').val(),
         };
-        console.log("Data yang akan dikirim: " + data);
+        console.log("Data yang akan dikirim: ");
+        console.log(data);
         $.ajax({
             url: "makun/" + id,
             type: "PUT",
