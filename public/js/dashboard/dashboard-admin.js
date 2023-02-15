@@ -266,6 +266,65 @@ $(document).ready(function () {
                 // Mengubah teks pada #chooseLabelKeluar dengan teks dari item yang dipilih
                 $("#chooseLabelKeluar").text($(this).text());
             });
+            // ====================================================================================
+            // Default Top 5 Label Pemasukan
+            // ====================================================================================
+            var labelMasukThisMonth = data["labelMasukThisMonth"];
+            var totalMasukThisMonth = data["totalMasukThisMonth"];
+            console.log(labelMasukThisMonth);
+            console.log(totalMasukThisMonth);
+            populateCardBody("in", labelMasukThisMonth, totalMasukThisMonth);
+            // ====================================================================================
+            // Default Top 5 Label Pengeluaran
+            // ====================================================================================
+            var labelKeluarThisMonth = data["labelKeluarThisMonth"];
+            var totalKeluarThisMonth = data["totalKeluarThisMonth"];
+            console.log(labelKeluarThisMonth);
+            console.log(totalKeluarThisMonth);
+            populateCardBody("out", labelKeluarThisMonth, totalKeluarThisMonth);
         },
     });
 });
+// ====================================================================================
+// Diluar Document on Ready
+// ====================================================================================
+// Fungsi untuk mengisi card-body dengan data label dan total
+function populateCardBody(tipe, labels, totals) {
+    if (tipe === "in") {
+        var cardBody = $("#ul-masuk");
+    } else {
+        var cardBody = $("#ul-keluar");
+    }
+    cardBody.empty();
+
+    if (labels.length == 0 || totals.length == 0) {
+        cardBody.html("<p>Belum ada data label</p>");
+    } else {
+        for (var i = 0; i < labels.length && i < totals.length; i++) {
+            var listItem = $("<li>").addClass("media");
+            var img = $("<img>")
+                .addClass("mr-3 rounded")
+                .attr("width", "55")
+                .attr("src", "img/label/" + (i + 1) + ".png")
+                .attr("alt", "product");
+            var mediaBody = $("<div>").addClass("media-body");
+            var mediaTitle = $("<div>").addClass("media-title").text(labels[i]);
+            var mt1 = $("<div>").addClass("mt-1");
+            var budgetPriceLabel = $("<div>")
+                .addClass("budget-price-label")
+                .text("Rp" + formatNumber(totals[i]));
+
+            mt1.append(budgetPriceLabel);
+            mediaBody.append(mediaTitle);
+            mediaBody.append(mt1);
+            listItem.append(img);
+            listItem.append(mediaBody);
+            cardBody.append(listItem);
+        }
+    }
+}
+
+// Fungsi untuk memformat angka menjadi format uang
+function formatNumber(number) {
+    return new Intl.NumberFormat("id-ID").format(number);
+}

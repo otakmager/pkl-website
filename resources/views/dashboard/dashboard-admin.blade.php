@@ -143,28 +143,16 @@
                     </div>
                     <div class="card-body"
                         id="top-5-scroll-masuk">
-                        <ul class="list-unstyled list-unstyled-border">
+                        <ul class="list-unstyled list-unstyled-border" id="ul-masuk">
                             <li class="media">
                                 <img class="mr-3 rounded"
                                     width="55"
                                     src="{{ asset('img/label/1.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">86 Sales</div>
-                                    </div>
-                                    <div class="media-title">oPhone S9 Limited</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="64%"></div>
-                                            <div class="budget-price-label">$68,714</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="43%"></div>
-                                            <div class="budget-price-label">$38,700</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -174,21 +162,9 @@
                                     src="{{ asset('img/label/2.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">67 Sales</div>
-                                    </div>
-                                    <div class="media-title">iBook Pro 2018</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="84%"></div>
-                                            <div class="budget-price-label">$107,133</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="60%"></div>
-                                            <div class="budget-price-label">$91,455</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -198,21 +174,9 @@
                                     src="{{ asset('img/label/3.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">63 Sales</div>
-                                    </div>
-                                    <div class="media-title">Headphone Blitz</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="34%"></div>
-                                            <div class="budget-price-label">$3,717</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="28%"></div>
-                                            <div class="budget-price-label">$2,835</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -222,21 +186,9 @@
                                     src="{{ asset('img/label/4.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">28 Sales</div>
-                                    </div>
-                                    <div class="media-title">oPhone X Lite</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="45%"></div>
-                                            <div class="budget-price-label">$13,972</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="30%"></div>
-                                            <div class="budget-price-label">$9,660</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -246,21 +198,9 @@
                                     src="{{ asset('img/label/5.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">19 Sales</div>
-                                    </div>
-                                    <div class="media-title">Old Camera</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="35%"></div>
-                                            <div class="budget-price-label">$7,391</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="28%"></div>
-                                            <div class="budget-price-label">$5,472</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -270,12 +210,7 @@
                         <div class="budget-price justify-content-center">
                             <div class="budget-price-square bg-primary"
                                 data-width="20"></div>
-                            <div class="budget-price-label">Selling Price</div>
-                        </div>
-                        <div class="budget-price justify-content-center">
-                            <div class="budget-price-square bg-danger"
-                                data-width="20"></div>
-                            <div class="budget-price-label">Budget Price</div>
+                            <div class="budget-price-label">Top 5 Label Pemasukan</div>
                         </div>
                     </div>
                 </div>
@@ -303,28 +238,16 @@
                     </div>
                     <div class="card-body"
                         id="top-5-scroll-keluar">
-                        <ul class="list-unstyled list-unstyled-border">
+                        <ul class="list-unstyled list-unstyled-border" id="ul-keluar">
                             <li class="media">
                                 <img class="mr-3 rounded"
                                     width="55"
                                     src="{{ asset('img/label/1.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">86 Sales</div>
-                                    </div>
-                                    <div class="media-title">oPhone S9 Limited</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="64%"></div>
-                                            <div class="budget-price-label">$68,714</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="43%"></div>
-                                            <div class="budget-price-label">$38,700</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -334,21 +257,9 @@
                                     src="{{ asset('img/label/2.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">67 Sales</div>
-                                    </div>
-                                    <div class="media-title">iBook Pro 2018</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="84%"></div>
-                                            <div class="budget-price-label">$107,133</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="60%"></div>
-                                            <div class="budget-price-label">$91,455</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -358,21 +269,9 @@
                                     src="{{ asset('img/label/3.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">63 Sales</div>
-                                    </div>
-                                    <div class="media-title">Headphone Blitz</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="34%"></div>
-                                            <div class="budget-price-label">$3,717</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="28%"></div>
-                                            <div class="budget-price-label">$2,835</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -382,21 +281,9 @@
                                     src="{{ asset('img/label/4.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">28 Sales</div>
-                                    </div>
-                                    <div class="media-title">oPhone X Lite</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="45%"></div>
-                                            <div class="budget-price-label">$13,972</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="30%"></div>
-                                            <div class="budget-price-label">$9,660</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -406,21 +293,9 @@
                                     src="{{ asset('img/label/5.png') }}"
                                     alt="product">
                                 <div class="media-body">
-                                    <div class="float-right">
-                                        <div class="font-weight-600 text-muted text-small">19 Sales</div>
-                                    </div>
-                                    <div class="media-title">Old Camera</div>
+                                    <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-primary"
-                                                data-width="35%"></div>
-                                            <div class="budget-price-label">$7,391</div>
-                                        </div>
-                                        <div class="budget-price">
-                                            <div class="budget-price-square bg-danger"
-                                                data-width="28%"></div>
-                                            <div class="budget-price-label">$5,472</div>
-                                        </div>
+                                        <div class="budget-price-label">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -428,14 +303,9 @@
                     </div>
                     <div class="card-footer d-flex justify-content-center pt-3">
                         <div class="budget-price justify-content-center">
-                            <div class="budget-price-square bg-primary"
-                                data-width="20"></div>
-                            <div class="budget-price-label">Selling Price</div>
-                        </div>
-                        <div class="budget-price justify-content-center">
                             <div class="budget-price-square bg-danger"
                                 data-width="20"></div>
-                            <div class="budget-price-label">Budget Price</div>
+                            <div class="budget-price-label">Top 5 Label Pengeluaran</div>
                         </div>
                     </div>
                 </div>
