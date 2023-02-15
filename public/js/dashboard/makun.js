@@ -141,6 +141,7 @@ $(document).ready(function () {
     // ====================================================================================
     $("#addModal").submit(function (e) {
         e.preventDefault();
+        if ($("#addpassword").val() != $("#addrepassword").val()) return false;
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('input[name="_token"][id="tokenAdd"]').val(),
@@ -288,4 +289,13 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
+    $("#addpassword, #addrepassword").on("keyup", function () {
+        let pw = $("#addpassword").val();
+        let rpw = $("#addrepassword").val();
+        if (pw != rpw) {
+            $("#repassword-error").text("Konfirmasi password berbeda");
+        } else {
+            $("#repassword-error").text("");
+        }
+    });
 });
