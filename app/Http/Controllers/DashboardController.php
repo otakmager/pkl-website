@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
-use App\Models\Label;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -165,16 +164,139 @@ class DashboardController extends Controller
         $chartKeluarTahun = intval(TKeluar::whereYear('tanggal', $now->year)
                             ->sum('nominal'));
         
-        // Label
-        // $now = Carbon::now();
-        // $startOfWeek = $now->startOfWeek();
-        // $startOfMonth = $now->startOfMonth();
-        // $startOfYear = $now->startOfYear();
-        // $data = TMasuk::selectRaw("sum(case when day(tanggal) = day('$now') and month(tanggal) = month('$now') and year(tanggal) = year('$now') then nominal end) as hari_ini,
-        //                    sum(case when tanggal >= '$startOfWeek' and tanggal <= '$now' then nominal end) as minggu_ini,
-        //                    sum(case when month(tanggal) = month('$now') and year(tanggal) = year('$now') then nominal end) as bulan_ini,
-        //                    sum(case when year(tanggal) = year('$now') then nominal end) as tahun_ini")
-        //         ->first();
+        // Label Masuk
+        $labelMasukThisMonth = [];
+        $totalMasukThisMonth = [];
+        $labelMasukLastMonth = [];
+        $totalMasukLastMonth = [];
+        $labelMasukThisYear = [];
+        $totalMasukThisYear = [];
+        $labelMasukLastYear = [];
+        $totalMasukLastYear = [];
+        $this_month_total = DB::table('labels')
+            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 0)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        $last_month_total = DB::table('labels')
+            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 0)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+            
+        $this_year_total = DB::table('labels')
+            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 0)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        $last_year_total = DB::table('labels')
+            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 0)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        // Parsing Masuk This Month
+        foreach ($this_month_total as $value) {
+            $value = (array) $value;
+            array_push($labelMasukThisMonth, $value['name']);
+            array_push($totalMasukThisMonth, intval($value['total']));
+        }
+        // Parsing Masuk Last Month
+        foreach ($last_month_total as $value) {
+            $value = (array) $value;
+            array_push($labelMasukLastMonth, $value['name']);
+            array_push($totalMasukLastMonth, intval($value['total']));
+        }
+        // Parsing Masuk This Year
+        foreach ($this_year_total as $value) {
+            $value = (array) $value;
+            array_push($labelMasukThisYear, $value['name']);
+            array_push($totalMasukThisYear, intval($value['total']));
+        }
+        // Parsing Masuk Last Year
+        foreach ($last_year_total as $value) {
+            $value = (array) $value;
+            array_push($labelMasukLastYear, $value['name']);
+            array_push($totalMasukLastYear, intval($value['total']));
+        }
+        
+        // Label Keluar
+        $labelKeluarThisMonth = [];
+        $totalKeluarThisMonth = [];
+        $labelKeluarLastMonth = [];
+        $totalKeluarLastMonth = [];
+        $labelKeluarThisYear = [];
+        $totalKeluarThisYear = [];
+        $labelKeluarLastYear = [];
+        $totalKeluarLastYear = [];
+        $this_month_total = DB::table('labels')
+            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 1)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        $last_month_total = DB::table('labels')
+            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 1)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+            
+        $this_year_total = DB::table('labels')
+            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 1)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        $last_year_total = DB::table('labels')
+            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
+            ->where('labels.jenis', '=', 1)
+            ->groupBy('labels.id', 'labels.name')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+        // Parsing Keluar This Month
+        foreach ($this_month_total as $value) {
+            $value = (array) $value;
+            array_push($labelKeluarThisMonth, $value['name']);
+            array_push($totalKeluarThisMonth, intval($value['total']));
+        }
+        // Parsing Keluar Last Month
+        foreach ($last_month_total as $value) {
+            $value = (array) $value;
+            array_push($labelKeluarLastMonth, $value['name']);
+            array_push($totalKeluarLastMonth, intval($value['total']));
+        }
+        // Parsing Keluar This Year
+        foreach ($this_year_total as $value) {
+            $value = (array) $value;
+            array_push($labelKeluarThisYear, $value['name']);
+            array_push($totalKeluarThisYear, intval($value['total']));
+        }
+        // Parsing Keluar Last Year
+        foreach ($last_year_total as $value) {
+            $value = (array) $value;
+            array_push($labelKeluarLastYear, $value['name']);
+            array_push($totalKeluarLastYear, intval($value['total']));
+        }
 
         return response()->json([
             'masukHari' => $masukHari,
@@ -196,7 +318,22 @@ class DashboardController extends Controller
             'chartKeluarMinggu' => $chartKeluarMinggu,
             'chartMasukTahun' => $chartMasukTahun,
             'chartKeluarTahun' => $chartKeluarTahun,
-            // 'data' => $data,
+            'labelMasukThisMonth' => $labelMasukThisMonth,
+            'labelMasukLastMonth' => $labelMasukLastMonth,
+            'labelMasukThisYear' => $labelMasukThisYear,
+            'labelMasukLastYear' => $labelMasukLastYear,
+            'totalMasukThisMonth' => $totalMasukThisMonth,
+            'totalMasukLastMonth' => $totalMasukLastMonth,
+            'totalMasukThisYear' => $totalMasukThisYear,
+            'totalMasukLastYear' => $totalMasukLastYear,
+            'labelKeluarThisMonth' => $labelKeluarThisMonth,
+            'labelKeluarLastMonth' => $labelKeluarLastMonth,
+            'labelKeluarThisYear' => $labelKeluarThisYear,
+            'labelKeluarLastYear' => $labelKeluarLastYear,
+            'totalKeluarThisMonth' => $totalKeluarThisMonth,
+            'totalKeluarLastMonth' => $totalKeluarLastMonth,
+            'totalKeluarThisYear' => $totalKeluarThisYear,
+            'totalKeluarLastYear' => $totalKeluarLastYear,
         ]);
     }
 }
