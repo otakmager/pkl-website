@@ -25,6 +25,7 @@
                     <div class="form-group">
                         <label>Konfirmasi Password</label>
                         <input type="password" class="form-control" id="editrepassword" name="repassword" minlength="5" maxlength="255" required>
+                        <span id="edit-rpw-error" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">

@@ -210,6 +210,8 @@ $(document).ready(function () {
     // ====================================================================================
     $("#editForm").on("submit", function (e) {
         e.preventDefault();
+        if ($("#editpassword").val() != $("#editrepassword").val())
+            return false;
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
@@ -289,6 +291,8 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
+    // 4. Validation Insert & Reset Password
+    // ====================================================================================
     $("#addpassword, #addrepassword").on("keyup", function () {
         let pw = $("#addpassword").val();
         let rpw = $("#addrepassword").val();
@@ -298,4 +302,14 @@ $(document).ready(function () {
             $("#repassword-error").text("");
         }
     });
+    $("#editpassword, #editrepassword").on("keyup", function () {
+        let pw = $("#editpassword").val();
+        let rpw = $("#editrepassword").val();
+        if (pw != rpw) {
+            $("#edit-rpw-error").text("Konfirmasi password berbeda");
+        } else {
+            $("#edit-rpw-error").text("");
+        }
+    });
+    // ====================================================================================
 });
