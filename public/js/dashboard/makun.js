@@ -150,12 +150,14 @@ $(document).ready(function () {
         });
         let data = {
             name: $("#addname").val(),
-            jenis: $("#addjenis").val(),
+            email: $("#addemail").val(),
+            password: $("#addpassword").val(),
+            repassword: $("#addrepassword").val(),
             _token: $('input[name="_token"][id="tokenAdd"]').val(),
         };
         $.ajax({
             type: "POST",
-            url: "/label",
+            url: "/makun",
             data: data,
             success: function (data) {
                 if (data.success) {
@@ -181,20 +183,22 @@ $(document).ready(function () {
     // 2. Fetch Detail Data
     // ====================================================================================
     let edit_id;
-    $(document).on("click", "#btn-edit-label", function () {
+    $(document).on("click", "#btn-reset-user", function () {
         let id = $(this).data("id");
         edit_id = id;
+        console.log("ID yang akan diedit: " + id);
 
         $.ajax({
-            url: "label/" + id,
+            url: "makun/" + id,
             type: "GET",
             dataType: "JSON",
             success: function (data) {
+                console.log(data);
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
-                $("#editjenis")
-                    .find("option[value='" + data.jenis + "']")
-                    .prop("selected", true);
+                $("#editemail").val(data.email);
+                $("#editpassword").val();
+                $("#editrepassword").val();
             },
             error: function () {
                 alert("Tidak dapat menampilkan data!");
@@ -217,11 +221,14 @@ $(document).ready(function () {
             .text();
         let data = {
             name: $("#editname").val(),
-            jenis: $("#editjenis").val(),
+            email: $("#editemail").val(),
+            password: $("#editpassword").val(),
+            repassword: $("#editrepassword").val(),
             _token: $('input[name="_token"][id="tokenEdit"]').val(),
         };
+        console.log("Data yang akan dikirim: " + data);
         $.ajax({
-            url: "label/" + id,
+            url: "makun/" + id,
             type: "PUT",
             data: data,
             success: function (data) {
@@ -231,27 +238,6 @@ $(document).ready(function () {
                     icon: "success",
                     timer: 10000,
                 });
-                //replace tr
-                let label =
-                    `
-                <tr class="text-center" id="${data.data.id}">
-                <td id="nomor">` +
-                    nomor +
-                    `</td>
-                <td>${data.data.name}</td>
-                <td>` +
-                    (data.data.jenis == 0
-                        ? "Transaksi masuk"
-                        : "Transaksi keluar") +
-                    `</td>
-                <td class="text-center">
-                    <a href="javascript:void(0)" id="btn-edit-label" data-id="${data.data.id}" class="btn btn-icon icon-left btn-primary" ><i class="far fa-edit"></i> Edit</a>
-                    <a href="javascript:void(0)" id="btn-del-label" data-id="${data.data.id}" class="btn btn-icon icon-left btn-danger" ><i class="fas fa-trash"></i> Hapus</a>
-                </td>
-                </tr>
-                `;
-                //append to post data
-                $(`#${data.data.id}`).replaceWith(label);
                 $("#editModal").modal("hide");
                 $("#editForm").trigger("reset");
             },
@@ -264,7 +250,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 3. Delete Data
     // ====================================================================================
-    $(document).on("click", "#btn-del-label", function () {
+    $(document).on("click", "#btn-del-user", function () {
         let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
@@ -281,7 +267,7 @@ $(document).ready(function () {
             if (willDelete) {
                 //fetch to delete data
                 $.ajax({
-                    url: "label/" + id,
+                    url: "makun/" + id,
                     type: "DELETE",
                     cache: false,
                     data: {

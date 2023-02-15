@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class MAkunController extends Controller
 {
@@ -74,7 +78,40 @@ class MAkunController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100',
+            'email' => 'required|unique:users',
+            'password' => 'required|min:5|max:255',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //create post
+        $user = User::create([
+            'name'     => $request->name, 
+            'username'   => Hash::make("user" . $request->name . Str::random(16)),
+            'email'   => $request->email,
+            'password'   => Hash::make($request->password),
+            'level' => 'user',
+            'status' => 1,
+        ]);
+
+        //return response
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Akun Berhasil Dibuat!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun Gagal Dibuat!',
+            ]);
+        }    
     }
 
     /**
@@ -85,7 +122,14 @@ class MAkunController extends Controller
      */
     public function show(User $user)
     {
-        //
+        // return response
+        return response()->json($user);
+        return response()->json([
+            'id' => $user->id,
+            'username' => $user->username,
+            'name' => $user->name,
+            'email' => $user->email
+        ]);
     }
 
     /**
@@ -108,7 +152,33 @@ class MAkunController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|min:5|max:255',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //update post
+        $user->update([
+            'password'   => Hash::make($request->password)
+        ]);
+
+        //return response
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password Berhasil Diubah!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password Gagal Diubah!',
+            ]);
+        }    
     }
 
     /**
@@ -119,6 +189,13 @@ class MAkunController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $deletedTUser = User::findOrFail($user->id);
+        $deletedTUser->delete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Akun berhasil dihapus secara permanen",
+        ]); 
     }
 }

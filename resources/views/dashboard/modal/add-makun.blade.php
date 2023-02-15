@@ -20,11 +20,11 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" class="form-control" id="addpassword" name="password" required>
+                        <input type="password" class="form-control" id="addpassword" name="password" minlength="5" maxlength="255" required>
                     </div>
                     <div class="form-group">
                         <label>Konfirmasi Password</label>
-                        <input type="password" class="form-control" id="addpassword" name="password" required>
+                        <input type="password" class="form-control" id="addrepassword" name="repassword" minlength="5" maxlength="255" required>
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
