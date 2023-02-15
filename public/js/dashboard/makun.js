@@ -159,6 +159,7 @@ $(document).ready(function () {
             data: data,
             success: function (data) {
                 if (data.success) {
+                    $("#email-error").text("");
                     $("#addModal").modal("hide");
                     $("#addForm").trigger("reset");
                     swal({
