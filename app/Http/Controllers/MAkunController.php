@@ -79,16 +79,37 @@ class MAkunController extends Controller
     public function store(Request $request)
     {
         //define validation rules
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|max:100',
+        //     'email' => 'required|unique:users',
+        //     'password' => 'required|min:5|max:255',
+        // ]);
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
-            'email' => 'required|unique:users',
+            'email' => 'required|unique:users|email',
             'password' => 'required|min:5|max:255',
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.max' => 'Nama maksimal 100 karakter',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.email' => 'Format email salah',
+            'password.required' => 'Password tidak boleh kosong',
+            'password.min' => 'Password minimal 5 karakter',
+            'password.max' => 'Password maksimal 255 karakter',
         ]);
 
         //check if validation fails
+        // if ($validator->fails()) {
+        //     return response()->json($validator->errors(), 422);
+        // }
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan akun',
+                'errors' => $validator->errors()
+            ]);
+        }        
 
         //create post
         $user = User::create([

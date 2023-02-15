@@ -168,6 +168,10 @@ $(document).ready(function () {
                         timer: 10000,
                     });
                     reloadPage();
+                } else {
+                    if (data.errors.email) {
+                        $("#email-error").text(data.errors.email[0]);
+                    }
                 }
             },
             error: function (data) {
@@ -220,8 +224,6 @@ $(document).ready(function () {
             repassword: $("#editrepassword").val(),
             _token: $('input[name="_token"][id="tokenEdit"]').val(),
         };
-        console.log("Data yang akan dikirim: ");
-        console.log(data);
         $.ajax({
             url: "makun/" + id,
             type: "PUT",

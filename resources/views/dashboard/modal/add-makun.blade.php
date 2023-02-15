@@ -17,6 +17,7 @@
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" class="form-control" id="addemail" name="email" required>
+                        <span id="email-error" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
