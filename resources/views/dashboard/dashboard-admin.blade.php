@@ -34,7 +34,7 @@
                         <h4>Atur Dana Awal</h4>
                         <div class="card-header-action">
                             <button class="btn btn-icon icon-left btn-primary py-2" 
-                            data-toggle="modal" data-target="#addModal">
+                            data-toggle="modal" data-target="#editModal">
                             <i class="fas fa-edit"></i> Ubah Dana Awal</button>
                         </div>
                     </div>
@@ -347,6 +347,7 @@
 
     </section>
 </div>
+@include('dashboard.modal.edit-dana')
 @endsection
 
 @push('scripts')
