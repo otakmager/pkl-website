@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
+use App\Models\Dana;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -147,7 +148,7 @@ class DashboardController extends Controller
         }
             
         // Sisa uang
-        $sisaUang = TMasuk::sum('nominal') - TKeluar::sum('nominal');
+        $sisaUang = Dana::sum('uang') + TMasuk::sum('nominal') - TKeluar::sum('nominal');
 
         // Chart Pie
         $now = Carbon::now();

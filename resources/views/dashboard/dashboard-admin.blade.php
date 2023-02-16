@@ -33,10 +33,9 @@
                     <div class="card-header">
                         <h4>Atur Dana Awal</h4>
                         <div class="card-header-action">
-                            <a href="#"
-                                class="btn btn-primary">
-                                View All
-                            </a>
+                            <button class="btn btn-icon icon-left btn-primary py-2" 
+                            data-toggle="modal" data-target="#addModal">
+                            <i class="fas fa-edit"></i> Ubah Dana Awal</button>
                         </div>
                     </div>
                 </div>

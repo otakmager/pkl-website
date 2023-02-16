@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
+use App\Models\Dana;
 
 class DatabaseSeeder extends Seeder
 {
@@ -67,5 +68,6 @@ class DatabaseSeeder extends Seeder
         User::factory(3)->create();
         TMasuk::factory(60)->create();
         TKeluar::factory(60)->create();
+        Dana::factory(1)->create();
     }
 }
