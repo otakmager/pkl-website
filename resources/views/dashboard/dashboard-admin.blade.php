@@ -2,11 +2,45 @@
 
 @section('title', 'Dashboard')
 
+@push('style')
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="{{ asset('css/toggle.css') }}">
+@endpush
+
 @section('main')
 <div class="main-content">
     <section class="section">
         <div class="section-header">
             <h1>Dashboard</h1>
+        </div>
+        {{-- Button Visibility & Set Dana Awal --}}
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4 id="txt-visible">Sembunyikan Data</h4>
+                        <div class="card-header-action">
+                            <label class="switch">
+                                <input type="checkbox" id="btn-visible"/>
+                                <span class="slider round"></span>
+                              </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4>Atur Dana Awal</h4>
+                        <div class="card-header-action">
+                            <a href="#"
+                                class="btn btn-primary">
+                                View All
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {{-- Info Hari Ini --}}
         <div class="row">
@@ -17,9 +51,9 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Uang Masuk Hari Ini</h4>
+                            <h4 class="harian">Uang Masuk Hari Ini</h4>
                         </div>
-                        <div class="card-body" id="masukHari">
+                        <div class="card-body info-hidden" id="masukHari">
                             Rp x.xxx.xxx,00
                         </div>
                     </div>
@@ -32,9 +66,9 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Uang Keluar Hari Ini</h4>
+                            <h4 class="harian">Uang Keluar Hari Ini</h4>
                         </div>
-                        <div class="card-body" id="keluarHari">
+                        <div class="card-body info-hidden" id="keluarHari">
                             Rp x.xxx.xxx,00
                         </div>
                     </div>
@@ -47,9 +81,9 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Sisa Uang</h4>
+                            <h4 class="harian">Sisa Uang</h4>
                         </div>
-                        <div class="card-body" id="sisaUang">
+                        <div class="card-body info-hidden" id="sisaUang">
                             Rp x.xxx.xxx,00
                         </div>
                     </div>
@@ -152,7 +186,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -164,7 +198,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -176,7 +210,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -188,7 +222,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -200,7 +234,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -247,7 +281,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -259,7 +293,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -271,7 +305,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -283,7 +317,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>
@@ -295,7 +329,7 @@
                                 <div class="media-body">
                                     <div class="media-title">Name Label</div>
                                     <div class="mt-1">
-                                        <div class="budget-price-label">Rpxxx.xxx</div>
+                                        <div class="budget-price-label info-hidden">Rpxxx.xxx</div>
                                     </div>
                                 </div>
                             </li>

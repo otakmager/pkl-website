@@ -252,6 +252,10 @@ $(document).ready(function () {
                 $(".lb-masuk").removeClass("active");
                 // Menambahkan kelas active pada item yang dipilih
                 $(this).addClass("active");
+                // Visibelity
+                if (isCheckedVisible()) {
+                    uncheckedVisible();
+                }
                 // Mengubah teks pada #chooseLabelMasuk dengan teks dari item yang dipilih
                 $("#chooseLabelMasuk").text($(this).text());
                 switch ($(this).text()) {
@@ -300,6 +304,10 @@ $(document).ready(function () {
                 $(".lb-keluar").removeClass("active");
                 // Menambahkan kelas active pada item yang dipilih
                 $(this).addClass("active");
+                // Visibelity
+                if (isCheckedVisible()) {
+                    uncheckedVisible();
+                }
                 // Mengubah teks pada #chooseLabelKeluar dengan teks dari item yang dipilih
                 $("#chooseLabelKeluar").text($(this).text());
                 switch ($(this).text()) {
@@ -382,6 +390,7 @@ function populateCardBody(tipe, labels, totals) {
             var mt1 = $("<div>").addClass("mt-1");
             var budgetPriceLabel = $("<div>")
                 .addClass("budget-price-label")
+                .addClass("info-hidden")
                 .text("Rp" + formatNumber(totals[i]));
 
             mt1.append(budgetPriceLabel);
@@ -397,4 +406,32 @@ function populateCardBody(tipe, labels, totals) {
 // Fungsi untuk memformat angka menjadi format uang
 function formatNumber(number) {
     return new Intl.NumberFormat("id-ID").format(number);
+}
+
+// Button Visible
+$("#btn-visible").on("change", (event) => {
+    if (event.target.checked) {
+        Array.from($(".info-hidden")).forEach((element) => {
+            const value = element.innerHTML;
+            element.dataset.value = value;
+            element.innerHTML = "Rp**.***,**".replace(/\*/g, "*");
+        });
+    } else {
+        Array.from($(".info-hidden")).forEach((element) => {
+            const value = element.dataset.value;
+            element.innerHTML = value;
+            element.removeAttribute("data-value");
+        });
+    }
+});
+function uncheckedVisible() {
+    Array.from($(".info-hidden")).forEach((element) => {
+        const value = element.dataset.value;
+        element.innerHTML = value;
+        element.removeAttribute("data-value");
+    });
+    $("#btn-visible").prop("checked", false);
+}
+function isCheckedVisible() {
+    return $("#btn-visible").is(":checked");
 }
