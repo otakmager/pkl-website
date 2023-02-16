@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dana;
-use App\Http\Requests\StoreDanaRequest;
-use App\Http\Requests\UpdateDanaRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DanaController extends Controller
 {
@@ -31,10 +31,10 @@ class DanaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDanaRequest  $request
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDanaRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -47,7 +47,8 @@ class DanaController extends Controller
      */
     public function show(Dana $dana)
     {
-        //
+        //return response
+        return response()->json($dana);
     }
 
     /**
@@ -64,13 +65,40 @@ class DanaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDanaRequest  $request
+     * @param  Request $request
      * @param  \App\Models\Dana  $dana
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDanaRequest $request, Dana $dana)
+    public function update(Request $request, Dana $dana)
     {
-        //
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'uang' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //update post
+        $dana->update([
+            'uang'     => $request->uang, 
+        ]);
+
+        //return response
+        if ($dana) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Diubah!',
+                'data' => $dana,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Diubah!',
+            ]);
+        }    
     }
 
     /**
