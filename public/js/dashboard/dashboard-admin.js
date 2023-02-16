@@ -254,6 +254,43 @@ $(document).ready(function () {
                 $(this).addClass("active");
                 // Mengubah teks pada #chooseLabelMasuk dengan teks dari item yang dipilih
                 $("#chooseLabelMasuk").text($(this).text());
+                switch ($(this).text()) {
+                    case "Bulan Ini":
+                        populateCardBody(
+                            "in",
+                            data["labelMasukThisMonth"],
+                            data["totalMasukThisMonth"]
+                        );
+                        break;
+                    case "Bulan Kemarin":
+                        populateCardBody(
+                            "in",
+                            data["labelMasukLastMonth"],
+                            data["totalMasukLastMonth"]
+                        );
+                        break;
+                    case "Tahun Ini":
+                        populateCardBody(
+                            "in",
+                            data["labelMasukThisYear"],
+                            data["totalMasukThisYear"]
+                        );
+                        break;
+                    case "Tahun Kemarin":
+                        populateCardBody(
+                            "in",
+                            data["labelMasukLastYear"],
+                            data["totalMasukLastYear"]
+                        );
+                        break;
+                    default:
+                        populateCardBody(
+                            "in",
+                            data["labelMasukThisMonth"],
+                            data["totalMasukThisMonth"]
+                        );
+                        break;
+                }
             });
             // ====================================================================================
             // Top 5 Label Pengeluaran
@@ -265,22 +302,55 @@ $(document).ready(function () {
                 $(this).addClass("active");
                 // Mengubah teks pada #chooseLabelKeluar dengan teks dari item yang dipilih
                 $("#chooseLabelKeluar").text($(this).text());
+                switch ($(this).text()) {
+                    case "Bulan Ini":
+                        populateCardBody(
+                            "out",
+                            data["labelKeluarThisMonth"],
+                            data["totalKeluarThisMonth"]
+                        );
+                        break;
+                    case "Bulan Kemarin":
+                        populateCardBody(
+                            "out",
+                            data["labelKeluarLastMonth"],
+                            data["totalKeluarLastMonth"]
+                        );
+                        break;
+                    case "Tahun Ini":
+                        populateCardBody(
+                            "out",
+                            data["labelKeluarThisYear"],
+                            data["totalKeluarThisYear"]
+                        );
+                        break;
+                    case "Tahun Kemarin":
+                        populateCardBody(
+                            "out",
+                            data["labelKeluarLastYear"],
+                            data["totalKeluarLastYear"]
+                        );
+                        break;
+                    default:
+                        populateCardBody(
+                            "out",
+                            data["labelKeluarThisMonth"],
+                            data["totalKeluarThisMonth"]
+                        );
+                        break;
+                }
             });
             // ====================================================================================
             // Default Top 5 Label Pemasukan
             // ====================================================================================
             var labelMasukThisMonth = data["labelMasukThisMonth"];
             var totalMasukThisMonth = data["totalMasukThisMonth"];
-            console.log(labelMasukThisMonth);
-            console.log(totalMasukThisMonth);
             populateCardBody("in", labelMasukThisMonth, totalMasukThisMonth);
             // ====================================================================================
             // Default Top 5 Label Pengeluaran
             // ====================================================================================
             var labelKeluarThisMonth = data["labelKeluarThisMonth"];
             var totalKeluarThisMonth = data["totalKeluarThisMonth"];
-            console.log(labelKeluarThisMonth);
-            console.log(totalKeluarThisMonth);
             populateCardBody("out", labelKeluarThisMonth, totalKeluarThisMonth);
         },
     });
