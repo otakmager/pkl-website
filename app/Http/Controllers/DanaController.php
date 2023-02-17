@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dana;
+use App\Models\TMasuk;
+use App\Models\TKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -91,7 +93,7 @@ class DanaController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data Berhasil Diubah!',
-                'data' => $dana,
+                'sisa' => intval(Dana::sum('uang') + TMasuk::sum('nominal') - TKeluar::sum('nominal')),
             ]);
         } else {
             return response()->json([

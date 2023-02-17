@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    // ====================================================================================
+    // 1. Fetch Dashboard Data
+    // ====================================================================================
     $.ajax({
         url: "/dashboard/dashboardData",
         type: "GET",
@@ -252,7 +255,7 @@ $(document).ready(function () {
                 $(".lb-masuk").removeClass("active");
                 // Menambahkan kelas active pada item yang dipilih
                 $(this).addClass("active");
-                // Visibelity
+                // Visibility
                 if (isCheckedVisible()) {
                     uncheckedVisible();
                 }
@@ -304,7 +307,7 @@ $(document).ready(function () {
                 $(".lb-keluar").removeClass("active");
                 // Menambahkan kelas active pada item yang dipilih
                 $(this).addClass("active");
-                // Visibelity
+                // Visibility
                 if (isCheckedVisible()) {
                     uncheckedVisible();
                 }
@@ -362,6 +365,73 @@ $(document).ready(function () {
             populateCardBody("out", labelKeluarThisMonth, totalKeluarThisMonth);
         },
     });
+    // ====================================================================================
+
+    // ====================================================================================
+    // 2. Fetch Dana untuk Edit
+    // ====================================================================================
+    let dana_id = 1;
+    $(document).on("click", "#editDana", function () {
+        $.ajax({
+            url: "dana/" + dana_id,
+            type: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                $("#editModal").modal("show");
+                $("#edituang").val(data.uang);
+            },
+            error: function () {
+                alert("Tidak dapat menampilkan data!");
+            },
+        });
+    });
+    // ====================================================================================
+    // 3. Update Data
+    // ====================================================================================
+    $("#editForm").on("submit", function (e) {
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
+            },
+        });
+        let data = {
+            uang: $("#edituang").val(),
+            _token: $('input[name="_token"][id="tokenEdit"]').val(),
+        };
+        $.ajax({
+            url: "dana/" + dana_id,
+            type: "PUT",
+            data: data,
+            success: function (data) {
+                swal({
+                    title: "Sukses!",
+                    text: data.message,
+                    icon: "success",
+                    timer: 10000,
+                });
+                $("#editModal").modal("hide");
+                $("#editForm").trigger("reset");
+                // Visibility
+                if (isCheckedVisible()) {
+                    uncheckedVisible();
+                }
+                // Ganti Text di Sisa Uang
+                $("#sisaUang").text(
+                    "Rp " +
+                        data.sisa
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
+                        ",00"
+                );
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mengubah data!");
+            },
+        });
+    });
+    // ====================================================================================
 });
 // ====================================================================================
 // Diluar Document on Ready

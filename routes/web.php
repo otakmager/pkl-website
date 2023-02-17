@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DanaController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MAkunController;
@@ -53,3 +54,4 @@ Route::get('/download', function () {
 
 Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax');
 Route::resource('/makun', MAkunController::class);
+Route::resource('/dana', DanaController::class);

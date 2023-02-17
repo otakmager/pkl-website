@@ -34,7 +34,7 @@
                         <h4>Atur Dana Awal</h4>
                         <div class="card-header-action">
                             <button class="btn btn-icon icon-left btn-primary py-2" 
-                            data-toggle="modal" data-target="#editModal">
+                            data-toggle="modal" data-target="#editModal" id="editDana">
                             <i class="fas fa-edit"></i> Ubah Dana Awal</button>
                         </div>
                     </div>
@@ -353,6 +353,7 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/dashboard/dashboard-admin.js') }}"></script>
