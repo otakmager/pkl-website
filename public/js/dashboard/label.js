@@ -70,8 +70,6 @@ $(document).ready(function () {
             $("#jenis").multiselect("updateButtonText");
             jenis_data = $("#jenis").val();
         }
-        console.log(sort_type);
-        console.log(column_name);
         fetch_data(page, sort_type, column_name, search, max_data, jenis_data);
     }
     // ====================================================================================
@@ -278,40 +276,79 @@ $(document).ready(function () {
         let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Data akan dihapus secara permanen.",
-            icon: "warning",
-            buttons: {
-                cancel: "Batal",
-                confirm: "Ya, Hapus!",
+        // check total data
+        $.ajax({
+            url: "label/label_sum/" + id,
+            type: "GET",
+            cache: false,
+            data: {
+                _token: token,
             },
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                //fetch to delete data
-                $.ajax({
-                    url: "label/" + id,
-                    type: "DELETE",
-                    cache: false,
-                    data: {
-                        _token: token,
+            success: function (data) {
+                swal({
+                    title: "Terdapat " + data.sum + " Data!",
+                    text:
+                        "Label ini mempunyai " +
+                        data.sum +
+                        " data. Jika Anda menghapus label ini maka semua data transaksi akan dihapus",
+                    icon: "warning",
+                    buttons: {
+                        cancel: "Batal",
+                        confirm: "Hapus Sekarang!",
                     },
-                    success: function (data) {
-                        //show success message
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
                         swal({
-                            title: "Sukses!",
-                            text: data.message,
-                            icon: "success",
-                            timer: 10000,
-                        });
+                            title: "Konfirmasi Akhir",
+                            text: "Data transaksi akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
+                            icon: "warning",
+                            buttons: {
+                                cancel: "Batal",
+                                confirm: "Ya, Hapus!",
+                            },
+                            dangerMode: true,
+                        }).then((willDeletePermanently) => {
+                            if (willDeletePermanently) {
+                                //fetch to delete data
+                                $.ajax({
+                                    url: "label/" + id,
+                                    type: "DELETE",
+                                    cache: false,
+                                    data: {
+                                        _token: token,
+                                    },
+                                    success: function (data) {
+                                        //show success message
+                                        swal({
+                                            title: "Sukses!",
+                                            text: data.message,
+                                            icon: "success",
+                                            timer: 10000,
+                                        });
 
-                        //remove post on table
-                        $("#" + id).remove();
-                    },
+                                        //remove post on table
+                                        $("#" + id).remove();
+                                    },
+                                });
+                            }
+                        });
+                    }
                 });
-            }
+            },
         });
     });
+    // ====================================================================================
+    // $(document).on("click", "#btn-del-label", function () {
+    //     var labelName = "Contoh Label";
+    //     // Muat nilai variabel ke dalam elemen HTML
+    //     $("#label-name").attr("data-label-name", labelName);
+    //     $("#label-name").text(labelName);
+    //     var labelSum = 5;
+    //     // Muat nilai variabel ke dalam elemen HTML
+    //     $("#label-sum").attr("Sum-label-sum", labelSum);
+    //     $("#label-sum").text(labelSum);
+    //     $("#delModal").modal("show");
+    // });
     // ====================================================================================
 });

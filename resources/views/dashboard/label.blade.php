@@ -85,6 +85,7 @@
         </section>
         @include('dashboard.modal.add-label')
         @include('dashboard.modal.edit-label')
+        @include('dashboard.modal.del-label')
     </div>
 @endsection
 

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
+use App\Models\TMasuk;
+use App\Models\TKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 class LabelController extends Controller
 {
@@ -165,6 +166,25 @@ class LabelController extends Controller
                 'message' => 'Data Gagal Diubah!',
             ]);
         }    
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Label  $label
+     * @return \Illuminate\Http\Response
+     */
+    public function label_sum(Label $label)
+    {
+        $sumMasuk = TMasuk::where('label_id', $label->id)->count();
+        $sumKeluar = TKeluar::where('label_id', $label->id)->count();
+        $sum = ($sumMasuk > $sumKeluar)? $sumMasuk : $sumKeluar;
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'sum' => $sum,
+        ]); 
     }
 
     /**

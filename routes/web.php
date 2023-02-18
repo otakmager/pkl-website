@@ -43,6 +43,7 @@ Route::resource('/tmasuk', TMasukController::class);
 Route::get('/tkeluar/tkeluar_ajax', [TKeluarController::class, 'tkeluar_ajax'])->name('tkeluar.ajax');
 Route::resource('/tkeluar', TKeluarController::class);
 Route::get('/label/label_ajax', [LabelController::class, 'label_ajax'])->name('label.ajax');
+Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->name('label.sum');
 Route::resource('/label', LabelController::class);
 Route::get('/sampah', function () {
     return view('dashboard.sampah');
