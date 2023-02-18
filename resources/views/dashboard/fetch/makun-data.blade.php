@@ -7,7 +7,7 @@
         @if ($user->level === 'pimpinan')
             Aktif
         @else
-            <select name="status" id="status" class="form-control">
+            <select name="status" id="status" class="form-control" data-id="{{ $user->id }}">
                 <option value="0" @if ($user->status === 0) selected @endif>Non Aktif</option>
                 <option value="1" @if ($user->status === 1) selected @endif>Aktif</option>
             </select>

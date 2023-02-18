@@ -79,11 +79,6 @@ class MAkunController extends Controller
     public function store(Request $request)
     {
         //define validation rules
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required|max:100',
-        //     'email' => 'required|unique:users',
-        //     'password' => 'required|min:5|max:255',
-        // ]);
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
             'email' => 'required|unique:users|email',
@@ -98,11 +93,6 @@ class MAkunController extends Controller
             'password.min' => 'Password minimal 5 karakter',
             'password.max' => 'Password maksimal 255 karakter',
         ]);
-
-        //check if validation fails
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(), 422);
-        // }
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -111,7 +101,7 @@ class MAkunController extends Controller
             ]);
         }        
 
-        //create post
+        //create user
         $user = User::create([
             'name'     => $request->name, 
             'username'   => Hash::make("user" . $request->name . Str::random(16)),
@@ -172,6 +162,36 @@ class MAkunController extends Controller
      */
     public function update(Request $request, User $makun)
     {
+        // Update status
+        if($request->want == 'ubahstatus'){
+            // Validasi
+            $validator = Validator::make($request->all(), [
+                'status' => 'required|',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengubah status akun',
+                    'errors' => $validator->errors()
+                ]);
+            } 
+            // Update
+            $makun->update([
+                'status'   => $request->status,
+            ]);
+            //return response
+            if ($makun) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Status Akun Berhasil Diubah!',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Status Akun Gagal Diubah!',
+                ]);
+            }  
+        }
         //define validation rules
         $validator = Validator::make($request->all(), [
             'password' => 'required|min:5|max:255',
@@ -182,7 +202,7 @@ class MAkunController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //update post
+        //update user
         $makun->update([
             'password'   => Hash::make($request->password)
         ]);

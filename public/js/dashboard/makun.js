@@ -206,7 +206,7 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
-    // 3. Update Data
+    // 3. Reset Password
     // ====================================================================================
     $("#editForm").on("submit", function (e) {
         e.preventDefault();
@@ -249,7 +249,7 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
-    // 3. Delete Data
+    // 4. Delete Data
     // ====================================================================================
     $(document).on("click", "#btn-del-user", function () {
         let id = $(this).data("id");
@@ -291,7 +291,7 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
-    // 4. Validation Insert & Reset Password
+    // 5. Validation Insert & Reset Password
     // ====================================================================================
     $("#addpassword, #addrepassword").on("keyup", function () {
         let pw = $("#addpassword").val();
@@ -310,6 +310,40 @@ $(document).ready(function () {
         } else {
             $("#edit-rpw-error").text("");
         }
+    });
+    // ====================================================================================
+    // 6. Change Status Aktif
+    // ====================================================================================
+    $(document).on("change", "#status", function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
+            },
+        });
+        let id = $(this).data("id");
+        edit_id = id;
+        let data = {
+            want: "ubahstatus",
+            status: $(this).val(),
+            _token: $('input[name="_token"][id="tokenEdit"]').val(),
+        };
+        $.ajax({
+            url: "makun/" + id,
+            type: "PUT",
+            data: data,
+            success: function (data) {
+                swal({
+                    title: "Sukses!",
+                    text: data.message,
+                    icon: "success",
+                    timer: 10000,
+                });
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mengubah data!");
+            },
+        });
     });
     // ====================================================================================
 });
