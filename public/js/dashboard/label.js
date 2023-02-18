@@ -300,7 +300,7 @@ $(document).ready(function () {
                 }).then((willDelete) => {
                     if (willDelete) {
                         swal({
-                            title: "Konfirmasi Akhir",
+                            title: "Apakah Anda Yakin?",
                             text: "Data transaksi akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
                             icon: "warning",
                             buttons: {
@@ -338,17 +338,5 @@ $(document).ready(function () {
             },
         });
     });
-    // ====================================================================================
-    // $(document).on("click", "#btn-del-label", function () {
-    //     var labelName = "Contoh Label";
-    //     // Muat nilai variabel ke dalam elemen HTML
-    //     $("#label-name").attr("data-label-name", labelName);
-    //     $("#label-name").text(labelName);
-    //     var labelSum = 5;
-    //     // Muat nilai variabel ke dalam elemen HTML
-    //     $("#label-sum").attr("Sum-label-sum", labelSum);
-    //     $("#label-sum").text(labelSum);
-    //     $("#delModal").modal("show");
-    // });
     // ====================================================================================
 });
