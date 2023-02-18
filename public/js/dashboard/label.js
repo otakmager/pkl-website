@@ -192,9 +192,19 @@ $(document).ready(function () {
             success: function (data) {
                 $("#editModal").modal("show");
                 $("#editname").val(data.name);
-                $("#editjenis")
-                    .find("option[value='" + data.jenis + "']")
-                    .prop("selected", true);
+                $("#editjenis option[value='0']").remove();
+                $("#editjenis option[value='1']").remove();
+                if (data.jenis == 0) {
+                    $("#editjenis").append(
+                        '<option value="0">Transaksi Masuk</option>'
+                    );
+                    $("#editjenis").val(0);
+                } else {
+                    $("#editjenis").append(
+                        '<option value="1">Transaksi Keluar</option>'
+                    );
+                    $("#editjenis").val(1);
+                }
             },
             error: function () {
                 alert("Tidak dapat menampilkan data!");

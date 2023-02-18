@@ -17,8 +17,6 @@
                     <div class="form-group">
                         <label>Jenis Transaksi</label>
                         <select type="text" class="form-control" id="editjenis" name="jenis" required>
-                            <option value="0">Transaksi Masuk</option>
-                            <option value="1">Transaksi Keluar</option>
                         </select>
                     </div>
                 </div>
