@@ -25,9 +25,23 @@
                 <a class="nav-link"
                     href="{{ url('tkeluar') }}"><i class="fas fa-basket-shopping"></i> <span>Transaksi Keluar</span></a>
             </li>
-            <li class="nav-item {{ Request::is('sampah')? 'active' : '' }}">
+            {{-- <li class="nav-item {{ Request::is('sampah')? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{ url('sampah') }}"><i class="far fa-trash-can"></i> <span>Sampah</span></a>
+            </li> --}}
+            <li class="nav-item dropdown {{ (Request::is('sampah-masuk') || Request::is('sampah-keluar')) ? 'active' : '' }}">
+                <a href="#"
+                    class="nav-link has-dropdown"><i class="far fa-trash-can"></i> <span>Sampah</span></a>
+                <ul class="dropdown-menu">
+                    <li class='{{ Request::is('sampah-masuk') ? 'active' : '' }}'>
+                        <a class="nav-link"
+                            href="{{ url('sampah-masuk') }}">Sampah Transaksi Masuk</a>
+                    </li>
+                    <li class="{{ Request::is('sampah-keluar') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('sampah-keluar') }}">Sampah Transaksi Keluar</a>
+                    </li>
+                </ul>
             </li>
             <li class="menu-header">Fitur Lainnya</li>
             <li class="nav-item {{ Request::is('label')? 'active' : '' }}">
@@ -45,10 +59,6 @@
         </ul>
 
         <div class="hide-sidebar-mini mt-3 mb-3 p-3">
-            {{-- <a href="/logout"
-                class="btn btn-danger btn-lg btn-block btn-icon-split">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a> --}}
             <form action="/logout" method="post" id="sidebar_logout">
                 @csrf
                 <button type="submit" class="btn btn-danger btn-lg btn-block btn-icon-split">

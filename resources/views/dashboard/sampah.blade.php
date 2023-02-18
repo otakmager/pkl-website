@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sampah')
+@section('title', $title)
 
 @push('style')
     <!-- CSS Libraries -->
@@ -13,7 +13,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Sampah</h1>
+                <h1>{{ $title }}</h1>
             </div>
             <div class="section-body">
                 <button class="btn btn-icon icon-left btn-success py-2"><i class="fas fa-plus"></i> Pulihkan Sampah</button>
@@ -23,7 +23,7 @@
                         <div class="card">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenCommon">
                             <div class="card-header">
-                                <h4>Tabel Sampah</h4>
+                                <h4>Tabel {{ $title }}</h4>
                                 <div class="card-header-form">
                                     <form>
                                         <div class="input-group">

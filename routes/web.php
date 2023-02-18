@@ -5,10 +5,11 @@ use App\Http\Controllers\DanaController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MAkunController;
-use App\Http\Controllers\SampahController;
 use App\Http\Controllers\TMasukController;
 use App\Http\Controllers\TKeluarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SampahMasukController;
+use App\Http\Controllers\SampahKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,8 @@ Route::resource('/tkeluar', TKeluarController::class);
 Route::get('/label/label_ajax', [LabelController::class, 'label_ajax'])->name('label.ajax');
 Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->name('label.sum');
 Route::resource('/label', LabelController::class);
-Route::get('/sampah', [SampahController::class, 'index'])->name('sampah.index');
+Route::get('/sampah-masuk', [SampahMasukController::class, 'index'])->name('sampah-masuk.index');
+Route::get('/sampah-keluar', [SampahKeluarController::class, 'index'])->name('sampah-keluar.index');
 Route::get('/download', function () {
     return view('dashboard.download');
 });
