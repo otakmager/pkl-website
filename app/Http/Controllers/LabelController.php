@@ -195,13 +195,20 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
+        // Hapus semua data pada model TMasuk yang memiliki label_id sama dengan $label->id
+        TMasuk::where('label_id', $label->id)->delete();
+
+        // Hapus semua data pada model TKeluar yang memiliki label_id sama dengan $label->id
+        TKeluar::where('label_id', $label->id)->delete();
+
+        // Hapus data pada model Label yang memiliki id sama dengan $label->id
         $deletedTLabel = Label::findOrFail($label->id);
         $deletedTLabel->delete();
 
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data label berhasil dihapus",
+            'message' => "Data label dan transaksi terkait berhasil dihapus",
         ]); 
     }
 }
