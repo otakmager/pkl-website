@@ -65,4 +65,22 @@ class SampahMasukController extends Controller
             ]);
         }
     }
+
+    /**
+     * Remove permanent the specified resource from storage.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $deletedTMasuk = TMasuk::onlyTrashed()->findOrFail($id);
+        $deletedTMasuk->forceDelete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data transaksi masuk berhasil dihapus secara permanen.",
+        ]); 
+    }
 }

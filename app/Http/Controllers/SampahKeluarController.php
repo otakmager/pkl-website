@@ -27,7 +27,7 @@ class SampahKeluarController extends Controller
             'maxData' => 5,
         ]);
     }
-    
+
     /**
      * Filter, pencarian, dan sorting dengan ajax
      *
@@ -64,5 +64,23 @@ class SampahKeluarController extends Controller
                 'maxData' =>$maxData,
             ]);
         }
+    }
+
+    /**
+     * Remove permanent the specified resource from storage.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $deletedTKeluar = TKeluar::onlyTrashed()->findOrFail($id);
+        $deletedTKeluar->forceDelete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data transaksi keluar berhasil dihapus secara permanen.",
+        ]); 
     }
 }
