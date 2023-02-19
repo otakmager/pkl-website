@@ -330,7 +330,7 @@ $(document).ready(function () {
 
         swal({
             title: "Apakah Anda Yakin?",
-            text: "Data akan dihapus ke tempat sampah \ndan dapat dipulihkan sebelum 14 hari sejak dihapus.",
+            text: "Data akan dihapus secara permanen dan tidak dapat dipulihkan!",
             icon: "warning",
             buttons: {
                 cancel: "Batal",
@@ -340,6 +340,13 @@ $(document).ready(function () {
         }).then((willDelete) => {
             if (willDelete) {
                 //fetch to delete data
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
                 $.ajax({
                     url: "sampah-keluar/" + id,
                     type: "DELETE",

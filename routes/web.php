@@ -49,10 +49,10 @@ Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->n
 Route::resource('/label', LabelController::class);
 Route::get('/sampah-masuk/sampah_ajax', [SampahMasukController::class, 'sampah_ajax'])->name('sampah-masuk.ajax');
 Route::get('/sampah-masuk', [SampahMasukController::class, 'index'])->name('sampah-masuk.index');
-Route::delete('/sampah-masuk/{tmasuk}', [SampahMasukController::class, 'destroy'])->name('sampah-masuk.destroy');
+Route::delete('/sampah-masuk/{id}', [SampahMasukController::class, 'destroy'])->name('sampah-masuk.destroy');
 Route::get('/sampah-keluar/sampah_ajax', [SampahKeluarController::class, 'sampah_ajax'])->name('sampah-keluar.ajax');
 Route::get('/sampah-keluar', [SampahKeluarController::class, 'index'])->name('sampah-keluar.index');
-Route::delete('/sampah-keluar/{tkeluar}', [SampahKeluarController::class, 'destroy'])->name('sampah-keluar.destroy');
+Route::delete('/sampah-keluar/{id}', [SampahKeluarController::class, 'destroy'])->name('sampah-keluar.destroy');
 Route::get('/download', function () {
     return view('dashboard.download');
 });
