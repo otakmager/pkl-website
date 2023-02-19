@@ -32,9 +32,9 @@ class DashboardController extends Controller
         $keluarHari = (int) TKeluar::whereDate('tanggal', '=', date('Y-m-d'))->sum('nominal');
 
         // Transaksi Seminggu
-        $masukSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_masuks.nominal), 0) AS total FROM days LEFT JOIN t_masuks ON DATE(day_date) = t_masuks.tanggal GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
+        $masukSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_masuks.nominal), 0) AS total FROM days LEFT JOIN t_masuks ON DATE(day_date) = t_masuks.tanggal AND t_masuks.deleted_at IS NULL GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
                         ->get();
-        $keluarSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_keluars.nominal), 0) AS total FROM days LEFT JOIN t_keluars ON DATE(day_date) = t_keluars.tanggal GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
+        $keluarSeminggu = DB::table(DB::raw("(WITH Recursive days AS ( SELECT DATE_SUB(NOW(), INTERVAL 7 DAY) AS day_date UNION SELECT DATE_ADD(day_date, INTERVAL 1 DAY) FROM days WHERE day_date < NOW() ) SELECT DATE_FORMAT(day_date, '%W, %d %M %Y') AS hari_tanggal, COALESCE(SUM(t_keluars.nominal), 0) AS total FROM days LEFT JOIN t_keluars ON DATE(day_date) = t_keluars.tanggal AND t_keluars.deleted_at IS NULL GROUP BY day_date, DATE(day_date) ORDER BY DATE(day_date)) as sub"))
                         ->get();
 
         // Transaksi 4 Minggu
@@ -61,7 +61,7 @@ class DashboardController extends Controller
             ->selectRaw("week, DATE_FORMAT(start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(end_date, '%d-%m-%Y') AS end_date, COALESCE(SUM(nominal),0) AS total")
             ->leftJoin('t_masuks', function ($join) {
             $join->on('t_masuks.tanggal', '>=', 'q.start_date')
-            ->on('t_masuks.tanggal', '<=', 'q.end_date');
+            ->on('t_masuks.tanggal', '<=', 'q.end_date')->whereNull('t_masuks.deleted_at');
             })
             ->groupBy("week", "start_date", "end_date")
             ->orderBy("week", "DESC")
@@ -89,19 +89,19 @@ class DashboardController extends Controller
             ->selectRaw("week, DATE_FORMAT(start_date, '%d-%m-%Y') AS start_date, DATE_FORMAT(end_date, '%d-%m-%Y') AS end_date, COALESCE(SUM(nominal),0) AS total")
             ->leftJoin('t_keluars', function ($join) {
             $join->on('t_keluars.tanggal', '>=', 'q.start_date')
-            ->on('t_keluars.tanggal', '<=', 'q.end_date');
+            ->on('t_keluars.tanggal', '<=', 'q.end_date')->whereNull('t_keluars.deleted_at');
             })
             ->groupBy("week", "start_date", "end_date")
             ->orderBy("week", "DESC")
             ->get();
 
         // Transaksi Setahun Terakhir
-        $masukSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_masuks.nominal), 0) AS total, month_date FROM months LEFT JOIN t_masuks ON months.month_date BETWEEN DATE_SUB(t_masuks.tanggal, INTERVAL DAY(t_masuks.tanggal) - 1 DAY) AND LAST_DAY(t_masuks.tanggal) GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
+        $masukSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_masuks.nominal), 0) AS total, month_date FROM months LEFT JOIN t_masuks ON months.month_date BETWEEN DATE_SUB(t_masuks.tanggal, INTERVAL DAY(t_masuks.tanggal) - 1 DAY) AND LAST_DAY(t_masuks.tanggal) AND t_masuks.deleted_at IS NULL GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
             ->select("month_year", DB::raw("SUM(total) as total"))
             ->groupBy("month_year")
             ->orderBy("month_date")
             ->get();
-        $keluarSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_keluars.nominal), 0) AS total, month_date FROM months LEFT JOIN t_keluars ON months.month_date BETWEEN DATE_SUB(t_keluars.tanggal, INTERVAL DAY(t_keluars.tanggal) - 1 DAY) AND LAST_DAY(t_keluars.tanggal) GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
+        $keluarSetahun = DB::table(DB::raw("(WITH Recursive months AS ( SELECT DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 YEAR)), INTERVAL 1 DAY) AS month_date UNION SELECT DATE_ADD(month_date, INTERVAL 1 MONTH) FROM months WHERE month_date < LAST_DAY(NOW()) ) SELECT DATE_FORMAT(month_date, '%M %Y') AS month_year, COALESCE(SUM(t_keluars.nominal), 0) AS total, month_date FROM months LEFT JOIN t_keluars ON months.month_date BETWEEN DATE_SUB(t_keluars.tanggal, INTERVAL DAY(t_keluars.tanggal) - 1 DAY) AND LAST_DAY(t_keluars.tanggal) AND t_keluars.deleted_at IS NULL GROUP BY month_year, month_date ORDER BY month_date LIMIT 12) as sub"))
             ->select("month_year", DB::raw("SUM(total) as total"))
             ->groupBy("month_year")
             ->orderBy("month_date")
@@ -154,15 +154,19 @@ class DashboardController extends Controller
         $now = Carbon::now();
         $chartMasukBulan = intval(TMasuk::whereMonth('tanggal', $now->month)
                             ->whereYear('tanggal', $now->year)
+                            ->whereNull('deleted_at')
                             ->sum('nominal'));
         $chartKeluarBulan = intval(TKeluar::whereMonth('tanggal', $now->month)
                             ->whereYear('tanggal', $now->year)
+                            ->whereNull('deleted_at')
                             ->sum('nominal'));
         $chartMasukMinggu = $dataMasuk4Week[3];
         $chartKeluarMinggu = $dataKeluar4Week[3];
         $chartMasukTahun = intval(TMasuk::whereYear('tanggal', $now->year)
+                            ->whereNull('deleted_at')
                             ->sum('nominal'));
         $chartKeluarTahun = intval(TKeluar::whereYear('tanggal', $now->year)
+                            ->whereNull('deleted_at')
                             ->sum('nominal'));
         
         // Label Masuk
@@ -178,6 +182,7 @@ class DashboardController extends Controller
             ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -186,6 +191,7 @@ class DashboardController extends Controller
             ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -195,6 +201,7 @@ class DashboardController extends Controller
             ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -203,6 +210,7 @@ class DashboardController extends Controller
             ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -245,6 +253,7 @@ class DashboardController extends Controller
             ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -253,6 +262,7 @@ class DashboardController extends Controller
             ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -262,6 +272,7 @@ class DashboardController extends Controller
             ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
@@ -270,6 +281,7 @@ class DashboardController extends Controller
             ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
+            ->whereNull('labels.deleted_at')
             ->groupBy('labels.id', 'labels.name')
             ->orderByDesc('total')
             ->limit(5)
