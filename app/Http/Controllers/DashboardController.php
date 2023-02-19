@@ -179,7 +179,10 @@ class DashboardController extends Controller
         $labelMasukLastYear = [];
         $totalMasukLastYear = [];
         $this_month_total = DB::table('labels')
-            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->leftJoin('t_masuks', function ($join) {
+                $join->on('labels.id', '=', 't_masuks.label_id')
+                    ->whereNull('t_masuks.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
             ->whereNull('labels.deleted_at')
@@ -188,7 +191,10 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $last_month_total = DB::table('labels')
-            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->leftJoin('t_masuks', function ($join) {
+                $join->on('labels.id', '=', 't_masuks.label_id')
+                    ->whereNull('t_masuks.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
             ->whereNull('labels.deleted_at')
@@ -198,7 +204,10 @@ class DashboardController extends Controller
             ->get();
             
         $this_year_total = DB::table('labels')
-            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->leftJoin('t_masuks', function ($join) {
+                $join->on('labels.id', '=', 't_masuks.label_id')
+                    ->whereNull('t_masuks.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
             ->whereNull('labels.deleted_at')
@@ -207,7 +216,10 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $last_year_total = DB::table('labels')
-            ->leftJoin('t_masuks', 'labels.id', '=', 't_masuks.label_id')
+            ->leftJoin('t_masuks', function ($join) {
+                $join->on('labels.id', '=', 't_masuks.label_id')
+                    ->whereNull('t_masuks.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 0)
             ->whereNull('labels.deleted_at')
@@ -250,7 +262,10 @@ class DashboardController extends Controller
         $labelKeluarLastYear = [];
         $totalKeluarLastYear = [];
         $this_month_total = DB::table('labels')
-            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->leftJoin('t_keluars', function ($join) {
+                $join->on('labels.id', '=', 't_keluars.label_id')
+                    ->whereNull('t_keluars.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
             ->whereNull('labels.deleted_at')
@@ -259,7 +274,10 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $last_month_total = DB::table('labels')
-            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->leftJoin('t_keluars', function ($join) {
+                $join->on('labels.id', '=', 't_keluars.label_id')
+                    ->whereNull('t_keluars.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) AND MONTH(tanggal) = MONTH(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
             ->whereNull('labels.deleted_at')
@@ -269,7 +287,10 @@ class DashboardController extends Controller
             ->get();
             
         $this_year_total = DB::table('labels')
-            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->leftJoin('t_keluars', function ($join) {
+                $join->on('labels.id', '=', 't_keluars.label_id')
+                    ->whereNull('t_keluars.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
             ->whereNull('labels.deleted_at')
@@ -278,7 +299,10 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $last_year_total = DB::table('labels')
-            ->leftJoin('t_keluars', 'labels.id', '=', 't_keluars.label_id')
+            ->leftJoin('t_keluars', function ($join) {
+                $join->on('labels.id', '=', 't_keluars.label_id')
+                    ->whereNull('t_keluars.deleted_at');
+            })
             ->select('labels.name', DB::raw('COALESCE(SUM(CASE WHEN YEAR(tanggal) = YEAR(NOW()) - 1 THEN nominal ELSE 0 END), 0) as total'))
             ->where('labels.jenis', '=', 1)
             ->whereNull('labels.deleted_at')
