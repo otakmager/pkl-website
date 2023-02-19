@@ -83,4 +83,91 @@ class SampahMasukController extends Controller
             'message' => "Data transaksi masuk berhasil dihapus secara permanen.",
         ]); 
     }
+
+    /**
+     * Remove permanent some tmasuks
+     *
+     * @param Request $request
+     * @return message
+     */
+    public function destorySelectedData(Request $request)
+    {
+        $ids = $request->input('ids');
+        foreach ($ids as $id) {
+            $this->forceDelete($id);
+        }
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data transaksi masuk berhasil dihapus secara permanen.",
+        ]);
+    }
+
+    /**
+     * Remove permanent all tmasuks
+     *
+     * @param
+     * @return message
+     */
+    public function destoryAll()
+    {
+        TMasuk::onlyTrashed()->forceDelete();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Semua data transaksi masuk berhasil dihapus secara permanen.",
+        ]);
+    }
+
+    /**
+     * Restore tmasuks
+     *
+     * @param Request $request
+     * @return message
+     */
+    public function restore($id)
+    {
+        $data = TMasuk::onlyTrashed()->findOrFail($id);
+        $data->restore();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data berhasil direstore.",
+        ]);
+    }
+
+    /**
+     * Restore some tmasuks
+     *
+     * @param Request $request
+     * @return message
+     */
+    public function restoreSelectedData(Request $request)
+    {
+        $ids = $request->input('ids');
+        foreach ($ids as $id) {
+            $this->restoreData($id);
+        }
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data berhasil direstore.",
+        ]);
+    }
+
+    /**
+     * Restore all tmasuks
+     *
+     * @param
+     * @return message
+     */
+    public function restoreAll()
+    {
+        TMasuk::onlyTrashed()->restore();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Semua data transaksi masuk berhasil dihapus secara permanen.",
+        ]);
+    }
 }
