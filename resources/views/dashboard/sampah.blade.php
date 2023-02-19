@@ -118,5 +118,9 @@
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/dashboard/sampah.js') }}"></script>
+    @if ($title == "Sampah Transaksi Masuk")
+        <script src="{{ asset('js/dashboard/sampah-masuk.js') }}"></script>
+    @else
+        <script src="{{ asset('js/dashboard/sampah-keluar.js') }}"></script>
+    @endif
 @endpush

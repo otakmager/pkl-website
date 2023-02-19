@@ -96,7 +96,7 @@ $(document).ready(function () {
     ) {
         $.ajax({
             url:
-                "tmasuk/tmasuk_ajax?page=" +
+                "sampah-masuk/sampah_ajax?page=" +
                 page +
                 "&sorttype=" +
                 sort_type +
@@ -161,7 +161,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 3. Sorting
     // ====================================================================================
-    $(document).on("click", ".tmasuk_sorting", function () {
+    $(document).on("click", ".sampah_sorting", function () {
         var column_name = $(this).data("column_name");
         var order_type = $(this).data("sorting_type");
         var reverse_order = "";
@@ -322,149 +322,9 @@ $(document).ready(function () {
     // ====================================================================================
 
     // ====================================================================================
-    // Insert, Edit, and Delete
+    // Delete Data
     // ====================================================================================
-    // 1. Insert Data
-    // ====================================================================================
-    $("#addModal").submit(function (e) {
-        e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenAdd"]').val(),
-            },
-        });
-        let data = {
-            name: $("#addname").val(),
-            label: $("#addlabel").val(),
-            nominal: $("#addnominal").val(),
-            tanggal: $("#addtanggal").val(),
-            _token: $('input[name="_token"][id="tokenAdd"]').val(),
-        };
-        $.ajax({
-            type: "POST",
-            url: "/tmasuk",
-            data: data,
-            success: function (data) {
-                if (data.success) {
-                    $("#addModal").modal("hide");
-                    $("#addForm").trigger("reset");
-                    swal({
-                        title: "Sukses!",
-                        text: data.message,
-                        icon: "success",
-                        timer: 10000,
-                    });
-                    reloadPage();
-                }
-            },
-            error: function (data) {
-                $("#addModal").modal("hide");
-                $("#addForm").trigger("reset");
-                console.log(data);
-            },
-        });
-    });
-    // ====================================================================================
-    // 2. Fetch Detail Data
-    // ====================================================================================
-    let edit_id;
-    $(document).on("click", "#btn-edit-tmasuk", function () {
-        let id = $(this).data("id");
-        edit_id = id;
-
-        $.ajax({
-            url: "tmasuk/" + id,
-            type: "GET",
-            dataType: "JSON",
-            success: function (data) {
-                $("#editModal").modal("show");
-                $("#editname").val(data.name);
-                $("#editlabel")
-                    .find("option[value='" + data.label_id + "']")
-                    .prop("selected", true);
-                $("#editnominal").val(data.nominal);
-                $("#edittanggal").val(
-                    moment(data.tanggal, "YYYY-MM-DD").format("DD/MM/YYYY")
-                );
-            },
-            error: function () {
-                alert("Tidak dapat menampilkan data!");
-            },
-        });
-    });
-    // ====================================================================================
-    // 3. Update Data
-    // ====================================================================================
-    $("#editForm").on("submit", function (e) {
-        e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
-            },
-        });
-        var id = edit_id;
-        var nomor = $("#" + id)
-            .find("#nomor")
-            .text();
-        let data = {
-            name: $("#editname").val(),
-            label: $("#editlabel").val(),
-            nominal: $("#editnominal").val(),
-            tanggal: $("#edittanggal").val(),
-            _token: $('input[name="_token"][id="tokenEdit"]').val(),
-        };
-        $.ajax({
-            url: "tmasuk/" + id,
-            type: "PUT",
-            data: data,
-            success: function (data) {
-                swal({
-                    title: "Sukses!",
-                    text: data.message,
-                    icon: "success",
-                    timer: 10000,
-                });
-                //replace tr
-                let tmasuk =
-                    `
-                <tr class="text-center" id="${data.data.id}">
-                <td id="nomor">` +
-                    nomor +
-                    `</td>
-                <td>${data.data.name}</td>
-                <td>${data.data.label}</td>
-                <td>Rp` +
-                    data.data.nominal
-                        .toString()
-                        .split(/(?=(?:...)*$)/)
-                        .join(".") +
-                    `</td>
-                <td>` +
-                    moment(data.data.tanggal, "YYYY-MM-DD").format(
-                        "DD/MM/YYYY"
-                    ) +
-                    `</td>
-                <td class="text-center">
-                    <a href="javascript:void(0)" id="btn-edit-tmasuk" data-id="${data.data.id}" class="btn btn-icon icon-left btn-primary" ><i class="far fa-edit"></i> Edit</a>
-                    <a href="javascript:void(0)" id="btn-del-tmasuk" data-id="${data.data.id}" class="btn btn-icon icon-left btn-danger" ><i class="fas fa-trash"></i> Hapus</a>
-                </td>
-                </tr>
-                `;
-                //append to post data
-                $(`#${data.data.id}`).replaceWith(tmasuk);
-                $("#editModal").modal("hide");
-                $("#editForm").trigger("reset");
-            },
-            error: function (data) {
-                console.log(data);
-                alert("Gagal mengubah data!");
-            },
-        });
-    });
-    // ====================================================================================
-    // 3. Delete Data
-    // ====================================================================================
-    $(document).on("click", "#btn-del-tmasuk", function () {
+    $(document).on("click", "#btn-del-transaction", function () {
         let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
@@ -481,7 +341,7 @@ $(document).ready(function () {
             if (willDelete) {
                 //fetch to delete data
                 $.ajax({
-                    url: "tmasuk/" + id,
+                    url: "sampah-masuk/" + id,
                     type: "DELETE",
                     cache: false,
                     data: {
