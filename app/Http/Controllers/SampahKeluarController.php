@@ -83,4 +83,91 @@ class SampahKeluarController extends Controller
             'message' => "Data transaksi keluar berhasil dihapus secara permanen.",
         ]); 
     }
+
+    /**
+     * Remove permanent some tkeluars
+     *
+     * @param Request $request
+     * @return message
+     */
+    public function destorySelectedData(Request $request)
+    {
+        $ids = $request->input('ids');
+        foreach ($ids as $id) {
+            $this->forceDelete($id);
+        }
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data sampah transaksi keluar berhasil dihapus secara permanen.",
+        ]);
+    }
+
+    /**
+     * Remove permanent all tkeluars
+     *
+     * @param
+     * @return message
+     */
+    public function destoryAll()
+    {
+        TKeluar::onlyTrashed()->forceDelete();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Semua data sampah transaksi keluar berhasil dihapus secara permanen.",
+        ]);
+    }
+
+    /**
+     * Restore tkeluars
+     *
+     * @param $id
+     * @return message
+     */
+    public function restore($id)
+    {
+        $data = TKeluar::onlyTrashed()->findOrFail($id);
+        $data->restore();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data berhasil dipulihkan.",
+        ]);
+    }
+
+    /**
+     * Restore some tkeluars
+     *
+     * @param Request $request
+     * @return message
+     */
+    public function restoreSelectedData(Request $request)
+    {
+        $ids = $request->input('ids');
+        foreach ($ids as $id) {
+            $this->restoreData($id);
+        }
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Data berhasil dipulihkan.",
+        ]);
+    }
+
+    /**
+     * Restore all tkeluars
+     *
+     * @param
+     * @return message
+     */
+    public function restoreAll()
+    {
+        TKeluar::onlyTrashed()->restore();
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => "Semua data transaksi keluar berhasil dipulihkan.",
+        ]);
+    }
 }

@@ -122,7 +122,7 @@ class SampahMasukController extends Controller
     /**
      * Restore tmasuks
      *
-     * @param Request $request
+     * @param $id
      * @return message
      */
     public function restore($id)

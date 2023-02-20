@@ -92,6 +92,8 @@ Route::delete('/sampah-keluar/{id}', [SampahKeluarController::class, 'destroy'])
 Route::put('/sampah-keluar/{id}', [SampahKeluarController::class, 'restore'])->name('sampah-keluar.restore');
 Route::post('/sampah-keluar/dsome/', [SampahKeluarController::class, 'destroySelectedData'])->name('sampah-keluar.destroy-some');
 Route::post('/sampah-keluar/rsome/', [SampahKeluarController::class, 'restoreSelectedData'])->name('sampah-keluar.restore-some');
+Route::delete('/sampah/keluar/delete-all', [SampahKeluarController::class, 'destoryAll'])->name('sampah-keluar.destroy-all');
+Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restoreAll'])->name('sampah-keluar.restore-all');
 /*
 |--------------------------------------------------------------------------
 | Download Routes

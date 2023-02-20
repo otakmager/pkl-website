@@ -339,7 +339,6 @@ $(document).ready(function () {
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                //fetch to delete data
                 $.ajaxSetup({
                     headers: {
                         "X-CSRF-TOKEN": $(
@@ -363,8 +362,148 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove post on table
+                        //remove data on table
                         $("#" + id).remove();
+                    },
+                });
+            }
+        });
+    });
+    // ====================================================================================
+    // Delete All Data
+    // ====================================================================================
+    $(document).on("click", "#del-all", function () {
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Semua data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Hapus Semua!",
+            },
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah/keluar/delete-all",
+                    type: "DELETE",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove all data on table
+                        reloadPage();
+                    },
+                });
+            }
+        });
+    });
+    // ====================================================================================
+    // Restore Data
+    // ====================================================================================
+    $(document).on("click", "#btn-res-transaction", function () {
+        let id = $(this).data("id");
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Data akan dipulihkan kembali!",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Pulihkan!",
+            },
+            dangerMode: true,
+        }).then((willRestore) => {
+            if (willRestore) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah-keluar/" + id,
+                    type: "PUT",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove data on table
+                        $("#" + id).remove();
+                    },
+                });
+            }
+        });
+    });
+    // ====================================================================================
+    // Restore All Data
+    // ====================================================================================
+    $(document).on("click", "#res-all", function () {
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Semua data akan dipulihkan kembali!",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Pulihkan Semua!",
+            },
+            dangerMode: true,
+        }).then((willRestore) => {
+            if (willRestore) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah/keluar/restore-all",
+                    type: "PUT",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove all data on table
+                        reloadPage();
                     },
                 });
             }
