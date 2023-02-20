@@ -327,7 +327,6 @@ $(document).ready(function () {
     $(document).on("click", "#btn-del-transaction", function () {
         let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
-        console.log(id);
 
         swal({
             title: "Apakah Anda Yakin?",
@@ -340,7 +339,6 @@ $(document).ready(function () {
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                //fetch to delete data
                 $.ajaxSetup({
                     headers: {
                         "X-CSRF-TOKEN": $(
@@ -356,7 +354,6 @@ $(document).ready(function () {
                         _token: token,
                     },
                     success: function (data) {
-                        console.log(data);
                         //show success message
                         swal({
                             title: "Sukses!",
@@ -373,13 +370,57 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
+    // Delete All Data
+    // ====================================================================================
+    $(document).on("click", "#del-all", function () {
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Semua data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Hapus Semua!",
+            },
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah/masuk/delete-all",
+                    type: "DELETE",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove all data on table
+                        reloadPage();
+                    },
+                });
+            }
+        });
+    });
     // ====================================================================================
     // Restore Data
     // ====================================================================================
     $(document).on("click", "#btn-res-transaction", function () {
         let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
-        console.log(id);
 
         swal({
             title: "Apakah Anda Yakin?",
@@ -407,7 +448,6 @@ $(document).ready(function () {
                         _token: token,
                     },
                     success: function (data) {
-                        console.log(data);
                         //show success message
                         swal({
                             title: "Sukses!",

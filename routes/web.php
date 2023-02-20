@@ -79,6 +79,7 @@ Route::delete('/sampah-masuk/{id}', [SampahMasukController::class, 'destroy'])->
 Route::put('/sampah-masuk/{id}', [SampahMasukController::class, 'restore'])->name('sampah-masuk.restore');
 Route::post('/sampah-masuk/dsome/', [SampahMasukController::class, 'destroySelectedData'])->name('sampah-masuk.destroy-some');
 Route::post('/sampah-masuk/rsome/', [SampahMasukController::class, 'restoreSelectedData'])->name('sampah-masuk.restore-some');
+Route::delete('/sampah/masuk/delete-all', [SampahMasukController::class, 'destoryAll'])->name('sampah-masuk.destroy-all');
 /*
 |--------------------------------------------------------------------------
 | Sampah Keluar Routes

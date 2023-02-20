@@ -16,7 +16,8 @@
                 <h1>{{ $title }}</h1>
             </div>
             <div class="section-body">
-                <button class="btn btn-icon icon-left btn-success py-2"><i class="fas fa-plus"></i> Pulihkan Sampah</button>
+                <button class="btn btn-icon icon-left btn-success btn-sm py-2" id="res-all"><i class="fas fa-rotate-left"></i> Pulihkan Semua Sampah</button>
+                <button class="btn btn-icon icon-left btn-danger btn-sm py-2" id="del-all"><i class="fas fa-trash"></i> Hapus Semua Sampah</button>
                 
                 <div class="row mt-3">
                     <div class="col-12">

@@ -80,7 +80,7 @@ class SampahMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data transaksi masuk berhasil dihapus secara permanen.",
+            'message' => "Data sampah transaksi masuk berhasil dihapus secara permanen.",
         ]); 
     }
 
@@ -99,7 +99,7 @@ class SampahMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data transaksi masuk berhasil dihapus secara permanen.",
+            'message' => "Data sampah transaksi masuk berhasil dihapus secara permanen.",
         ]);
     }
 
@@ -111,11 +111,14 @@ class SampahMasukController extends Controller
      */
     public function destoryAll()
     {
-        TMasuk::onlyTrashed()->forceDelete();
+        $deleted = Tmasuk::onlyTrashed()->get();    
+        foreach ($deleted as $del) {
+            $del->forceDelete();
+        }
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Semua data transaksi masuk berhasil dihapus secara permanen.",
+            'message' => "Semua data sampah transaksi masuk berhasil dihapus secara permanen.",
         ]);
     }
 
