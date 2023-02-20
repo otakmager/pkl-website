@@ -510,4 +510,30 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
+
+    // ====================================================================================
+    // Checkbox All Data
+    // ====================================================================================
+    $("#checkbox-all").click(function () {
+        if ($(this).is(":checked")) {
+            $(".checkbox-item").attr("checked", true);
+        } else {
+            $(".checkbox-item").attr("checked", false);
+        }
+
+        if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
+            $("#checkbox-all").prop("checked", true);
+        } else {
+            $("#checkbox-all").prop("checked", false);
+        }
+    });
+
+    $(".checkbox-item").click(function () {
+        if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
+            $("#checkbox-all").prop("checked", true);
+        } else {
+            $("#checkbox-all").prop("checked", false);
+        }
+    });
+    // ====================================================================================
 });

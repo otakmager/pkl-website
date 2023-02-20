@@ -85,8 +85,18 @@
                                 <div class="table-responsive mydata">
                                     <table class="table-striped table">
                                         <thead>
-                                            <tr class="text-center">
-                                                <th>No.</th>
+                                            <tr class="text-center" style="user-select: none;">
+                                                <th>
+                                                    <div class="custom-checkbox custom-control">
+                                                        <input type="checkbox"
+                                                            data-checkboxes="mygroup"
+                                                            data-checkbox-role="dad"
+                                                            class="custom-control-input"
+                                                            id="checkbox-all">
+                                                        <label for="checkbox-all"
+                                                            class="custom-control-label">&nbsp;</label>
+                                                    </div>
+                                                </th>
                                                 <th class="sampah_sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Nama</th>
                                                 <th class="sampah_sorting" data-sorting_type="asc" data-column_name="label_id" style="cursor: pointer">Label</th>
                                                 <th class="sampah_sorting" data-sorting_type="asc" data-column_name="nominal" style="cursor: pointer">Nominal</th>
