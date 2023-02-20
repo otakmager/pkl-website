@@ -52,7 +52,7 @@
                                     <label class="mt-2 mr-1" for="label">Status akun: </label>
                                     <div class="example-optionClass-container">
                                         <select id="status" class="form-control mx-1" name="multiselect[]" multiple="multiple">
-                                            <option value="0">Non Aktif</option>
+                                            <option value="0">Nonaktif</option>
                                             <option value="1">Aktif</option>
                                         </select>
                                     </div>        
