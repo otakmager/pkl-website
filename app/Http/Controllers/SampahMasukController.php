@@ -111,10 +111,7 @@ class SampahMasukController extends Controller
      */
     public function destoryAll()
     {
-        $deleted = Tmasuk::onlyTrashed()->get();    
-        foreach ($deleted as $del) {
-            $del->forceDelete();
-        }
+        TMasuk::onlyTrashed()->forceDelete();
         //return response
         return response()->json([
             'success' => true,
@@ -170,7 +167,7 @@ class SampahMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Semua data transaksi masuk berhasil dihapus secara permanen.",
+            'message' => "Semua data transaksi masuk berhasil dipulihkan.",
         ]);
     }
 }

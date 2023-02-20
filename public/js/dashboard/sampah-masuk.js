@@ -424,7 +424,7 @@ $(document).ready(function () {
 
         swal({
             title: "Apakah Anda Yakin?",
-            text: "Data akan dipulihkan kembali?",
+            text: "Data akan dipulihkan kembali!",
             icon: "warning",
             buttons: {
                 cancel: "Batal",
@@ -464,4 +464,49 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
+    // Restore All Data
+    // ====================================================================================
+    $(document).on("click", "#res-all", function () {
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Semua data akan dipulihkan kembali!",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Pulihkan Semua!",
+            },
+            dangerMode: true,
+        }).then((willRestore) => {
+            if (willRestore) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah/masuk/restore-all",
+                    type: "PUT",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove all data on table
+                        reloadPage();
+                    },
+                });
+            }
+        });
+    });
 });
