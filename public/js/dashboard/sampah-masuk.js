@@ -365,7 +365,58 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove post on table
+                        //remove data on table
+                        $("#" + id).remove();
+                    },
+                });
+            }
+        });
+    });
+    // ====================================================================================
+    // ====================================================================================
+    // Restore Data
+    // ====================================================================================
+    $(document).on("click", "#btn-res-transaction", function () {
+        let id = $(this).data("id");
+        let token = $('input[name="_token"][id="tokenCommon"]').val();
+        console.log(id);
+
+        swal({
+            title: "Apakah Anda Yakin?",
+            text: "Data akan dipulihkan kembali?",
+            icon: "warning",
+            buttons: {
+                cancel: "Batal",
+                confirm: "Ya, Pulihkan!",
+            },
+            dangerMode: true,
+        }).then((willRestore) => {
+            if (willRestore) {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $(
+                            'input[name="_token"][id="tokenCommon"]'
+                        ).val(),
+                    },
+                });
+                $.ajax({
+                    url: "sampah-masuk/" + id,
+                    type: "PUT",
+                    cache: false,
+                    data: {
+                        _token: token,
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        //show success message
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+
+                        //remove data on table
                         $("#" + id).remove();
                     },
                 });

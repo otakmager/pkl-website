@@ -132,7 +132,7 @@ class SampahMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data berhasil direstore.",
+            'message' => "Data berhasil dipulihkan.",
         ]);
     }
 
@@ -151,7 +151,7 @@ class SampahMasukController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data berhasil direstore.",
+            'message' => "Data berhasil dipulihkan.",
         ]);
     }
 
