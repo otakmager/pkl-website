@@ -510,30 +510,37 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
-
-    // ====================================================================================
-    // Checkbox All Data
-    // ====================================================================================
-    $("#checkbox-all").click(function () {
-        if ($(this).is(":checked")) {
-            $(".checkbox-item").attr("checked", true);
-        } else {
-            $(".checkbox-item").attr("checked", false);
-        }
-
-        if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
-            $("#checkbox-all").prop("checked", true);
-        } else {
-            $("#checkbox-all").prop("checked", false);
-        }
-    });
-
-    $(".checkbox-item").click(function () {
-        if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
-            $("#checkbox-all").prop("checked", true);
-        } else {
-            $("#checkbox-all").prop("checked", false);
-        }
-    });
-    // ====================================================================================
+    console.log(ids);
 });
+
+// ====================================================================================
+// Checkbox All Data
+// ====================================================================================
+let total_check = 0;
+let ids = [];
+
+// Handler untuk checkbox-all
+$("#checkbox-all").click(function () {
+    $(".checkbox-item").prop("checked", $(this).prop("checked"));
+    total_check = $(".checkbox-item:checked").length;
+    updateIds();
+});
+// Handler untuk setiap checkbox-item
+$(".checkbox-item").click(function () {
+    if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
+        $("#checkbox-all").prop("checked", true);
+    } else {
+        $("#checkbox-all").prop("checked", false);
+    }
+    total_check = $(".checkbox-item:checked").length;
+    updateIds();
+});
+
+// Fungsi untuk mengupdate array ids berdasarkan status checkbox saat ini
+function updateIds() {
+    ids = [];
+    $(".checkbox-item:checked").each(function () {
+        ids.push($(this).data("id"));
+    });
+}
+// ====================================================================================
