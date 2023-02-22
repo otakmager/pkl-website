@@ -18,6 +18,7 @@ class SampahKeluarController extends Controller
         $labels = Label::join('t_keluars', 't_keluars.label_id', '=', 'labels.id')
                 ->whereNotNull('t_keluars.deleted_at')
                 ->select('labels.id', 'labels.name')
+                ->groupBy('labels.id', 'labels.name')
                 ->get();
 
         return view('dashboard.sampah', [
@@ -75,7 +76,19 @@ class SampahKeluarController extends Controller
     public function destroy($id)
     {
         $deletedTKeluar = TKeluar::onlyTrashed()->findOrFail($id);
-        $deletedTKeluar->forceDelete();
+        // Check related label to delete label permanent
+        $labelId = $deletedTKeluar->label_id;
+        $label = Label::findOrFail($labelId);
+        $related = TKeluar::where('label_id', $label->id)->count();
+        if($label && $label->deleted_at !== NULL && $related == 1){
+            // Delete data permanent
+            $deletedTKeluar->forceDelete();
+            // Delete label permanent
+            $label->delete();
+        }else{
+            // Delete data permanent
+            $deletedTKeluar->forceDelete();
+        }
 
         //return response
         return response()->json([
@@ -94,7 +107,21 @@ class SampahKeluarController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            TKeluar::onlyTrashed()->findOrFail($id)->forceDelete();
+            $deletedTKeluar = TKeluar::onlyTrashed()->findOrFail($id);
+
+            // Check related label to delete label permanent
+            $labelId = $deletedTKeluar->label_id;
+            $label = Label::findOrFail($labelId);
+            $related = TKeluar::where('label_id', $label->id)->count();
+            if($label && $label->deleted_at !== NULL && $related == 1){
+                // Delete data permanent
+                $deletedTKeluar->forceDelete();
+                // Delete label permanent
+                $label->delete();
+            }else{
+                // Delete data permanent
+                $deletedTKeluar->forceDelete();
+            }
         }
         //return response
         return response()->json([
@@ -111,7 +138,25 @@ class SampahKeluarController extends Controller
      */
     public function destoryAll()
     {
-        TKeluar::onlyTrashed()->forceDelete();
+        // Get all trashed data
+        $deletedTKeluars = TKeluar::onlyTrashed()->get();
+        
+        foreach ($deletedTKeluars as $deletedTKeluar) {            
+            // Check related label to delete label permanent
+            $labelId = $deletedTKeluar->label_id;
+            $label = Label::findOrFail($labelId);
+            $related = TKeluar::where('label_id', $label->id)->count();
+            if($label && $label->deleted_at !== NULL && $related == 1){
+                // Delete data permanent
+                $deletedTKeluar->forceDelete();
+                // Delete label permanent
+                $label->delete();
+            }else{
+                // Delete data permanent
+                $deletedTKeluar->forceDelete();
+            }
+        }
+
         //return response
         return response()->json([
             'success' => true,
@@ -127,8 +172,21 @@ class SampahKeluarController extends Controller
      */
     public function restore($id)
     {
+        // Get data
         $data = TKeluar::onlyTrashed()->findOrFail($id);
+        
+        // Check label to restore if it's deleted
+        $labelId = $data->label_id;
+        $label = Label::findOrFail($labelId);
+        if($label && $label->deleted_at !== NULL){
+            $label->update([
+                'deleted_at' => NULL,
+            ]);
+        }
+
+        // Restore data
         $data->restore();
+
         //return response
         return response()->json([
             'success' => true,
@@ -146,8 +204,22 @@ class SampahKeluarController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->restore($id);
+            // Get data 
+            $data = TKeluar::onlyTrashed()->findOrFail($id);
+
+            // Check label to restore if it's deleted
+            $labelId = $data->label_id;
+            $label = Label::findOrFail($labelId);
+            if($label && $label->deleted_at !== NULL){
+                $label->update([
+                    'deleted_at' => NULL,
+                ]);
+            }
+
+            // Restore data 
+            $data->restore();
         }
+
         //return response
         return response()->json([
             'success' => true,
@@ -163,7 +235,23 @@ class SampahKeluarController extends Controller
      */
     public function restoreAll()
     {
-        TKeluar::onlyTrashed()->restore();
+        // Get all trashed data
+        $datas = TKeluar::onlyTrashed()->get();
+
+        foreach ($datas as $data) {
+            // Check label to restore if it's deleted
+            $labelId = $data->label_id;
+            $label = Label::findOrFail($labelId);
+            if($label && $label->deleted_at !== NULL){
+                $label->update([
+                    'deleted_at' => NULL,
+                ]);
+            }
+
+            // Restore data 
+            $data->restore();
+        }
+
         //return response
         return response()->json([
             'success' => true,
