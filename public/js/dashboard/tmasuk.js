@@ -238,6 +238,7 @@ $(document).ready(function () {
             str_date,
             end_date
         );
+        $("#hidden_page").val($(this).attr("href").split("page=")[1]);
     });
     // ====================================================================================
     // 5. Filter Date Toggle

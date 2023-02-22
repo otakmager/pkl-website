@@ -131,6 +131,7 @@ $(document).ready(function () {
             status_data = $("#status").val();
         }
         fetch_data(page, sort_type, column_name, search, max_data, status_data);
+        $("#hidden_page").val($(this).attr("href").split("page=")[1]);
     });
     // ====================================================================================
 
