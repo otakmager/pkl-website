@@ -90,16 +90,16 @@ class SampahKeluarController extends Controller
      * @param Request $request
      * @return message
      */
-    public function destorySelectedData(Request $request)
+    public function destroySelectedData(Request $request)
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->forceDelete($id);
+            TKeluar::onlyTrashed()->findOrFail($id)->forceDelete();
         }
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data sampah transaksi keluar berhasil dihapus secara permanen.",
+            'message' =>  $request->input('total') . " data sampah transaksi masuk berhasil dihapus secara permanen.",
         ]);
     }
 
@@ -146,12 +146,12 @@ class SampahKeluarController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->restoreData($id);
+            $this->restore($id);
         }
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data berhasil dipulihkan.",
+            'message' => $request->input('total') . " data yang terpilih berhasil dipulihkan.",
         ]);
     }
 
