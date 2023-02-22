@@ -75,7 +75,20 @@ class SampahMasukController extends Controller
     public function destroy($id)
     {
         $deletedTMasuk = TMasuk::onlyTrashed()->findOrFail($id);
-        $deletedTMasuk->forceDelete();
+
+        // Check related label to delete label permanent
+        $labelId = $deletedTMasuk->label_id;
+        $label = Label::findOrFail($labelId);
+        $related = TMasuk::where('label_id', $label->id)->count();
+        if($label && $label->deleted_at !== NULL && $related == 1){
+            // Delete data permanent
+            $deletedTMasuk->forceDelete();
+            // Delete label permanent
+            $label->delete();
+        }else{
+            // Delete data permanent
+            $deletedTMasuk->forceDelete();
+        }
 
         //return response
         return response()->json([
@@ -94,7 +107,21 @@ class SampahMasukController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            TMasuk::onlyTrashed()->findOrFail($id)->forceDelete();
+            $deletedTMasuk = TMasuk::onlyTrashed()->findOrFail($id);
+
+            // Check related label to delete label permanent
+            $labelId = $deletedTMasuk->label_id;
+            $label = Label::findOrFail($labelId);
+            $related = TMasuk::where('label_id', $label->id)->count();
+            if($label && $label->deleted_at !== NULL && $related == 1){
+                // Delete data permanent
+                $deletedTMasuk->forceDelete();
+                // Delete label permanent
+                $label->delete();
+            }else{
+                // Delete data permanent
+                $deletedTMasuk->forceDelete();
+            }
         }
         //return response
         return response()->json([
@@ -111,7 +138,25 @@ class SampahMasukController extends Controller
      */
     public function destoryAll()
     {
-        TMasuk::onlyTrashed()->forceDelete();
+        // Get all trashed data
+        $deletedTMasuks = TMasuk::onlyTrashed()->get();
+
+        foreach ($deletedTMasuks as $deletedTMasuk) {
+            // Check related label to delete label permanent
+            $labelId = $deletedTMasuk->label_id;
+            $label = Label::findOrFail($labelId);
+            $related = TMasuk::where('label_id', $label->id)->count();
+            if($label && $label->deleted_at !== NULL && $related == 1){
+                // Delete data permanent
+                $deletedTMasuk->forceDelete();
+                // Delete label permanent
+                $label->delete();
+            }else{
+                // Delete data permanent
+                $deletedTMasuk->forceDelete();
+            }
+        }
+
         //return response
         return response()->json([
             'success' => true,
@@ -132,9 +177,11 @@ class SampahMasukController extends Controller
         
         // Check label to restore if it's deleted
         $labelId = $data->label_id;
-        $label = Label::onlyTrashed()->findOrFail($labelId);
+        $label = Label::findOrFail($labelId);
         if($label && $label->deleted_at !== NULL){
-            $label->restore();
+            $label->update([
+                'deleted_at' => NULL,
+            ]);
         }
 
         // Restore data
@@ -159,12 +206,14 @@ class SampahMasukController extends Controller
         foreach ($ids as $id) {
             // Get data 
             $data = TMasuk::onlyTrashed()->findOrFail($id);
-            
+
             // Check label to restore if it's deleted
             $labelId = $data->label_id;
-            $label = Label::onlyTrashed()->findOrFail($labelId);
+            $label = Label::findOrFail($labelId);
             if($label && $label->deleted_at !== NULL){
-                $label->restore();
+                $label->update([
+                    'deleted_at' => NULL,
+                ]);
             }
 
             // Restore data 
@@ -192,9 +241,11 @@ class SampahMasukController extends Controller
         foreach ($datas as $data) {
             // Check label to restore if it's deleted
             $labelId = $data->label_id;
-            $label = Label::onlyTrashed()->find($labelId);
-            if ($label && $ $label->deleted_at !== NULL) {
-                $label->restore();
+            $label = Label::findOrFail($labelId);
+            if($label && $label->deleted_at !== NULL){
+                $label->update([
+                    'deleted_at' => NULL,
+                ]);
             }
 
             // Restore data 

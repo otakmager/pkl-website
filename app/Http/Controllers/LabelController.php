@@ -177,9 +177,7 @@ class LabelController extends Controller
      */
     public function label_sum(Label $label)
     {
-        $sumMasuk = TMasuk::where('label_id', $label->id)->count();
-        $sumKeluar = TKeluar::where('label_id', $label->id)->count();
-        $sum = ($sumMasuk > $sumKeluar)? $sumMasuk : $sumKeluar;
+        $sum = ($label->jenis == 0)? TMasuk::where('label_id', $label->id)->count() : TKeluar::where('label_id', $label->id)->count();
 
         //return response
         return response()->json([
@@ -200,12 +198,16 @@ class LabelController extends Controller
         $deletedTLabel = Label::findOrFail($label->id);
 
         // Check if there are any related TMasuk or TKeluar data
-        $relatedTMasukCount = TMasuk::where('label_id', $label->id)->count();
-        $relatedTKeluarCount = TKeluar::where('label_id', $label->id)->count();        
+        $sum = ($label->jenis == 0)? TMasuk::where('label_id', $label->id)->count() : TKeluar::where('label_id', $label->id)->count();       
+        $sumWithTrashed = ($label->jenis == 0)? TMasuk::withTrashed()->where('label_id', $label->id)->count() : TKeluar::withTrashed()->where('label_id', $label->id)->count();       
 
         // Delete label or sofdelete transaction datas with update deleted_at label
-        if ($relatedTMasukCount == 0 && $relatedTKeluarCount == 0) {
+        if ($sum == 0) {
+            if($sumWithTrashed != 0){
+                ($label->jenis == 0)? TMasuk::onlyTrashed()->where('label_id', $label->id)->forceDelete() : TKeluar::onlyTrashed()->where('label_id', $label->id)->forceDelete();
+            }
             $deletedTLabel->delete();
+            
         } else {
             $deletedTLabel->update([
                 'deleted_at' => now()->format('Y-m-d'),
