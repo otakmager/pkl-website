@@ -366,8 +366,8 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove data on table
-                        $("#" + id).remove();
+                        //reload table
+                        reloadPage();
                     },
                 });
             }
@@ -412,7 +412,7 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove all data on table
+                        //reload table
                         reloadPage();
                     },
                 });
@@ -463,8 +463,7 @@ $(document).ready(function () {
                                 timer: 10000,
                             });
 
-                            //remove data on table
-                            // $("#" + id).remove();
+                            //reload table
                             reloadPage();
                         },
                     });
@@ -506,8 +505,8 @@ $(document).ready(function () {
                                 timer: 10000,
                             });
 
-                            //remove data on table
-                            $("#" + id).remove();
+                            //reload table
+                            reloadPage();
                         },
                     });
                 }
@@ -553,7 +552,7 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove all data on table
+                        //reload table
                         reloadPage();
                     },
                 });
