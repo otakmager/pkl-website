@@ -66,8 +66,8 @@ class DatabaseSeeder extends Seeder
             'jenis' => 1,
         ]);
         User::factory(3)->create();
-        TMasuk::factory(60)->create();
-        TKeluar::factory(60)->create();
+        TMasuk::factory(130)->create();
+        TKeluar::factory(130)->create();
         Dana::factory(1)->create();
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug');
             $table->boolean('jenis');
             $table->timestamps();
-            $table->softDeletes();
+            $table->date('deleted_at')->nullable();
         });
     }
 
