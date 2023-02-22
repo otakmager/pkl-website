@@ -18,6 +18,7 @@ class SampahMasukController extends Controller
         $labels = Label::join('t_masuks', 't_masuks.label_id', '=', 'labels.id')
                 ->whereNotNull('t_masuks.deleted_at')
                 ->select('labels.id', 'labels.name')
+                ->groupBy('labels.id', 'labels.name')
                 ->get();
 
         return view('dashboard.sampah', [
