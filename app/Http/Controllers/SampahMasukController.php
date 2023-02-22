@@ -127,8 +127,19 @@ class SampahMasukController extends Controller
      */
     public function restore($id)
     {
+        // Get data
         $data = TMasuk::onlyTrashed()->findOrFail($id);
+        
+        // Check label to restore if it's deleted
+        $labelId = $data->label_id;
+        $label = Label::onlyTrashed()->findOrFail($labelId);
+        if($label && $label->deleted_at !== NULL){
+            $label->restore();
+        }
+
+        // Restore data
         $data->restore();
+        
         //return response
         return response()->json([
             'success' => true,
@@ -146,8 +157,20 @@ class SampahMasukController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->restore($id);
+            // Get data 
+            $data = TMasuk::onlyTrashed()->findOrFail($id);
+            
+            // Check label to restore if it's deleted
+            $labelId = $data->label_id;
+            $label = Label::onlyTrashed()->findOrFail($labelId);
+            if($label && $label->deleted_at !== NULL){
+                $label->restore();
+            }
+
+            // Restore data 
+            $data->restore();
         }
+
         //return response
         return response()->json([
             'success' => true,
@@ -163,7 +186,21 @@ class SampahMasukController extends Controller
      */
     public function restoreAll()
     {
-        TMasuk::onlyTrashed()->restore();
+        // Get all trashed data
+        $datas = TMasuk::onlyTrashed()->get();
+
+        foreach ($datas as $data) {
+            // Check label to restore if it's deleted
+            $labelId = $data->label_id;
+            $label = Label::onlyTrashed()->find($labelId);
+            if ($label && $ $label->deleted_at !== NULL) {
+                $label->restore();
+            }
+
+            // Restore data 
+            $data->restore();
+        }
+
         //return response
         return response()->json([
             'success' => true,

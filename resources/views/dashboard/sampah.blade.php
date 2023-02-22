@@ -118,8 +118,6 @@
                 </div>
             </div>
         </section>
-        {{-- @include('dashboard.modal.add-sampah') --}}
-        {{-- @include('dashboard.modal.edit-sampah') --}}
     </div>
 @endsection
 
