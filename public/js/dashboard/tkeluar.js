@@ -355,6 +355,7 @@ $(document).ready(function () {
                         icon: "success",
                         timer: 10000,
                     });
+                    $("#hidden_page").val(1);
                     reloadPage();
                 }
             },
@@ -497,8 +498,8 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove post on table
-                        $("#" + id).remove();
+                        //reload table
+                        reloadPage();
                     },
                 });
             }
