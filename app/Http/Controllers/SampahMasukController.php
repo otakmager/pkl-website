@@ -146,12 +146,12 @@ class SampahMasukController extends Controller
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->restoreData($id);
+            $this->restore($id);
         }
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data berhasil dipulihkan.",
+            'message' => $request->input('total') . " data yang terpilih berhasil dipulihkan.",
         ]);
     }
 

@@ -94,6 +94,9 @@ $(document).ready(function () {
         str_date = defStrDate,
         end_date = defEndDate
     ) {
+        // Clear checkbox data
+        clearCheckbox();
+        // Fetch data
         $.ajax({
             url:
                 "sampah-masuk/sampah_ajax?page=" +
@@ -419,49 +422,97 @@ $(document).ready(function () {
     // Restore Data
     // ====================================================================================
     $(document).on("click", "#btn-res-transaction", function () {
-        let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
+        console.log(ids);
 
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Data akan dipulihkan kembali!",
-            icon: "warning",
-            buttons: {
-                cancel: "Batal",
-                confirm: "Ya, Pulihkan!",
-            },
-            dangerMode: true,
-        }).then((willRestore) => {
-            if (willRestore) {
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $(
-                            'input[name="_token"][id="tokenCommon"]'
-                        ).val(),
-                    },
-                });
-                $.ajax({
-                    url: "sampah-masuk/" + id,
-                    type: "PUT",
-                    cache: false,
-                    data: {
-                        _token: token,
-                    },
-                    success: function (data) {
-                        //show success message
-                        swal({
-                            title: "Sukses!",
-                            text: data.message,
-                            icon: "success",
-                            timer: 10000,
-                        });
+        if (totalCheck > 0) {
+            swal({
+                title: "Apakah Anda Yakin?",
+                text:
+                    totalCheck + " data yang terpilih akan dipulihkan kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Pulihkan!",
+                },
+                dangerMode: true,
+            }).then((willRestore) => {
+                if (willRestore) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "/sampah-masuk/rsome/",
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            total: totalCheck,
+                            ids: ids,
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
 
-                        //remove data on table
-                        $("#" + id).remove();
-                    },
-                });
-            }
-        });
+                            //remove data on table
+                            // $("#" + id).remove();
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        } else {
+            let id = $(this).data("id");
+            swal({
+                title: "Apakah Anda Yakin?",
+                text: "Data akan dipulihkan kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Pulihkan!",
+                },
+                dangerMode: true,
+            }).then((willRestore) => {
+                if (willRestore) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "sampah-masuk/" + id,
+                        type: "PUT",
+                        cache: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
+
+                            //remove data on table
+                            $("#" + id).remove();
+                        },
+                    });
+                }
+            });
+        }
     });
     // ====================================================================================
     // Restore All Data
@@ -516,31 +567,42 @@ $(document).ready(function () {
 // ====================================================================================
 // Checkbox All Data
 // ====================================================================================
-let total_check = 0;
+let totalCheck = 0;
 let ids = [];
 
 // Handler untuk checkbox-all
-$("#checkbox-all").click(function () {
+$(document).on("click", "#checkbox-all", function () {
     $(".checkbox-item").prop("checked", $(this).prop("checked"));
-    total_check = $(".checkbox-item:checked").length;
+    totalCheck = $(".checkbox-item:checked").length;
     updateIds();
 });
 // Handler untuk setiap checkbox-item
-$(".checkbox-item").click(function () {
+$(document).on("click", ".checkbox-item", function () {
     if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
         $("#checkbox-all").prop("checked", true);
     } else {
         $("#checkbox-all").prop("checked", false);
     }
-    total_check = $(".checkbox-item:checked").length;
+    totalCheck = $(".checkbox-item:checked").length;
     updateIds();
 });
-
+// ====================================================================================
 // Fungsi untuk mengupdate array ids berdasarkan status checkbox saat ini
 function updateIds() {
     ids = [];
     $(".checkbox-item:checked").each(function () {
         ids.push($(this).data("id"));
     });
+    console.log(ids);
+}
+// ====================================================================================
+function clearCheckbox() {
+    // Uncheck all checkboxes
+    $("#checkbox-all").prop("checked", false);
+    $(".checkbox-item").prop("checked", false);
+
+    // Call updateIds() to update the ids array
+    totalCheck = $(".checkbox-item:checked").length;
+    updateIds();
 }
 // ====================================================================================
