@@ -329,49 +329,96 @@ $(document).ready(function () {
     // Delete Data
     // ====================================================================================
     $(document).on("click", "#btn-del-transaction", function () {
-        let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Data akan dihapus secara permanen dan tidak dapat dipulihkan!",
-            icon: "warning",
-            buttons: {
-                cancel: "Batal",
-                confirm: "Ya, Hapus!",
-            },
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $(
-                            'input[name="_token"][id="tokenCommon"]'
-                        ).val(),
-                    },
-                });
-                $.ajax({
-                    url: "sampah-masuk/" + id,
-                    type: "DELETE",
-                    cache: false,
-                    data: {
-                        _token: token,
-                    },
-                    success: function (data) {
-                        //show success message
-                        swal({
-                            title: "Sukses!",
-                            text: data.message,
-                            icon: "success",
-                            timer: 10000,
-                        });
+        if (totalCheck > 0) {
+            swal({
+                title: "Apakah Anda Yakin?",
+                text:
+                    totalCheck +
+                    " data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Hapus!",
+                },
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "/sampah-masuk/dsome/",
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            total: totalCheck,
+                            ids: ids,
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
 
-                        //reload table
-                        reloadPage();
-                    },
-                });
-            }
-        });
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        } else {
+            let id = $(this).data("id");
+            swal({
+                title: "Apakah Anda Yakin?",
+                text: "Data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Hapus!",
+                },
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "sampah-masuk/" + id,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
+
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        }
     });
     // ====================================================================================
     // Delete All Data

@@ -90,16 +90,16 @@ class SampahMasukController extends Controller
      * @param Request $request
      * @return message
      */
-    public function destorySelectedData(Request $request)
+    public function destroySelectedData(Request $request)
     {
         $ids = $request->input('ids');
         foreach ($ids as $id) {
-            $this->forceDelete($id);
+            TMasuk::onlyTrashed()->findOrFail($id)->forceDelete();
         }
         //return response
         return response()->json([
             'success' => true,
-            'message' => "Data sampah transaksi masuk berhasil dihapus secara permanen.",
+            'message' =>  $request->input('total') . " data sampah transaksi masuk berhasil dihapus secara permanen.",
         ]);
     }
 
