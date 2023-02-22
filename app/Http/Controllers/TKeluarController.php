@@ -21,7 +21,7 @@ class TKeluarController extends Controller
     {
         $maxData = 5;
         $tkeluars = TKeluar::latest()->paginate($maxData);
-        $labels = Label::where('jenis', 1)->get();
+        $labels = Label::whereNull('deleted_at')->where('jenis', 1)->get();
         return view('dashboard.tkeluar', [
             'tkeluars' => $tkeluars,
             'labels' => $labels,
