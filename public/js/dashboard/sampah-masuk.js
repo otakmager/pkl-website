@@ -241,6 +241,7 @@ $(document).ready(function () {
             str_date,
             end_date
         );
+        $("#hidden_page").val($(this).attr("href").split("page=")[1]);
     });
     // ====================================================================================
     // 5. Filter Date Toggle
@@ -423,7 +424,6 @@ $(document).ready(function () {
     // ====================================================================================
     $(document).on("click", "#btn-res-transaction", function () {
         let token = $('input[name="_token"][id="tokenCommon"]').val();
-        console.log(ids);
 
         if (totalCheck > 0) {
             swal({
@@ -561,7 +561,6 @@ $(document).ready(function () {
         });
     });
     // ====================================================================================
-    console.log(ids);
 });
 
 // ====================================================================================
@@ -593,7 +592,6 @@ function updateIds() {
     $(".checkbox-item:checked").each(function () {
         ids.push($(this).data("id"));
     });
-    console.log(ids);
 }
 // ====================================================================================
 function clearCheckbox() {
