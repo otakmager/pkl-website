@@ -21,7 +21,7 @@ class TMasukController extends Controller
     {
         $maxData = 5;
         $tmasuks = TMasuk::latest()->paginate($maxData);
-        $labels = Label::where('jenis', 0)->get();
+        $labels = Label::whereNull('deleted_at')->where('jenis', 0)->get();
         return view('dashboard.tmasuk', [
             'tmasuks' => $tmasuks,
             'labels' => $labels,

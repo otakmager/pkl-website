@@ -19,7 +19,7 @@ class LabelController extends Controller
     public function index()
     {
         $maxData = 5;
-        $labels = Label::latest()->paginate($maxData);
+        $labels = Label::whereNull('deleted_at')->latest()->paginate($maxData);
         return view('dashboard.label', [
             'labels' => $labels,
             'maxData' => 5,
@@ -43,7 +43,8 @@ class LabelController extends Controller
             $jenis = explode(',', $jenis);
             $jenis = array_map('intval', $jenis);
            
-            $labels = Label::where('name', 'like', '%' . $search . '%')->whereIn('jenis', $jenis)
+            $labels = Label::whereNull('deleted_at')
+                        ->where('name', 'like', '%' . $search . '%')->whereIn('jenis', $jenis)
                         ->orderBy($sort_by, $sort_type)->paginate($maxData);
 
             return view('dashboard.fetch.label-data', [
@@ -195,15 +196,26 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        // Hapus semua data pada model TMasuk yang memiliki label_id sama dengan $label->id
-        TMasuk::where('label_id', $label->id)->delete();
-
-        // Hapus semua data pada model TKeluar yang memiliki label_id sama dengan $label->id
-        TKeluar::where('label_id', $label->id)->delete();
-
-        // Hapus data pada model Label yang memiliki id sama dengan $label->id
+        // Get label data
         $deletedTLabel = Label::findOrFail($label->id);
-        $deletedTLabel->delete();
+
+        // Check if there are any related TMasuk or TKeluar data
+        $relatedTMasukCount = TMasuk::where('label_id', $label->id)->count();
+        $relatedTKeluarCount = TKeluar::where('label_id', $label->id)->count();        
+
+        // Delete label or sofdelete transaction datas with update deleted_at label
+        if ($relatedTMasukCount == 0 && $relatedTKeluarCount == 0) {
+            $deletedTLabel->delete();
+        } else {
+            $deletedTLabel->update([
+                'deleted_at' => now()->format('Y-m-d'),
+            ]);
+            if($label->jenis == 0){
+                TMasuk::where('label_id', $label->id)->delete();
+            }else{
+                TKeluar::where('label_id', $label->id)->delete();
+            }            
+        }
 
         //return response
         return response()->json([
