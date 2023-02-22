@@ -156,12 +156,14 @@ $(document).ready(function () {
     // 2. Search + Max Data + Label
     // ====================================================================================
     $(document).on("keyup change", "#search, #max_data, #label", function () {
+        $("#hidden_page").val(1);
         reloadPage();
     });
     // ====================================================================================
     // 3. Sorting
     // ====================================================================================
     $(document).on("click", ".tmasuk_sorting", function () {
+        $("#hidden_page").val(1);
         var column_name = $(this).data("column_name");
         var order_type = $(this).data("sorting_type");
         var reverse_order = "";
@@ -207,6 +209,7 @@ $(document).ready(function () {
     // 4. Pagination
     // ====================================================================================
     $(document).on("click", ".data_pagin_link a", function (e) {
+        $("#hidden_page").val(1);
         e.preventDefault();
         var search = $("#search").val();
         var column_name = $("#hidden_column_name").val();
@@ -244,6 +247,7 @@ $(document).ready(function () {
     // 5. Filter Date Toggle
     // ====================================================================================
     $("#date_toggle").on("change", function () {
+        $("#hidden_page").val(1);
         // Hidden toggle
         var div_date = $("#div_date");
         if (this.checked) {
@@ -289,6 +293,7 @@ $(document).ready(function () {
     // 6. Filter Date
     // ====================================================================================
     $("#date_filter").on("change", function () {
+        $("#hidden_page").val(1);
         var search = $("#search").val();
         var column_name = $("#hidden_column_name").val();
         var sort_type = $("#hidden_sort_type").val();

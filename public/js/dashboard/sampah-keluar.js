@@ -159,12 +159,14 @@ $(document).ready(function () {
     // 2. Search + Max Data + Label
     // ====================================================================================
     $(document).on("keyup change", "#search, #max_data, #label", function () {
+        $("#hidden_page").val(1);
         reloadPage();
     });
     // ====================================================================================
     // 3. Sorting
     // ====================================================================================
     $(document).on("click", ".sampah_sorting", function () {
+        $("#hidden_page").val(1);
         var column_name = $(this).data("column_name");
         var order_type = $(this).data("sorting_type");
         var reverse_order = "";
