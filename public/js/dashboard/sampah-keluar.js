@@ -94,6 +94,9 @@ $(document).ready(function () {
         str_date = defStrDate,
         end_date = defEndDate
     ) {
+        // Clear checkbox data
+        clearCheckbox();
+        // Fetch data
         $.ajax({
             url:
                 "sampah-keluar/sampah_ajax?page=" +
@@ -238,6 +241,7 @@ $(document).ready(function () {
             str_date,
             end_date
         );
+        $("#hidden_page").val($(this).attr("href").split("page=")[1]);
     });
     // ====================================================================================
     // 5. Filter Date Toggle
@@ -325,49 +329,96 @@ $(document).ready(function () {
     // Delete Data
     // ====================================================================================
     $(document).on("click", "#btn-del-transaction", function () {
-        let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Data akan dihapus secara permanen dan tidak dapat dipulihkan!",
-            icon: "warning",
-            buttons: {
-                cancel: "Batal",
-                confirm: "Ya, Hapus!",
-            },
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $(
-                            'input[name="_token"][id="tokenCommon"]'
-                        ).val(),
-                    },
-                });
-                $.ajax({
-                    url: "sampah-keluar/" + id,
-                    type: "DELETE",
-                    cache: false,
-                    data: {
-                        _token: token,
-                    },
-                    success: function (data) {
-                        //show success message
-                        swal({
-                            title: "Sukses!",
-                            text: data.message,
-                            icon: "success",
-                            timer: 10000,
-                        });
+        if (totalCheck > 0) {
+            swal({
+                title: "Apakah Anda Yakin?",
+                text:
+                    totalCheck +
+                    " data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Hapus!",
+                },
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "/sampah-keluar/dsome/",
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            total: totalCheck,
+                            ids: ids,
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
 
-                        //remove data on table
-                        $("#" + id).remove();
-                    },
-                });
-            }
-        });
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        } else {
+            let id = $(this).data("id");
+            swal({
+                title: "Apakah Anda Yakin?",
+                text: "Data akan dihapus secara permanen dan tidak dapat dipulihkan!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Hapus!",
+                },
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "sampah-keluar/" + id,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
+
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        }
     });
     // ====================================================================================
     // Delete All Data
@@ -408,7 +459,7 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove all data on table
+                        //reload table
                         reloadPage();
                     },
                 });
@@ -419,49 +470,95 @@ $(document).ready(function () {
     // Restore Data
     // ====================================================================================
     $(document).on("click", "#btn-res-transaction", function () {
-        let id = $(this).data("id");
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
-        swal({
-            title: "Apakah Anda Yakin?",
-            text: "Data akan dipulihkan kembali!",
-            icon: "warning",
-            buttons: {
-                cancel: "Batal",
-                confirm: "Ya, Pulihkan!",
-            },
-            dangerMode: true,
-        }).then((willRestore) => {
-            if (willRestore) {
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $(
-                            'input[name="_token"][id="tokenCommon"]'
-                        ).val(),
-                    },
-                });
-                $.ajax({
-                    url: "sampah-keluar/" + id,
-                    type: "PUT",
-                    cache: false,
-                    data: {
-                        _token: token,
-                    },
-                    success: function (data) {
-                        //show success message
-                        swal({
-                            title: "Sukses!",
-                            text: data.message,
-                            icon: "success",
-                            timer: 10000,
-                        });
+        if (totalCheck > 0) {
+            swal({
+                title: "Apakah Anda Yakin?",
+                text:
+                    totalCheck + " data yang terpilih akan dipulihkan kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Pulihkan!",
+                },
+                dangerMode: true,
+            }).then((willRestore) => {
+                if (willRestore) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "/sampah-keluar/rsome/",
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            total: totalCheck,
+                            ids: ids,
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
 
-                        //remove data on table
-                        $("#" + id).remove();
-                    },
-                });
-            }
-        });
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        } else {
+            let id = $(this).data("id");
+            swal({
+                title: "Apakah Anda Yakin?",
+                text: "Data akan dipulihkan kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: "Batal",
+                    confirm: "Ya, Pulihkan!",
+                },
+                dangerMode: true,
+            }).then((willRestore) => {
+                if (willRestore) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $(
+                                'input[name="_token"][id="tokenCommon"]'
+                            ).val(),
+                        },
+                    });
+                    $.ajax({
+                        url: "sampah-keluar/" + id,
+                        type: "PUT",
+                        cache: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (data) {
+                            //show success message
+                            swal({
+                                title: "Sukses!",
+                                text: data.message,
+                                icon: "success",
+                                timer: 10000,
+                            });
+
+                            //reload table
+                            reloadPage();
+                        },
+                    });
+                }
+            });
+        }
     });
     // ====================================================================================
     // Restore All Data
@@ -502,7 +599,7 @@ $(document).ready(function () {
                             timer: 10000,
                         });
 
-                        //remove all data on table
+                        //reload table
                         reloadPage();
                     },
                 });
@@ -511,3 +608,45 @@ $(document).ready(function () {
     });
     // ====================================================================================
 });
+
+// ====================================================================================
+// Checkbox All Data
+// ====================================================================================
+let totalCheck = 0;
+let ids = [];
+
+// Handler untuk checkbox-all
+$(document).on("click", "#checkbox-all", function () {
+    $(".checkbox-item").prop("checked", $(this).prop("checked"));
+    totalCheck = $(".checkbox-item:checked").length;
+    updateIds();
+});
+// Handler untuk setiap checkbox-item
+$(document).on("click", ".checkbox-item", function () {
+    if ($(".checkbox-item:checked").length === $(".checkbox-item").length) {
+        $("#checkbox-all").prop("checked", true);
+    } else {
+        $("#checkbox-all").prop("checked", false);
+    }
+    totalCheck = $(".checkbox-item:checked").length;
+    updateIds();
+});
+// ====================================================================================
+// Fungsi untuk mengupdate array ids berdasarkan status checkbox saat ini
+function updateIds() {
+    ids = [];
+    $(".checkbox-item:checked").each(function () {
+        ids.push($(this).data("id"));
+    });
+}
+// ====================================================================================
+function clearCheckbox() {
+    // Uncheck all checkboxes
+    $("#checkbox-all").prop("checked", false);
+    $(".checkbox-item").prop("checked", false);
+
+    // Call updateIds() to update the ids array
+    totalCheck = $(".checkbox-item:checked").length;
+    updateIds();
+}
+// ====================================================================================
