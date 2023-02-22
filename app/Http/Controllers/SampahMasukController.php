@@ -80,7 +80,7 @@ class SampahMasukController extends Controller
         // Check related label to delete label permanent
         $labelId = $deletedTMasuk->label_id;
         $label = Label::findOrFail($labelId);
-        $related = TMasuk::where('label_id', $label->id)->count();
+        $related = TMasuk::withTrashed()->where('label_id', $label->id)->count();
         if($label && $label->deleted_at !== NULL && $related == 1){
             // Delete data permanent
             $deletedTMasuk->forceDelete();
@@ -113,7 +113,7 @@ class SampahMasukController extends Controller
             // Check related label to delete label permanent
             $labelId = $deletedTMasuk->label_id;
             $label = Label::findOrFail($labelId);
-            $related = TMasuk::where('label_id', $label->id)->count();
+            $related = TMasuk::withTrashed()->where('label_id', $label->id)->count();
             if($label && $label->deleted_at !== NULL && $related == 1){
                 // Delete data permanent
                 $deletedTMasuk->forceDelete();
@@ -146,7 +146,7 @@ class SampahMasukController extends Controller
             // Check related label to delete label permanent
             $labelId = $deletedTMasuk->label_id;
             $label = Label::findOrFail($labelId);
-            $related = TMasuk::where('label_id', $label->id)->count();
+            $related = TMasuk::withTrashed()->where('label_id', $label->id)->count();
             if($label && $label->deleted_at !== NULL && $related == 1){
                 // Delete data permanent
                 $deletedTMasuk->forceDelete();

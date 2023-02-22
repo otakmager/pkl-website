@@ -79,7 +79,7 @@ class SampahKeluarController extends Controller
         // Check related label to delete label permanent
         $labelId = $deletedTKeluar->label_id;
         $label = Label::findOrFail($labelId);
-        $related = TKeluar::where('label_id', $label->id)->count();
+        $related = TKeluar::withTrashed()->where('label_id', $label->id)->count();
         if($label && $label->deleted_at !== NULL && $related == 1){
             // Delete data permanent
             $deletedTKeluar->forceDelete();
@@ -112,7 +112,7 @@ class SampahKeluarController extends Controller
             // Check related label to delete label permanent
             $labelId = $deletedTKeluar->label_id;
             $label = Label::findOrFail($labelId);
-            $related = TKeluar::where('label_id', $label->id)->count();
+            $related = TKeluar::withTrashed()->where('label_id', $label->id)->count();
             if($label && $label->deleted_at !== NULL && $related == 1){
                 // Delete data permanent
                 $deletedTKeluar->forceDelete();
@@ -145,7 +145,7 @@ class SampahKeluarController extends Controller
             // Check related label to delete label permanent
             $labelId = $deletedTKeluar->label_id;
             $label = Label::findOrFail($labelId);
-            $related = TKeluar::where('label_id', $label->id)->count();
+            $related = TKeluar::withTrashed()->where('label_id', $label->id)->count();
             if($label && $label->deleted_at !== NULL && $related == 1){
                 // Delete data permanent
                 $deletedTKeluar->forceDelete();
