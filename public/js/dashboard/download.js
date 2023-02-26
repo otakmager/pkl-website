@@ -3,19 +3,28 @@
 // Setting format tanggal dan interaksi
 $(".daterange-cus").daterangepicker(
     {
+        opens: "left",
+        drops: "up",
         locale: { format: "D MMMM YYYY" },
         ranges: {
-            Today: [moment(), moment()],
-            Yesterday: [
+            "Hari Ini": [moment(), moment()],
+            Kemarin: [
                 moment().subtract(1, "days"),
                 moment().subtract(1, "days"),
             ],
-            "Last 7 Days": [moment().subtract(6, "days"), moment()],
-            "Last 30 Days": [moment().subtract(29, "days"), moment()],
-            "This Month": [moment().startOf("month"), moment().endOf("month")],
-            "Last Month": [
+            "Bulan Ini": [moment().startOf("month"), moment().endOf("month")],
+            "Bulan Kemarin": [
                 moment().subtract(1, "month").startOf("month"),
                 moment().subtract(1, "month").endOf("month"),
+            ],
+            "Tahun Ini": [moment().startOf("year"), moment().endOf("year")],
+            "Tahun Kemarin": [
+                moment().subtract(1, "year").startOf("year"),
+                moment().subtract(1, "year").endOf("year"),
+            ],
+            "Awal Tahun Sampai Bulan Ini": [
+                moment().startOf("year"),
+                moment().endOf("month"),
             ],
         },
         startDate: moment().startOf("month"),
