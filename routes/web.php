@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MAkunController;
 use App\Http\Controllers\TMasukController;
 use App\Http\Controllers\TKeluarController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SampahMasukController;
 use App\Http\Controllers\SampahKeluarController;
@@ -99,9 +100,7 @@ Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restor
 | Download Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/download', function () {
-    return view('dashboard.download');
-});
+Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
 /*
 |--------------------------------------------------------------------------
 | Manajemen Akun Routes

@@ -4,8 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-multiselect/css/bootstrap-multiselect.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endpush
 
@@ -51,8 +50,7 @@
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Label Transaksi</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <select class="form-control select2" multiple="" name="label" id="label">
-                                            <option value="semua" selected>Semua</option>
+                                        <select class="form-control mx-1" name="multiselect[]" multiple="multiple" id="label">
                                             <option value="reparasi">Reparasi</option>
                                             <option value="jualan">Jualan</option>
                                         </select>
@@ -86,9 +84,8 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script>    
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ 'js/dashboard/download.js' }}"></script>

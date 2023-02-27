@@ -38,3 +38,18 @@ $(".daterange-cus").daterangepicker(
         );
     }
 );
+// Multiselect label
+$("#label").multiselect({
+    includeSelectAllOption: true, // add select all option as usual
+    optionClass: function (element) {
+        var value = $(element).val();
+
+        if (value % 2 == 0) {
+            return "even";
+        } else {
+            return "odd";
+        }
+    },
+});
+$("#label").multiselect("selectAll", false);
+$("#label").multiselect("updateButtonText");
