@@ -14,9 +14,22 @@ class DownloadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        $labels = Label::whereNull('deleted_at')->orderBy('jenis')->get();
+        $labelsMsk = [];
+        $labelsKlr = [];
+        foreach ($labels as $label) {
+            if($label->jenis == 0){
+                array_push($labelsMsk, $label);
+            }else{
+                array_push($labelsKlr, $label);
+            }
+        }
 
         return view('dashboard.download', [
             'title' => "Download",
+            'labelsMsk' => $labelsMsk,
+            'labelsKlr' => $labelsKlr,
+            'labels' => $labels,
         ]);
     }
 }

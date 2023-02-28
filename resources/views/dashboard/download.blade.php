@@ -18,6 +18,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenCommon">
                             <div class="card-header">
                                 <h4>Download Laporan Keuangan</h4>
                             </div>
@@ -41,7 +42,7 @@
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Bentuk Laporan</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select class="form-control selectric" name="format-laporan" id="format-laporan">
-                                            <option value="semua">Semua Transaksi</option>
+                                            <option value="semua" selected>Semua Transaksi</option>
                                             <option value="tmasuk">Transaksi Masuk</option>
                                             <option value="tkeluar">Transaksi Keluar</option>
                                         </select>
@@ -51,8 +52,9 @@
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Label Transaksi</label>
                                     <div class="col-sm-12 col-md-7">
                                         <select class="form-control mx-1" name="multiselect[]" multiple="multiple" id="label">
-                                            <option value="reparasi">Reparasi</option>
-                                            <option value="jualan">Jualan</option>
+                                            @foreach ($labels as $label)
+                                            <option value="{{ $label->id }}">{{ $label->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -86,6 +88,42 @@
     <!-- JS Libraies -->
     <script src="{{ asset('library/bootstrap-multiselect/js/bootstrap-multiselect.min.js') }}"></script>    
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+    <!-- Option Label with get JSON from controller -->
+    <script>
+        $('#format-laporan').on('change', function() {
+        var formatLaporan = $(this).val();
+        var labels = {!! json_encode($labels) !!};
+        var labelsMsk = {!! json_encode($labelsMsk) !!};
+        var labelsKlr = {!! json_encode($labelsKlr) !!};
+        var selectLabel = $('#label');
+        
+        // Hapus semua option pada select #label
+        selectLabel.empty();
+        
+        // Tambahkan option pada select #label sesuai dengan pilihan select #format-laporan
+        if (formatLaporan == 'semua') {
+            $.each(labels, function(i, label) {
+                selectLabel.append('<option value="' + label.id + '">' + label.name + '</option>');
+            });
+        } else if (formatLaporan == 'tmasuk') {
+            $.each(labelsMsk, function(i, label) {
+                selectLabel.append('<option value="' + label.id + '">' + label.name + '</option>');
+            });
+        } else if (formatLaporan == 'tkeluar') {
+            $.each(labelsKlr, function(i, label) {
+                selectLabel.append('<option value="' + label.id + '">' + label.name + '</option>');
+            });
+        }
+        
+        // Refresh select #label dengan plugin multiselect
+        selectLabel.multiselect('rebuild');
+
+        // Auto Select All Option        
+        $("#label").multiselect("selectAll", false);
+        $("#label").multiselect("updateButtonText");
+    });
+    </script>
 
     <!-- Page Specific JS File -->
     <script src="{{ 'js/dashboard/download.js' }}"></script>
