@@ -47,7 +47,7 @@ class DownloadController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'jenis' => 'required',
+            'formatLaporan' => 'required',
             '_token' => 'required',
         ]);
 
@@ -57,12 +57,12 @@ class DownloadController extends Controller
         }
 
         //download setup
-        $jenis = $request->input('jenis');
+        $formatLaporan = $request->input('formatLaporan');
         $fileName = $request->input('name');
 
         //download
-        // return Excel::download(new LaporanKeuanganExport($jenis), $fileName);
-        return Excel::download(new LaporanKeuanganExport, $fileName);
+        // return Excel::download(new LaporanKeuanganExport($formatLaporan), $fileName);
+        return Excel::download(new LaporanKeuanganExport($formatLaporan), $fileName);
     }
 
 
