@@ -57,46 +57,34 @@ $("#label").multiselect({
 });
 $("#label").multiselect("selectAll", false);
 $("#label").multiselect("updateButtonText");
+// ====================================================================================
+// Toggle change button name to download
+// ====================================================================================
+$("#jenis").on("change", function () {
+    var formatFile = $(this).val();
+    var downloadBtn = $("#btn-download");
 
+    if (formatFile == "excel") {
+        downloadBtn.text("Download Excel");
+        downloadBtn.removeClass("btn-warning").addClass("btn-success");
+    } else if (formatFile == "pdf") {
+        downloadBtn.text("Download PDF");
+        downloadBtn.removeClass("btn-success").addClass("btn-warning");
+    }
+});
 // ====================================================================================
 // Main Function
 // ====================================================================================
 $(document).ready(function () {
-    $("#btn-download").on("click", function () {
-        // Ajax setup
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $(
-                    'input[name="_token"][id="tokenCommon"]'
-                ).val(),
-            },
-        });
-        // Make data container
-        let data = {
-            name: $("#name").val() + ".xlsx",
-            // jenis: $("#format-laporan").val(),
-            jenis: "tmasuk",
-            _token: $('input[name="_token"][id="tokenCommon"]').val(),
-        };
-        // Testing
-        console.log(data);
-        // Ajax to request make file laporan
-        $.ajax({
-            type: "GET",
-            url: "/download/format/excel",
-            data: data,
-            success: function (data) {
-                if (data.success) {
-                    console.log(data);
-                } else {
-                    console.log("data.error");
-                    console.log(data);
-                }
-            },
-            error: function (data) {
-                console.log("error");
-                console.log(data);
-            },
-        });
+    $("#download-form").on("submit", function (event) {
+        event.preventDefault();
+        // Set URL with custom data as query string
+        let url = "/download/format/excel?";
+        url += "name=" + $("#name").val() + ".xlsx";
+        url += "&jenis=tmasuk";
+        url += "&_token=" + $('input[name="_token"][id="tokenCommon"]').val();
+
+        // Open new tab with URL
+        window.open(url, "_blank");
     });
 });

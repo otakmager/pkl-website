@@ -9,19 +9,25 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class LaporanKeuanganExport implements FromCollection
 {
-    private $jenis;
+    // private $jenis;
 
-    // Get jenis (format laporan) -> salah satu ['semua', 'tmasuk', 'tkeluar']
-    public function __construct($jenis)
-    {
-        $this->jenis = $jenis;
-    }
+    // // Get jenis (format laporan) -> salah satu ['semua', 'tmasuk', 'tkeluar']
+    // public function __construct($jenis)
+    // {
+    //     $this->jenis = $jenis;
+    // }
 
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
+        // Testing
+        return TMasuk::all();
+        return TMasuk::whereNull('deleted_at')->get();
+
+        // Real
+        /*
         if ($this->jenis == "semua") {
             // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
             $data = TMasuk::select('id', 'name', 'label_id', 'nominal', 'tanggal')
@@ -40,9 +46,11 @@ class LaporanKeuanganExport implements FromCollection
             // Generate laporan dengan menggunakan data dari model TKeluar saja
             return TKeluar::whereNull('deleted_at')->get();
         }
+        */
     }
 
     // Make header
+    /*
     public function headings(): array
     {
         return [
@@ -53,4 +61,5 @@ class LaporanKeuanganExport implements FromCollection
             'Tanggal',
         ];
     }
+    */
 }

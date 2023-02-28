@@ -23,58 +23,72 @@
                                 <h4>Download Laporan Keuangan</h4>
                             </div>
                             <div class="card-body">
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama File</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <input type="text" class="form-control" name="name" id="name" value="laporan-keuangan" autofocus>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis File</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric" name="format-file" id="format-file">
-                                            <option value="Excel">Excel</option>
-                                            <option value="pdf">PDF</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Bentuk Laporan</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric" name="format-laporan" id="format-laporan">
-                                            <option value="semua" selected>Semua Transaksi</option>
-                                            <option value="tmasuk">Transaksi Masuk</option>
-                                            <option value="tkeluar">Transaksi Keluar</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Label Transaksi</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <select class="form-control mx-1" name="multiselect[]" multiple="multiple" id="label">
-                                            @foreach ($labels as $label)
-                                            <option value="{{ $label->id }}">{{ $label->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Rentang Tanggal</label>
-                                    <div class="input-group col-sm-12 col-md-7">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </div>
+                                <form method="get" name="download-form" id="download-form">
+                                    <!-- Name start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama File</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <input type="text" class="form-control" name="name" id="name" value="laporan-keuangan" autofocus required>
                                         </div>
-                                        <input type="text" class="form-control daterange-cus" name="tanggal" id="tanggal">
                                     </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary" id="btn-download">Download</button>
+                                    <!-- Name End -->
+                                    <!-- Jenis Start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis File</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select class="form-control selectric" name="jenis" id="jenis" required>
+                                                <option value="excel" selected>Excel</option>
+                                                <option value="pdf">PDF</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                    <!-- Jenis End -->
+                                    <!-- Format Start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Bentuk Laporan</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select class="form-control selectric" name="format-laporan" id="format-laporan" required>
+                                                <option value="semua" selected>Semua Transaksi</option>
+                                                <option value="tmasuk">Transaksi Masuk</option>
+                                                <option value="tkeluar">Transaksi Keluar</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Format End -->
+                                    <!-- Label start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Label Transaksi</label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <select class="form-control mx-1" name="multiselect[]" multiple="multiple" id="label">
+                                                @foreach ($labels as $label)
+                                                <option value="{{ $label->id }}">{{ $label->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Label End -->
+                                    <!-- Date Start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Rentang Tanggal</label>
+                                        <div class="input-group col-sm-12 col-md-7">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fas fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control daterange-cus" name="tanggal" id="tanggal" required>
+                                        </div>
+                                    </div>
+                                    <!-- Date End -->
+                                    <!-- Button Start -->
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                        <div class="col-sm-12 col-md-7">
+                                            <button type="submit" id="btn-download" class="btn btn-success">Download Excel</button>
+                                        </div>
+                                    </div>
+                                    <!-- Button End -->
+                                </form>                                
                             </div>
                         </div>
                     </div>
