@@ -101,6 +101,8 @@ Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restor
 |--------------------------------------------------------------------------
 */
 Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
+Route::get('/download/format/excel', [DownloadController::class, 'downloadExcel'])->name('download-excel');
+
 /*
 |--------------------------------------------------------------------------
 | Manajemen Akun Routes
