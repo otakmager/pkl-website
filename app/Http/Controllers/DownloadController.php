@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\LaporanKeuanganExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
