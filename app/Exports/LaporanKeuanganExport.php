@@ -24,10 +24,10 @@ class LaporanKeuanganExport implements FromCollection
     {
         if ($this->jenis == "semua") {
             // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
-            $data = TMasuk::select('id', 'name', 'label', 'nominal', 'tanggal')
+            $data = TMasuk::select('id', 'name', 'label_id', 'nominal', 'tanggal')
                 ->whereNull('deleted_at')
                 ->union(
-                    TKeluar::select('id', 'name', 'label', 'nominal', 'tanggal')
+                    TKeluar::select('id', 'name', 'label_id', 'nominal', 'tanggal')
                     ->whereNull('deleted_at')
                 )
                 ->get();

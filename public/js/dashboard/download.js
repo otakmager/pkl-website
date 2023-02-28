@@ -1,6 +1,8 @@
 "use strict";
 
-// Setting format tanggal dan interaksi
+// ====================================================================================
+// DatePicker
+// ====================================================================================
 $(".daterange-cus").daterangepicker(
     {
         opens: "left",
@@ -38,7 +40,9 @@ $(".daterange-cus").daterangepicker(
         );
     }
 );
-// Multiselect label
+// ====================================================================================
+// Multiselect
+// ====================================================================================
 $("#label").multiselect({
     includeSelectAllOption: true, // add select all option as usual
     optionClass: function (element) {
@@ -53,3 +57,46 @@ $("#label").multiselect({
 });
 $("#label").multiselect("selectAll", false);
 $("#label").multiselect("updateButtonText");
+
+// ====================================================================================
+// Main Function
+// ====================================================================================
+$(document).ready(function () {
+    $("#btn-download").on("click", function () {
+        // Ajax setup
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $(
+                    'input[name="_token"][id="tokenCommon"]'
+                ).val(),
+            },
+        });
+        // Make data container
+        let data = {
+            name: $("#name").val() + ".xlsx",
+            // jenis: $("#format-laporan").val(),
+            jenis: "tmasuk",
+            _token: $('input[name="_token"][id="tokenCommon"]').val(),
+        };
+        // Testing
+        console.log(data);
+        // Ajax to request make file laporan
+        $.ajax({
+            type: "GET",
+            url: "/download/format/excel",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data);
+                } else {
+                    console.log("data.error");
+                    console.log(data);
+                }
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+            },
+        });
+    });
+});
