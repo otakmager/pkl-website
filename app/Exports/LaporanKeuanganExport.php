@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
-class LaporanKeuanganExport implements FromCollection
+class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell
 {
     private $formatLaporan;
 
@@ -48,4 +48,21 @@ class LaporanKeuanganExport implements FromCollection
             return TKeluar::whereNull('deleted_at')->get();
         }
     }
+
+    // Tambahan
+
+    public function startCell(): string
+    {
+        return 'A1';
+    }
+
+    public function headings(): array
+    {
+        return [
+            ['CV Berkah Makmur'], // Baris baru di atas header kolom
+            ['ID', 'Nama', 'Label ID', 'Nominal', 'Tanggal'], // Header kolom
+        ];
+    }
+
+    // End tambahan
 }
