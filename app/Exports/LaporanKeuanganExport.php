@@ -41,18 +41,4 @@ class LaporanKeuanganExport implements FromCollection
             return TKeluar::whereNull('deleted_at')->get();
         }
     }
-
-    // Make header
-    /*
-    public function headings(): array
-    {
-        return [
-            'Nomor',
-            'Name',
-            'Label',
-            'Nominal',
-            'Tanggal',
-        ];
-    }
-    */
 }

@@ -61,59 +61,58 @@ class DownloadController extends Controller
         $fileName = $request->input('name');
 
         //download
-        // return Excel::download(new LaporanKeuanganExport($formatLaporan), $fileName);
         return Excel::download(new LaporanKeuanganExport($formatLaporan), $fileName);
     }
 
 
-    /*
-    public function downloadExcel(Request $request)
-    {
-        // Ambil data dari model TMasuk
-        $tmasuks = TMasuk::all();
 
-        // Definisikan data kas awal bulan ini
-        $danaBulanIni = 1000000;
+    // public function downloadExcel(Request $request)
+    // {
+    //     // Ambil data dari model TMasuk
+    //     $tmasuks = TMasuk::all();
 
-        // Definisikan header dan footer pada file excel
-        $header = [
-            'Nama Perusahaan',
-            'Alamat Perusahaan',
-        ];
+    //     // Definisikan data kas awal bulan ini
+    //     $danaBulanIni = 1000000;
 
-        $footer = [
-            ['Rekap Akhir', '', '', '', TMasuk::sum('nominal')],
-            ['Sisa Uang', '', '', '', $danaBulanIni - TMasuk::sum('nominal')],
-        ];
+    //     // Definisikan header dan footer pada file excel
+    //     $header = [
+    //         'Nama Perusahaan',
+    //         'Alamat Perusahaan',
+    //     ];
 
-        // Definisikan body pada file excel
-        $body = [];
-        $body[] = ['Judul Laporan'];
-        $body[] = ['', '', '', '', ''];
+    //     $footer = [
+    //         ['Rekap Akhir', '', '', '', TMasuk::sum('nominal')],
+    //         ['Sisa Uang', '', '', '', $danaBulanIni - TMasuk::sum('nominal')],
+    //     ];
 
-        // Tambahkan data dari model TMasuk ke dalam body
-        $nomor = 1;
-        foreach ($tmasuks as $tmasuk) {
-            $body[] = [
-                $nomor,
-                $tmasuk->name,
-                $tmasuk->label,
-                $tmasuk->nominal,
-                $tmasuk->tanggal,
-            ];
-            $nomor++;
-        }
+    //     // Definisikan body pada file excel
+    //     $body = [];
+    //     $body[] = ['Judul Laporan'];
+    //     $body[] = ['', '', '', '', ''];
 
-        // Generate file excel menggunakan library maatwebsite/excel
-        $fileName = 'laporan.xlsx';
-        return Excel::download(function ($excel) use ($header, $body, $footer) {
-            $excel->sheet('Sheet 1', function ($sheet) use ($header, $body, $footer) {
-                $sheet->fromArray($header, null, 'A1', false, false);
-                $sheet->fromArray($body, null, 'A4', false, false);
-                $sheet->fromArray($footer, null, 'A' . (count($body) + 5), false, false);
-            });
-        }, $fileName);
-    }
-    */
+    //     // Tambahkan data dari model TMasuk ke dalam body
+    //     $nomor = 1;
+    //     foreach ($tmasuks as $tmasuk) {
+    //         $body[] = [
+    //             $nomor,
+    //             $tmasuk->name,
+    //             $tmasuk->label,
+    //             $tmasuk->nominal,
+    //             $tmasuk->tanggal,
+    //         ];
+    //         $nomor++;
+    //     }
+
+    //     // Generate file excel menggunakan library maatwebsite/excel
+    //     $fileName = 'laporan.xlsx';
+    //     return Excel::download(function ($excel) use ($header, $body, $footer) {
+    //         $excel->sheet('Sheet 1', function ($sheet) use ($header, $body, $footer) {
+    //             $sheet->fromArray($header, null, 'A1', false, false);
+    //             $sheet->fromArray($body, null, 'A4', false, false);
+    //             $sheet->fromArray($footer, null, 'A' . (count($body) + 5), false, false);
+    //         });
+    //     }, $fileName);
+    // }
+    
 
 }
