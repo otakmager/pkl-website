@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
-class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell
+class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell, WithEvents
 {
     private $formatLaporan;
 
@@ -59,8 +59,97 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function headings(): array
     {
         return [
-            ['CV Berkah Makmur'], // Baris baru di atas header kolom
-            ['ID', 'Nama', 'Label ID', 'Nominal', 'Tanggal'], // Header kolom
+            [
+                'CV Berkah Makmur',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                'Jalan Cempaka Putih Gang Bimasakti Karanganyar, Jawa Tengah',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                '',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                '',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                'ID',
+                'Nama',
+                'Label ID',
+                'Nominal',
+                'Tanggal',
+            ],
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                // Merge and style CV Berkah Makmur row
+                $event->sheet->mergeCells('A1:E1');
+                $event->sheet->getStyle('A1:E1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'size' => 14,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+
+                // Merge and style addres CV Berkah Makmur row
+                $event->sheet->mergeCells('A2:E2');
+                $event->sheet->getStyle('A2:E2')->applyFromArray([
+                    'font' => [
+                        'size' => 12,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+
+                // Add empty rows
+                $event->sheet->mergeCells('A3:E3');
+                $event->sheet->mergeCells('A4:E4');
+                $event->sheet->getStyle('A3:E4')->applyFromArray([
+                    'font' => [
+                        'size' => 12,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+
+                // Style Header Column
+                $event->sheet->getStyle('A5:E5')->applyFromArray([
+                    'font' => [
+                        'size' => 12,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+            },
         ];
     }
 
