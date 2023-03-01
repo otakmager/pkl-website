@@ -13,8 +13,9 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell, WithEvents
+class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell, WithEvents, WithColumnWidths
 {
     private $formatLaporan;
 
@@ -54,6 +55,16 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function startCell(): string
     {
         return 'A1';
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'B' => 30,
+            'C' => 15,
+            'D' => 20,
+            'E' => 10,
+        ];
     }
 
     public function headings(): array
