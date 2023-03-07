@@ -81,7 +81,7 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function columnWidths(): array
     {
         return [
-            'B' => 35,
+            'B' => 25,
             'C' => 25,
             'D' => 20,
             'E' => 20,
@@ -126,11 +126,11 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
             ],
             [
                 'Nomor',
+                'Tanggal',
                 'Nama',
                 'Label',
                 'Nominal Masuk',
                 'Nominal Keluar',
-                'Tanggal',
             ],
         ];
     }
