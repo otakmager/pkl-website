@@ -35,21 +35,20 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
         if ($this->formatLaporan == "semua") {
             // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
             $data = DB::table(function ($query) {
-                $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', DB::raw("DATE_FORMAT(t_masuks.tanggal, '%W, %d-%m-%Y') as tanggal"), 'created_at')
                     ->from('t_masuks')
                     ->whereNull('deleted_at')
                     ->union(
-                        TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                        TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', DB::raw("DATE_FORMAT(t_keluars.tanggal, '%W, %d-%m-%Y') as tanggal"), 'created_at')
                         ->whereNull('deleted_at')
                     );
 
                 $query->fromSub($subquery, 'sub');
             }, 'subquery')
             ->join('labels', 'labels.id', '=', 'subquery.label_id')
-            ->select('subquery.name', 'labels.name as labels_name')
+            ->select('subquery.tanggal', 'subquery.name', 'labels.name as labels_name')
             ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
             ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
-            ->selectRaw("DATE_FORMAT(MIN(subquery.tanggal), '%W, %d-%m-%Y') AS tanggal")
             ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
             ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
             ->get();
