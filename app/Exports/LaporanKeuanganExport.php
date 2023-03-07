@@ -139,18 +139,18 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     {
         return [
             [
-                'Total pemasukan:',
-                '', '',
+                '', 'Total pemasukan:',
+                '',
                 45000,
             ],
             [
-                'Total pengeluaran:',
-                '', '',
+                '', 'Total pengeluaran:',
+                '',
                 35000,
             ],
             [
-                'Sisa kas:',
-                '', '',
+                '', 'Sisa kas:',
+                '',
                 15000,
             ]
         ];
@@ -223,13 +223,13 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 foreach ($this->footer() as $row) {
                     $event->sheet->append($row);
                     $rowPost = $event->sheet->getHighestRow();
-                    $footerJudul = "A{$rowPost}:C{$rowPost}";
+                    $footerJudul = "B{$rowPost}:C{$rowPost}";
                     $event->sheet->getStyle($footerJudul)->applyFromArray([
                         'alignment' => [
                             'horizontal' => Alignment::HORIZONTAL_RIGHT,
                         ],
                     ]);
-                    $event->sheet->mergeCells('A' . $rowPost . ':C' . $rowPost);
+                    $event->sheet->mergeCells('B' . $rowPost . ':C' . $rowPost);
                 }
             },
         ];
