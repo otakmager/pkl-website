@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+use Illuminate\Support\Facades\DB;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
@@ -30,15 +31,36 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     */
     public function collection()
     {
+        DB::select(DB::raw("SET lc_time_names = 'id_ID'"));
         if ($this->formatLaporan == "semua") {
             // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
-            $data = TMasuk::select('id', 'name', 'label_id', 'nominal', 'tanggal')
-                ->whereNull('deleted_at')
-                ->union(
-                    TKeluar::select('id', 'name', 'label_id', 'nominal', 'tanggal')
+            $data = DB::table(function ($query) {
+                $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                    ->from('t_masuks')
                     ->whereNull('deleted_at')
-                )
-                ->get();
+                    ->union(
+                        TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                        ->whereNull('deleted_at')
+                    );
+
+                $query->fromSub($subquery, 'sub');
+            }, 'subquery')
+            ->join('labels', 'labels.id', '=', 'subquery.label_id')
+            ->select('subquery.name', 'labels.name as labels_name')
+            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
+            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
+            ->selectRaw("DATE_FORMAT(MIN(subquery.tanggal), '%W, %d-%m-%Y') AS tanggal")
+            ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
+            ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
+            ->get();
+            
+
+            $nomor = 1;
+            foreach($data as $key => $row) {
+                $data[$key] = (object)array_merge(array('nomor' => $nomor), (array)$row);
+                $nomor++;
+            }
+
             return $data;
 
         } else if ($this->formatLaporan == "tmasuk") {
@@ -60,10 +82,11 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function columnWidths(): array
     {
         return [
-            'B' => 30,
-            'C' => 15,
+            'B' => 35,
+            'C' => 25,
             'D' => 20,
-            'E' => 10,
+            'E' => 20,
+            'F' => 20,
         ];
     }
 
@@ -76,6 +99,7 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 '',
                 '',
                 '',
+                '',
             ],
             [
                 'Jalan Cempaka Putih Gang Bimasakti Karanganyar, Jawa Tengah',
@@ -83,12 +107,6 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 '',
                 '',
                 '',
-            ],
-            [
-                '',
-                '',
-                '',
-                '',
                 '',
             ],
             [
@@ -97,14 +115,45 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 '',
                 '',
                 '',
+                '',
             ],
             [
-                'ID',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                'Nomor',
                 'Nama',
-                'Label ID',
-                'Nominal',
+                'Label',
+                'Nominal Masuk',
+                'Nominal Keluar',
                 'Tanggal',
             ],
+        ];
+    }
+
+    public function footer(): array
+    {
+        return [
+            [
+                'Total pemasukan:',
+                '', '',
+                45000,
+            ],
+            [
+                'Total pengeluaran:',
+                '', '',
+                35000,
+            ],
+            [
+                'Sisa kas:',
+                '', '',
+                15000,
+            ]
         ];
     }
 
@@ -113,8 +162,8 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // Merge and style CV Berkah Makmur row
-                $event->sheet->mergeCells('A1:E1');
-                $event->sheet->getStyle('A1:E1')->applyFromArray([
+                $event->sheet->mergeCells('A1:F1');
+                $event->sheet->getStyle('A1:F1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 14,
@@ -126,8 +175,8 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 ]);
 
                 // Merge and style addres CV Berkah Makmur row
-                $event->sheet->mergeCells('A2:E2');
-                $event->sheet->getStyle('A2:E2')->applyFromArray([
+                $event->sheet->mergeCells('A2:F2');
+                $event->sheet->getStyle('A2:F2')->applyFromArray([
                     'font' => [
                         'size' => 12,
                     ],
@@ -138,9 +187,9 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 ]);
 
                 // Add empty rows
-                $event->sheet->mergeCells('A3:E3');
-                $event->sheet->mergeCells('A4:E4');
-                $event->sheet->getStyle('A3:E4')->applyFromArray([
+                $event->sheet->mergeCells('A3:F3');
+                $event->sheet->mergeCells('A4:F4');
+                $event->sheet->getStyle('A3:F4')->applyFromArray([
                     'font' => [
                         'size' => 12,
                     ],
@@ -151,7 +200,7 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                 ]);
 
                 // Style Header Column
-                $event->sheet->getStyle('A5:E5')->applyFromArray([
+                $event->sheet->getStyle('A5:F5')->applyFromArray([
                     'font' => [
                         'size' => 12,
                     ],
@@ -160,6 +209,29 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
                         'vertical' => Alignment::VERTICAL_CENTER,
                     ],
                 ]);
+
+                // Add footer Kosong
+                $footerStartRow = $event->sheet->getHighestRow() + 1;
+                $footerEndRow = $footerStartRow + count($this->footer()) - 1;
+                $footerRange = "A{$footerStartRow}:E{$footerEndRow}";
+                $event->sheet->getStyle($footerRange)->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_LEFT,
+                    ],
+                ]);
+
+                // Add footer rekap
+                foreach ($this->footer() as $row) {
+                    $event->sheet->append($row);
+                    $rowPost = $event->sheet->getHighestRow();
+                    $footerJudul = "A{$rowPost}:C{$rowPost}";
+                    $event->sheet->getStyle($footerJudul)->applyFromArray([
+                        'alignment' => [
+                            'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                        ],
+                    ]);
+                    $event->sheet->mergeCells('A' . $rowPost . ':C' . $rowPost);
+                }
             },
         ];
     }
