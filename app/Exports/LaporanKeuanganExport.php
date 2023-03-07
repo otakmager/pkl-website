@@ -81,8 +81,8 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function columnWidths(): array
     {
         return [
-            'B' => 25,
-            'C' => 25,
+            'B' => 20,
+            'C' => 30,
             'D' => 20,
             'E' => 20,
             'F' => 20,
