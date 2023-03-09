@@ -16,18 +16,24 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomStartCell, WithEvents, WithColumnWidths
+class LapKeuKeluarSheet implements FromCollection, WithHeadings, WithCustomStartCell, WithEvents, WithColumnWidths, WithTitle
 {
-    private $formatLaporan;
+    private $sheetTitle;
     private $str_date;
     private $end_date;
 
-    // Get formatLaporan (format laporan) -> salah satu ['semua', 'tmasuk', 'tkeluar']
-    public function __construct($formatLaporan, $str_date, $end_date)
+    // Constructor
+    public function __construct($sheetTitle, $str_date, $end_date)
     {
-        $this->formatLaporan = $formatLaporan;
+        $this->$sheetTitle = $sheetTitle;
         $this->str_date = $str_date;
         $this->end_date = $end_date;
+    }
+
+    // Set title sheet
+    public function title(): string
+    {
+        return $this->sheetTitle;
     }
 
     /**
@@ -36,84 +42,30 @@ class LaporanKeuanganExport implements FromCollection, WithHeadings, WithCustomS
     public function collection()
     {
         DB::select(DB::raw("SET lc_time_names = 'id_ID'"));
-        if ($this->formatLaporan == "semua") {
-            // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
-            $data = DB::table(function ($query) {
-                $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
-                    ->from('t_masuks')
-                    ->whereNull('deleted_at')
-                    ->union(
-                        TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
-                        ->whereNull('deleted_at')
-                    );
+        // Generate laporan dengan menggunakan data dari model TMasuk dan TKeluar
+        $data = DB::table(function ($query) {
+            $subquery = TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                ->from('t_keluars')
+                ->whereNull('deleted_at')
+                ->whereBetween('tanggal', [$this->str_date, $this->end_date]);
 
-                $query->fromSub($subquery, 'sub');
-            }, 'subquery')
-            ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
-            ->join('labels', 'labels.id', '=', 'subquery.label_id')
-            ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
-            ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
-            ->get();            
+            $query->fromSub($subquery, 'sub');
+        }, 'subquery')
+        ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
+        ->join('labels', 'labels.id', '=', 'subquery.label_id')
+        ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
+        ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
+        ->get();           
 
-            $nomor = 1;
-            foreach($data as $key => $row) {
-                $data[$key] = (object)array_merge(array('nomor' => $nomor), (array)$row);
-                $nomor++;
-            }
-
-            return $data;
-
-        } else if ($this->formatLaporan == "tmasuk") {
-            // Generate laporan dengan menggunakan data dari model TMasuk saja
-            $data = DB::table(function ($query) {
-                $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
-                    ->from('t_masuks')
-                    ->whereNull('deleted_at');
-
-                $query->fromSub($subquery, 'sub');
-            }, 'subquery')
-            ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
-            ->join('labels', 'labels.id', '=', 'subquery.label_id')
-            ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
-            ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
-            ->get();            
-
-            $nomor = 1;
-            foreach($data as $key => $row) {
-                $data[$key] = (object)array_merge(array('nomor' => $nomor), (array)$row);
-                $nomor++;
-            }
-
-            return $data;
-        } else if ($this->formatLaporan == "tkeluar") {
-            // Generate laporan dengan menggunakan data dari model TKeluar saja
-            $data = DB::table(function ($query) {
-                $subquery = TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
-                    ->from('t_keluars')
-                    ->whereNull('deleted_at');
-
-                $query->fromSub($subquery, 'sub');
-            }, 'subquery')
-            ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
-            ->join('labels', 'labels.id', '=', 'subquery.label_id')
-            ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
-            ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
-            ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
-            ->get();            
-
-            $nomor = 1;
-            foreach($data as $key => $row) {
-                $data[$key] = (object)array_merge(array('nomor' => $nomor), (array)$row);
-                $nomor++;
-            }
-
-            return $data;
+        $nomor = 1;
+        foreach($data as $key => $row) {
+            $data[$key] = (object)array_merge(array('nomor' => $nomor), (array)$row);
+            $nomor++;
         }
+
+        return $data;
     }
 
     // Tambahan

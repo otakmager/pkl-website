@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Exports\LaporanKeuanganExport;
+use App\Exports\LapKeuDriverExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +49,8 @@ class DownloadController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'formatLaporan' => 'required',
+            'str_date' => 'required',
+            'end_date' => 'required',
             '_token' => 'required',
         ]);
 
@@ -59,9 +62,12 @@ class DownloadController extends Controller
         //download setup
         $formatLaporan = $request->input('formatLaporan');
         $fileName = $request->input('name');
+        $str_date = $request->input('str_date');
+        $end_date = $request->input('end_date');
 
         //download
-        return Excel::download(new LaporanKeuanganExport($formatLaporan), $fileName);
+        // return Excel::download(new LaporanKeuanganExport($formatLaporan, $str_date, $end_date), $fileName);
+        return Excel::download(new LapKeuDriverExport($formatLaporan, $str_date, $end_date), $fileName);
     }
 
 
