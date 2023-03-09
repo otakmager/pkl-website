@@ -24,13 +24,15 @@ class LapKeuDriverExport implements WithMultipleSheets
     private $formatLaporan;
     private $str_date;
     private $end_date;
+    private $labels;
 
     // Get formatLaporan (format laporan) -> salah satu ['semua', 'tmasuk', 'tkeluar']
-    public function __construct($formatLaporan, $str_date, $end_date)
+    public function __construct($formatLaporan, $str_date, $end_date, $labels)
     {
         $this->formatLaporan = $formatLaporan;
         $this->str_date = $str_date;
         $this->end_date = $end_date;
+        $this->labels = $labels;
     }
 
     /**
@@ -75,7 +77,7 @@ class LapKeuDriverExport implements WithMultipleSheets
                         }
                     }
                     $i++;        
-                    $sheets[] = new LapKeuAllSheet($monthName, $startDateOfMonth, $endDateOfMonth);
+                    $sheets[] = new LapKeuAllSheet($monthName, $startDateOfMonth, $endDateOfMonth, $this->labels);
                 }
                 break;
             case "tmasuk":
@@ -105,7 +107,7 @@ class LapKeuDriverExport implements WithMultipleSheets
                         }
                     }
                     $i++;        
-                    $sheets[] = new LapKeuMasukSheet($monthName, $startDateOfMonth, $endDateOfMonth);
+                    $sheets[] = new LapKeuMasukSheet($monthName, $startDateOfMonth, $endDateOfMonth, $this->labels);
                 }
                 break;
             case "tkeluar":
@@ -135,7 +137,7 @@ class LapKeuDriverExport implements WithMultipleSheets
                         }
                     }
                     $i++;        
-                    $sheets[] = new LapKeuKeluarSheet($monthName, $startDateOfMonth, $endDateOfMonth);
+                    $sheets[] = new LapKeuKeluarSheet($monthName, $startDateOfMonth, $endDateOfMonth, $this->labels);
                 }
                 break;
             default: 

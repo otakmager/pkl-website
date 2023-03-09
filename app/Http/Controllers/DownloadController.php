@@ -51,6 +51,7 @@ class DownloadController extends Controller
             'formatLaporan' => 'required',
             'str_date' => 'required',
             'end_date' => 'required',
+            'label' => 'required',
             '_token' => 'required',
         ]);
 
@@ -64,10 +65,13 @@ class DownloadController extends Controller
         $fileName = $request->input('name');
         $str_date = $request->input('str_date');
         $end_date = $request->input('end_date');
+        $labels = $request->input('label');
+        $labels = explode(',', $labels);
+        $labels = array_map('intval', $labels);
 
         //download
         // return Excel::download(new LaporanKeuanganExport($formatLaporan, $str_date, $end_date), $fileName);
-        return Excel::download(new LapKeuDriverExport($formatLaporan, $str_date, $end_date), $fileName);
+        return Excel::download(new LapKeuDriverExport($formatLaporan, $str_date, $end_date, $labels), $fileName);
     }
 
 

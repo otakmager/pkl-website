@@ -21,13 +21,15 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
     private $sheetTitle;
     private $str_date;
     private $end_date;
+    private $labels;
 
     // Constructor
-    public function __construct($sheetTitle, $str_date, $end_date)
+    public function __construct($sheetTitle, $str_date, $end_date, $labels)
     {
-        $this->$sheetTitle = $sheetTitle;
+        $this->sheetTitle = $sheetTitle;
         $this->str_date = $str_date;
         $this->end_date = $end_date;
+        $this->labels = $labels;
     }
 
     // Set title sheet
@@ -47,10 +49,12 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
             $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
                 ->from('t_masuks')
                 ->whereNull('deleted_at')
+                ->whereIn('label_id', $this->labels)
                 ->whereBetween('tanggal', [$this->str_date, $this->end_date])
                 ->union(
                     TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
                     ->whereNull('deleted_at')
+                    ->whereIn('label_id', $this->labels)
                     ->whereBetween('tanggal', [$this->str_date, $this->end_date])
                 );
 
