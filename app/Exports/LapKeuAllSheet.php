@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
@@ -87,6 +88,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
     public function columnWidths(): array
     {
         return [
+            'A' => 15,
             'B' => 20,
             'C' => 30,
             'D' => 20,
@@ -107,7 +109,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                 '',
             ],
             [
-                'Jalan Cempaka Putih Gang Bimasakti Karanganyar, Jawa Tengah',
+                'Perum Argokiloso, Gang Bima Sakti Blok A. No. 19 Rt 01/ 06, Ngijo Tasikmadu, Karanganyar',
                 '',
                 '',
                 '',
@@ -117,6 +119,31 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
             [
                 '',
                 '',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                'Bulan:',
+                Carbon::parse($this->str_date)->locale('id')->isoFormat('MMMM Y'),
+                '',
+                '',
+                '',
+                '',
+            ],
+            [
+                'Tanggal:',
+                Carbon::parse($this->str_date)->locale('id')->isoFormat('D MMMM YYYY') 
+                . " - " . Carbon::parse($this->end_date)->locale('id')->isoFormat('D MMMM YYYY'),
                 '',
                 '',
                 '',
@@ -159,22 +186,18 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
         return [
             [
                 '', 'Saldo awal:',
-                '',
                 $saldoAwal,
             ],
             [
                 '', 'Total pemasukan:',
-                '',
                 $totMasuk[0]['total_pemasukan'],
             ],
             [
                 '', 'Total pengeluaran:',
-                '',
                 $totKeluar[0]['total_pengeluaran'],
             ],
             [
                 '', 'Saldo akhir:',
-                '',
                 $saldoAwal + $totMasuk[0]['total_pemasukan'] - $totKeluar[0]['total_pengeluaran'],
             ]
         ];
@@ -222,8 +245,27 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                     ],
                 ]);
 
+                // Style Keterangan bulan dan rentang tanggal
+                $event->sheet->getStyle('A5:F6')->applyFromArray([
+                    'font' => [
+                        'size' => 12,
+                    ],
+                ]);
+                $event->sheet->getStyle('A5:A6')->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                    ],
+                ]);
+                $event->sheet->getStyle('B5:C6')->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_LEFT,
+                    ],
+                ]);
+                $event->sheet->mergeCells('B5:C5');
+                $event->sheet->mergeCells('B6:C6');
+                
                 // Style Header Column
-                $event->sheet->getStyle('A5:F5')->applyFromArray([
+                $event->sheet->getStyle('A8:F8')->applyFromArray([
                     'font' => [
                         'size' => 12,
                     ],
@@ -235,7 +277,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
 
                 // Add footer Kosong
                 $footerStartRow = $event->sheet->getHighestRow() + 1;
-                $footerEndRow = $footerStartRow + count($this->footer()) - 1;
+                $footerEndRow = $footerStartRow + count($this->footer()) - 3;
                 $footerRange = "A{$footerStartRow}:E{$footerEndRow}";
                 $event->sheet->getStyle($footerRange)->applyFromArray([
                     'alignment' => [
@@ -253,7 +295,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                             'horizontal' => Alignment::HORIZONTAL_RIGHT,
                         ],
                     ]);
-                    $event->sheet->mergeCells('B' . $rowPost . ':C' . $rowPost);
+                    // $event->sheet->mergeCells('B' . $rowPost . ':C' . $rowPost);
                 }
             },
         ];
