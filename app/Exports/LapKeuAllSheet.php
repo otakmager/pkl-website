@@ -88,7 +88,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
+            'A' => 10,
             'B' => 20,
             'C' => 30,
             'D' => 20,
@@ -214,12 +214,16 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                     ->groupBy('labels.name')
                     ->get();
         $result = [];
+        $sum = 0;
         if ($labelsMasuk->isNotEmpty()){
+            $result[] = [' ',' ', ' '];
             $result[] = [' ',' ', ' '];
             $result[] = ['', 'Rekap Label Pemasukan', ''];
             foreach($labelsMasuk as $labels) {
                 $result[] = ['', $labels['name'], $labels['sum']];
+                $sum += $labels['sum'];
             }
+            $result[] = ['', 'Total:', $sum];
         }
         return $result;
     }
@@ -234,12 +238,16 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                     ->groupBy('labels.name')
                     ->get();
         $result = [];
+        $sum = 0;
         if ($labelsKeluar->isNotEmpty()){
+            $result[] = [' ',' ', ' '];
             $result[] = [' ',' ', ' '];
             $result[] = ['', 'Rekap Label Pengeluaran', ''];
             foreach($labelsKeluar as $labels) {
                 $result[] = ['', $labels['name'], $labels['sum']];
+                $sum += $labels['sum'];
             }
+            $result[] = ['', 'Total:', $sum];
         }
         return $result;
     }
@@ -339,10 +347,12 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                 }
 
                 // Add footer rekap Label Masuk
-                foreach ($this->footerLabelMasuk() as $index => $row) {
+                $footerLabelMasuk = $this->footerLabelMasuk();
+                $count = count($footerLabelMasuk);
+                foreach ($footerLabelMasuk as $index => $row) {
                     $event->sheet->append($row);
                     $rowPost = $event->sheet->getHighestRow();
-                    if ($index === 1) {
+                    if ($index === 2) {
                         $footerJudul = "B{$rowPost}:C{$rowPost}";
                         $event->sheet->getStyle($footerJudul)->applyFromArray([
                             'alignment' => [
@@ -350,6 +360,13 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                             ],
                         ]);
                         $event->sheet->mergeCells($footerJudul);
+                    }else if($index === $count-1){
+                        $footerJudul = "B{$rowPost}";
+                        $event->sheet->getStyle($footerJudul)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                            ],
+                        ]);
                     }else{
                         $event->sheet->getStyle('C'.$rowPost)->applyFromArray([
                             'alignment' => [
@@ -360,10 +377,12 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                 }
                 
                 // Add footer rekap Label Keluar
-                foreach ($this->footerLabelKeluar() as $index => $row) {
+                $footerLabelKeluar = $this->footerLabelKeluar();
+                $count = count($footerLabelKeluar);
+                foreach ($footerLabelKeluar as $index => $row) {
                     $event->sheet->append($row);
                     $rowPost = $event->sheet->getHighestRow();
-                    if ($index === 1) {
+                    if ($index === 2) {
                         $footerJudul = "B{$rowPost}:C{$rowPost}";
                         $event->sheet->getStyle($footerJudul)->applyFromArray([
                             'alignment' => [
@@ -371,6 +390,13 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                             ],
                         ]);
                         $event->sheet->mergeCells($footerJudul);
+                    }else if($index === $count-1){
+                        $footerJudul = "B{$rowPost}";
+                        $event->sheet->getStyle($footerJudul)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                            ],
+                        ]);
                     }else{
                         $event->sheet->getStyle('C'.$rowPost)->applyFromArray([
                             'alignment' => [
