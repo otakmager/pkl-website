@@ -183,6 +183,7 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                     ->whereBetween('tanggal', [$this->str_date, $this->end_date])
                     ->selectRaw('COALESCE(SUM(nominal), 0) as total_pengeluaran')
                     ->get();
+        
         return [
             [
                 '', 'Saldo awal:',
@@ -199,8 +200,48 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
             [
                 '', 'Saldo akhir:',
                 $saldoAwal + $totMasuk[0]['total_pemasukan'] - $totKeluar[0]['total_pengeluaran'],
-            ]
+            ],
         ];
+    }
+
+    public function footerLabelMasuk(): array
+    { 
+        $labelsMasuk = TMasuk::whereNull('t_masuks.deleted_at')
+                    ->whereIn('label_id', $this->labels)
+                    ->whereBetween('tanggal', [$this->str_date, $this->end_date])
+                    ->join('labels', 'labels.id', '=', 't_masuks.label_id')
+                    ->selectRaw('labels.name as name, COALESCE(SUM(nominal), 0) as sum')
+                    ->groupBy('labels.name')
+                    ->get();
+        $result = [];
+        if ($labelsMasuk->isNotEmpty()){
+            $result[] = [' ',' ', ' '];
+            $result[] = ['', 'Rekap Label Pemasukan', ''];
+            foreach($labelsMasuk as $labels) {
+                $result[] = ['', $labels['name'], $labels['sum']];
+            }
+        }
+        return $result;
+    }
+
+    public function footerLabelKeluar(): array
+    {
+        $labelsKeluar = TKeluar::whereNull('t_keluars.deleted_at')
+                    ->whereIn('label_id', $this->labels)
+                    ->whereBetween('tanggal', [$this->str_date, $this->end_date])
+                    ->join('labels', 'labels.id', '=', 't_keluars.label_id')
+                    ->selectRaw('labels.name as name, COALESCE(SUM(nominal), 0) as sum')
+                    ->groupBy('labels.name')
+                    ->get();
+        $result = [];
+        if ($labelsKeluar->isNotEmpty()){
+            $result[] = [' ',' ', ' '];
+            $result[] = ['', 'Rekap Label Pengeluaran', ''];
+            foreach($labelsKeluar as $labels) {
+                $result[] = ['', $labels['name'], $labels['sum']];
+            }
+        }
+        return $result;
     }
 
     public function registerEvents(): array
@@ -295,7 +336,48 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
                             'horizontal' => Alignment::HORIZONTAL_RIGHT,
                         ],
                     ]);
-                    // $event->sheet->mergeCells('B' . $rowPost . ':C' . $rowPost);
+                }
+
+                // Add footer rekap Label Masuk
+                foreach ($this->footerLabelMasuk() as $index => $row) {
+                    $event->sheet->append($row);
+                    $rowPost = $event->sheet->getHighestRow();
+                    if ($index === 1) {
+                        $footerJudul = "B{$rowPost}:C{$rowPost}";
+                        $event->sheet->getStyle($footerJudul)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                            ],
+                        ]);
+                        $event->sheet->mergeCells($footerJudul);
+                    }else{
+                        $event->sheet->getStyle('C'.$rowPost)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                            ],
+                        ]);
+                    }
+                }
+                
+                // Add footer rekap Label Keluar
+                foreach ($this->footerLabelKeluar() as $index => $row) {
+                    $event->sheet->append($row);
+                    $rowPost = $event->sheet->getHighestRow();
+                    if ($index === 1) {
+                        $footerJudul = "B{$rowPost}:C{$rowPost}";
+                        $event->sheet->getStyle($footerJudul)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                            ],
+                        ]);
+                        $event->sheet->mergeCells($footerJudul);
+                    }else{
+                        $event->sheet->getStyle('C'.$rowPost)->applyFromArray([
+                            'alignment' => [
+                                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                            ],
+                        ]);
+                    }
                 }
             },
         ];
