@@ -70,59 +70,7 @@ class DownloadController extends Controller
         $labels = array_map('intval', $labels);
 
         //download
-        // return Excel::download(new LaporanKeuanganExport($formatLaporan, $str_date, $end_date), $fileName);
         return Excel::download(new LapKeuDriverExport($formatLaporan, $str_date, $end_date, $labels), $fileName);
-    }
-
-
-
-    // public function downloadExcel(Request $request)
-    // {
-    //     // Ambil data dari model TMasuk
-    //     $tmasuks = TMasuk::all();
-
-    //     // Definisikan data kas awal bulan ini
-    //     $danaBulanIni = 1000000;
-
-    //     // Definisikan header dan footer pada file excel
-    //     $header = [
-    //         'Nama Perusahaan',
-    //         'Alamat Perusahaan',
-    //     ];
-
-    //     $footer = [
-    //         ['Rekap Akhir', '', '', '', TMasuk::sum('nominal')],
-    //         ['Sisa Uang', '', '', '', $danaBulanIni - TMasuk::sum('nominal')],
-    //     ];
-
-    //     // Definisikan body pada file excel
-    //     $body = [];
-    //     $body[] = ['Judul Laporan'];
-    //     $body[] = ['', '', '', '', ''];
-
-    //     // Tambahkan data dari model TMasuk ke dalam body
-    //     $nomor = 1;
-    //     foreach ($tmasuks as $tmasuk) {
-    //         $body[] = [
-    //             $nomor,
-    //             $tmasuk->name,
-    //             $tmasuk->label,
-    //             $tmasuk->nominal,
-    //             $tmasuk->tanggal,
-    //         ];
-    //         $nomor++;
-    //     }
-
-    //     // Generate file excel menggunakan library maatwebsite/excel
-    //     $fileName = 'laporan.xlsx';
-    //     return Excel::download(function ($excel) use ($header, $body, $footer) {
-    //         $excel->sheet('Sheet 1', function ($sheet) use ($header, $body, $footer) {
-    //             $sheet->fromArray($header, null, 'A1', false, false);
-    //             $sheet->fromArray($body, null, 'A4', false, false);
-    //             $sheet->fromArray($footer, null, 'A' . (count($body) + 5), false, false);
-    //         });
-    //     }, $fileName);
-    // }
-    
+    }    
 
 }
