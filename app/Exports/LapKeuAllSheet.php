@@ -142,22 +142,40 @@ class LapKeuAllSheet implements FromCollection, WithHeadings, WithCustomStartCel
     }
 
     public function footer(): array
-    {
+    {        
+        $saldoAwal = Dana::sum('uang') 
+                    + TMasuk::where('tanggal', '<', $this->str_date)->sum('nominal') 
+                    - TKeluar::where('tanggal', '<', $this->str_date)->sum('nominal');
+        $totMasuk = TMasuk::whereNull('deleted_at')
+                    ->whereIn('label_id', $this->labels)
+                    ->whereBetween('tanggal', [$this->str_date, $this->end_date])
+                    ->selectRaw('COALESCE(SUM(nominal), 0) as total_pemasukan')
+                    ->get();
+        $totKeluar = TKeluar::whereNull('deleted_at')
+                    ->whereIn('label_id', $this->labels)
+                    ->whereBetween('tanggal', [$this->str_date, $this->end_date])
+                    ->selectRaw('COALESCE(SUM(nominal), 0) as total_pengeluaran')
+                    ->get();
         return [
+            [
+                '', 'Saldo awal:',
+                '',
+                $saldoAwal,
+            ],
             [
                 '', 'Total pemasukan:',
                 '',
-                45000,
+                $totMasuk[0]['total_pemasukan'],
             ],
             [
                 '', 'Total pengeluaran:',
                 '',
-                35000,
+                $totKeluar[0]['total_pengeluaran'],
             ],
             [
-                '', 'Sisa kas:',
+                '', 'Saldo akhir:',
                 '',
-                15000,
+                $saldoAwal + $totMasuk[0]['total_pemasukan'] - $totKeluar[0]['total_pengeluaran'],
             ]
         ];
     }
