@@ -10,6 +10,11 @@ use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
 use Illuminate\Http\Request;
+use Dompdf\Options;
+use Dompdf\Dompdf;
+use PDF;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class DownloadController extends Controller
 {
@@ -72,5 +77,54 @@ class DownloadController extends Controller
         //download
         return Excel::download(new LapKeuDriverExport($formatLaporan, $str_date, $end_date, $labels), $fileName);
     }    
+
+    /**
+     * Export Data to excel based on jenis (format laporan)
+     *
+     * @return file
+     */
+    public function downloadPDF(Request $request)
+    {
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'formatLaporan' => 'required',
+            'str_date' => 'required',
+            'end_date' => 'required',
+            'label' => 'required',
+            '_token' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //download setup
+        $formatLaporan = $request->input('formatLaporan');
+        $fileName = $request->input('name');
+        $str_date = $request->input('str_date');
+        $end_date = $request->input('end_date');
+        $labels = $request->input('label');
+        $labels = explode(',', $labels);
+        $labels = array_map('intval', $labels);
+
+        // Get Data
+        if($formatLaporan == "semua"){
+
+        }else if($formatLaporan == "tmasuk"){
+
+        }else if($formatLaporan == "tkeluar"){
+
+        }
+        
+        $output = "";
+
+        //download
+        return response($output)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename=' . $fileName);
+
+    }   
 
 }
