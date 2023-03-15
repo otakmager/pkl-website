@@ -83,7 +83,8 @@ class LapKeuDriverExport implements WithMultipleSheets
                 break;
             case "tmasuk":
                 foreach ($period as $dt) {
-                    $monthName = $dt->format("F Y");
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName = $carbonDt->locale('id')->isoFormat("MMMM Y");
                     if($nMonth == 1){
                         $startDateOfMonth =  $startDate;
                         $endDateOfMonth = $endDate;
@@ -113,7 +114,8 @@ class LapKeuDriverExport implements WithMultipleSheets
                 break;
             case "tkeluar":
                 foreach ($period as $dt) {
-                    $monthName = $dt->format("F Y");
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName = $carbonDt->locale('id')->isoFormat("MMMM Y");
                     if($nMonth == 1){
                         $startDateOfMonth =  $startDate;
                         $endDateOfMonth = $endDate;
