@@ -48,9 +48,13 @@ class DownloadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function templatePDF(){
-
-        return view('pdfTemplate.export');
+    public function templatePDF()
+    {
+        $data = TMasuk::whereNull('deleted_at')->get();
+        return view('pdfTemplate.export', [
+            'title' => "Laporan Keuangan",
+            'datas' => $data,
+        ]);
     }
 
     /**
