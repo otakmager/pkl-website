@@ -52,7 +52,8 @@ class LapKeuDriverExport implements WithMultipleSheets
         switch($this->formatLaporan){
             case "semua":
                 foreach ($period as $dt) {
-                    $monthName = $dt->format("F Y");
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName = $carbonDt->locale('id')->isoFormat("MMMM Y");
                     if($nMonth == 1){
                         $startDateOfMonth =  $startDate;
                         $endDateOfMonth = $endDate;
