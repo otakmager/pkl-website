@@ -44,6 +44,16 @@ class DownloadController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function templatePDF(){
+
+        return view('pdfTemplate.export');
+    }
+
+    /**
      * Export Data to excel based on jenis (format laporan)
      *
      * @return file
@@ -111,20 +121,167 @@ class DownloadController extends Controller
 
         // Get Data
         if($formatLaporan == "semua"){
-
+            $data = $this->getAllData($str_date, $end_date, $labels);
         }else if($formatLaporan == "tmasuk"){
-
+            $data = $this->getDataMasuk($str_date, $end_date, $labels);
         }else if($formatLaporan == "tkeluar"){
-
+            $data = $this->getDataKeluar($str_date, $end_date, $labels);
         }
+
+        // Group the data by month
+        $dataByMonth = $data->groupBy(function($item) {
+            return date('Y-m', strtotime($item->tanggal));
+        });
         
         $output = "";
 
-        //download
-        return response($output)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename=' . $fileName);
+        foreach ($dataByMonth as $month => $data) {
+            // Generate the header
+            $header = '<table style="width: 100%; border-collapse: collapse;">' .
+                        '<tr>' .
+                          '<td style="width: 100px;"><img src="{{ asset(' . public_path('img/logo.png') . ') }}" width="85" height="31"></td>' .
+                          '<td style="text-align: center; vertical-align: middle;">' .
+                            '<h2>CV Berkah Makmur</h2>' .
+                            '<p>Jalan Bimasakti, Perum Argokiloso, Tasikmadu, Karanganyar, Jawa Tengah</p>' .
+                          '</td>' .
+                        '</tr>' .
+                      '</table>' .
+                      '<hr>' .
+                      '<p>Bulan: ' . date('F Y', strtotime($month . '-01')) . '</p>' .
+                      '<table style="width: 100%; border-collapse: collapse;">' .
+                      '<thead>' .
+                      '<tr>' .
+                      '<th>Nomor</th>' .
+                      '<th>Tanggal</th>' .
+                      '<th>Nama</th>' .
+                      '<th>Label ID</th>' .
+                      '<th>Nominal masuk</th>' .
+                      '<th>Nominal keluar</th>' .
+                      '</tr>' .
+                      '</thead>' .
+                      '<tbody>';
+    
+            // Generate the rows
+            $rows = '';
+            $i = 1;
+            foreach ($data as $row) {
+                $rows .= '<tr>' .
+                         '<td>' . $i++ . '</td>' .
+                         '<td>' . $row->tanggal . '</td>' .
+                         '<td>' . $row->nama . '</td>' .
+                         '<td>' . $row->label_id . '</td>' .
+                         '<td>' . $row->nominal_masuk . '</td>' .
+                         '<td>' . $row->nominal_keluar . '</td>' .
+                         '</tr>';
+            }
+    
+            // Generate the footer
+            $footer = '</tbody>' .
+                      '</table>';
+    
+            // Concatenate the header, rows, and footer
+            $output .= $header . $rows . $footer;
+    
+            // Add a page break if there is more than one page
+            if (!$data->isEmpty() && $data->count() > 20) {
+                $output .= '<pagebreak>';
+            }
+        }
 
+        //download
+        // return response($output)
+        return response($data)
+            ->header('Content-Type', 'application/pdf')
+            // ->header('Content-Disposition', 'attachment; filename=' . $fileName);
+            ->header('Content-Disposition', 'inline; filename=' . $fileName);
+
+    }   
+
+    /**
+     * Get all data (tmasuk & tkeluar)
+     *
+     * @return $data
+     */
+    public function getAllData($str_date, $end_date, $labels)
+    {
+        $data = DB::table(function ($query) use ($str_date, $end_date, $labels) {
+            $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                ->from('t_masuks')
+                ->whereNull('deleted_at')
+                ->whereIn('label_id', $labels)
+                ->whereBetween('tanggal', [$str_date, $end_date])
+                ->union(
+                    TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                    ->whereNull('deleted_at')
+                    ->whereIn('label_id', $labels)
+                    ->whereBetween('tanggal', [$str_date, $end_date])
+                );
+
+            $query->fromSub($subquery, 'sub');
+        }, 'subquery')
+        ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
+        ->join('labels', 'labels.id', '=', 'subquery.label_id')
+        ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
+        ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
+        ->get();  
+
+        return $data;
+    }   
+
+    /**
+     * Get tmasuk data
+     *
+     * @return $data
+     */
+    public function getDataMasuk($str_date, $end_date, $labels)
+    {
+        $data = DB::table(function ($query) use ($str_date, $end_date, $labels) {
+            $subquery = TMasuk::select(DB::raw("'masuk' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                ->from('t_masuks')
+                ->whereNull('deleted_at')
+                ->whereIn('label_id', $labels)
+                ->whereBetween('tanggal', [$str_date, $end_date]);
+
+            $query->fromSub($subquery, 'sub');
+        }, 'subquery')
+        ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
+        ->join('labels', 'labels.id', '=', 'subquery.label_id')
+        ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
+        ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
+        ->get();  
+
+        return $data;
+    
+    }   
+    /**
+     * Get tkeluar data
+     *
+     * @return $data
+     */
+    public function getDataKeluar($str_date, $end_date, $labels)
+    {
+        $data = DB::table(function ($query) use ($str_date, $end_date, $labels) {
+            $subquery = TKeluar::select(DB::raw("'keluar' AS tipe"), 'id', 'name', 'label_id', 'nominal', 'tanggal', 'created_at')
+                ->from('t_keluars')
+                ->whereNull('deleted_at')
+                ->whereIn('label_id', $labels)
+                ->whereBetween('tanggal', [$str_date, $end_date]);
+
+            $query->fromSub($subquery, 'sub');
+        }, 'subquery')
+        ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
+        ->join('labels', 'labels.id', '=', 'subquery.label_id')
+        ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
+        ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
+        ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
+        ->get();  
+
+        return $data;
     }   
 
 }

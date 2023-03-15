@@ -103,6 +103,7 @@ Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restor
 Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
 Route::get('/download/format/excel', [DownloadController::class, 'downloadExcel'])->name('download-excel');
 Route::get('/download/format/pdf', [DownloadController::class, 'downloadPDF'])->name('download-pdf');
+Route::get('/download/template/export/pdf', [DownloadController::class, 'templatePDF'])->name('template-pdf');
 
 /*
 |--------------------------------------------------------------------------
