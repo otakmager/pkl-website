@@ -37,11 +37,6 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
-        
-        // Date Format
-        Blade::directive('idTime', function ( $expression ) { 
-            return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
-        });
 
         // Tambahan - Pagination Default Laravel
         Paginator::useBootstrapFive();  

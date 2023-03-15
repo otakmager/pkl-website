@@ -12,7 +12,7 @@
         }
         table.my-tb, th.my-tb, td.my-tb {
             border: 1px solid black;
-            padding: 5px;
+            padding: 10px;
         }
     </style>
     <title>{{ $title }}</title>
@@ -48,16 +48,17 @@
     <!-- Header End -->
 
     <!-- Data Start -->
-    <div class="container mt-3">
+    <div class="container mt-3 mb-5">
         <div class="row align-items-center">
             <table class="my-tb">
                 <thead>
                     <tr class="text-center">
                         <th class="my-tb" style="width: 50px">No.</th>
-                        <th class="my-tb">Tanggal</th>
+                        <th class="my-tb" style="width: 230px">Tanggal</th>
                         <th class="my-tb" style="width: 400px">Nama</th>
                         <th class="my-tb" style="width: 200px">Label</th>
-                        <th class="my-tb" style="width: 200px">Nominal</th>
+                        <th class="my-tb" style="width: 200px">Nominal Masuk</th>
+                        <th class="my-tb" style="width: 200px">Nominal Keluar</th>
                     </tr>
                 </thead>                                        
                 <tbody>
@@ -65,9 +66,10 @@
                     @foreach ($datas as $data)
                     <tr>
                         <td class="text-center my-tb">{{ $i++ . "." }}</td>
-                        <td class="text-center my-tb">{{ date('d/m/Y', strtotime($data->tanggal)) }}</td>
+                        <td class="text-start my-tb">{{ \Carbon\Carbon::parse($data->tanggal)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</td>
                         <td class="my-tb">{{$data->name}}</td>
                         <td class="text-center my-tb">{{$data->label_id}}</td>
+                        <td class="text-end my-tb">@currency($data->nominal)</td>
                         <td class="text-end my-tb">@currency($data->nominal)</td>
                     </tr>
                     @endforeach

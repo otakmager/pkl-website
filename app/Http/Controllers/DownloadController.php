@@ -194,6 +194,7 @@ class DownloadController extends Controller
 
         //download
         // return response($output)
+        // $pdf = PDF::loadview('pegawai_pdf',['pegawai'=>$pegawai]);
         return response($data)
             ->header('Content-Type', 'application/pdf')
             // ->header('Content-Disposition', 'attachment; filename=' . $fileName);
