@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ asset('library/bootstrap-5.3/css/bootstrap.min.css') }}">
     <style>
+        * {
+            color: #000;
+        }
         .my-hr {
             border: 2px solid black;
             opacity: 0.75;
