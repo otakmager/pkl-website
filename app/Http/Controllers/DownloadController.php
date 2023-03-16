@@ -13,8 +13,10 @@ use Illuminate\Http\Request;
 use Dompdf\Options;
 use Dompdf\Dompdf;
 use PDF;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 
 class DownloadController extends Controller
 {
@@ -54,6 +56,16 @@ class DownloadController extends Controller
         return view('pdfTemplate.export', [
             'title' => "Laporan Keuangan",
             'datas' => $data,
+        ]);
+    }
+    public function templatePDF2($dataBig, $monthName, $dataStartDate, $dataEndDate)
+    {
+        return view('pdfTemplate.export', [
+            'title' => "Laporan Keuangan",
+            'dataBig' => $dataBig,
+            'monthName' => $monthName,
+            'dataStartDate' => $dataStartDate,
+            'dataEndDate' => $dataEndDate,
         ]);
     }
 
@@ -123,7 +135,128 @@ class DownloadController extends Controller
         $labels = explode(',', $labels);
         $labels = array_map('intval', $labels);
 
+        // Create looping
+        $monthName = [];
+        $dataBig = [];
+        $dataStartDate = [];
+        $dataendDate = [];
+
+        $startDate = Carbon::parse($str_date);
+        $endDate = Carbon::parse($end_date);
+        $interval = \DateInterval::createFromDateString('1 month');
+        $period = new \DatePeriod($startDate, $interval, $endDate);        
+        $nMonth = count(iterator_to_array($period));
+        $i = 1;
+
+        switch($formatLaporan){
+            case "semua":
+                foreach ($period as $dt) {
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName[] = $carbonDt->locale('id')->isoFormat("MMMM Y");
+                    if($nMonth == 1){
+                        $startDateOfMonth =  $startDate;
+                        $endDateOfMonth = $endDate;
+                    }else if($nMonth == 2){
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }
+                    }else{                        
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else if($i == $nMonth){
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }
+                    }
+                    $i++;        
+                    $dataBig[] = $this->getAllData($startDateOfMonth, $endDateOfMonth, $labels);
+                    $dataStartDate[] = Carbon::parse($startDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
+                    $dataEndDate[] = Carbon::parse($endDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
+                }
+                break;
+            case "tmasuk":
+                foreach ($period as $dt) {
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName[] = $carbonDt->locale('id')->isoFormat("MMMM Y");
+                    if($nMonth == 1){
+                        $startDateOfMonth =  $startDate;
+                        $endDateOfMonth = $endDate;
+                    }else if($nMonth == 2){
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }
+                    }else{                        
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else if($i == $nMonth){
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }
+                    }
+                    $i++;        
+                    $dataBig[] = $this->getDataMasuk($startDateOfMonth, $endDateOfMonth, $labels);
+                    $dataStartDate[] = $startDateOfMonth;
+                    $dataEndDate[] = $endDateOfMonth;
+                }
+                break;
+            case "tkeluar":
+                foreach ($period as $dt) {
+                    $carbonDt = Carbon::instance($dt);
+                    $monthName[] = $carbonDt->locale('id')->isoFormat("MMMM Y");
+                    if($nMonth == 1){
+                        $startDateOfMonth =  $startDate;
+                        $endDateOfMonth = $endDate;
+                    }else if($nMonth == 2){
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }
+                    }else{                        
+                        if($i == 1){
+                            $startDateOfMonth =  $startDate;
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }else if($i == $nMonth){
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = $endDate;
+                        }else{
+                            $startDateOfMonth =  Carbon::parse($dt)->startOfMonth()->format("Y-m-d");
+                            $endDateOfMonth = Carbon::parse($dt)->endOfMonth()->format("Y-m-d");
+                        }
+                    }
+                    $i++;        
+                    $dataBig[] = $this->getDataKeluar($startDateOfMonth, $endDateOfMonth, $labels);
+                    $dataStartDate[] = $startDateOfMonth;
+                    $dataEndDate[] = $endDateOfMonth;
+                }
+                break;
+            default: 
+                break;
+        } 
+        // dd($monthName);
+        // dd($dataBig);
+        return $this->templatePDF2($dataBig, $monthName, $dataStartDate, $dataEndDate);
+
         // Get Data
+        $data = null;
         if($formatLaporan == "semua"){
             $data = $this->getAllData($str_date, $end_date, $labels);
         }else if($formatLaporan == "tmasuk"){
@@ -132,74 +265,8 @@ class DownloadController extends Controller
             $data = $this->getDataKeluar($str_date, $end_date, $labels);
         }
 
-        // Group the data by month
-        $dataByMonth = $data->groupBy(function($item) {
-            return date('Y-m', strtotime($item->tanggal));
-        });
-        
-        $output = "";
-
-        foreach ($dataByMonth as $month => $data) {
-            // Generate the header
-            $header = '<table style="width: 100%; border-collapse: collapse;">' .
-                        '<tr>' .
-                          '<td style="width: 100px;"><img src="{{ asset(' . public_path('img/logo.png') . ') }}" width="85" height="31"></td>' .
-                          '<td style="text-align: center; vertical-align: middle;">' .
-                            '<h2>CV Berkah Makmur</h2>' .
-                            '<p>Jalan Bimasakti, Perum Argokiloso, Tasikmadu, Karanganyar, Jawa Tengah</p>' .
-                          '</td>' .
-                        '</tr>' .
-                      '</table>' .
-                      '<hr>' .
-                      '<p>Bulan: ' . date('F Y', strtotime($month . '-01')) . '</p>' .
-                      '<table style="width: 100%; border-collapse: collapse;">' .
-                      '<thead>' .
-                      '<tr>' .
-                      '<th>Nomor</th>' .
-                      '<th>Tanggal</th>' .
-                      '<th>Nama</th>' .
-                      '<th>Label ID</th>' .
-                      '<th>Nominal masuk</th>' .
-                      '<th>Nominal keluar</th>' .
-                      '</tr>' .
-                      '</thead>' .
-                      '<tbody>';
-    
-            // Generate the rows
-            $rows = '';
-            $i = 1;
-            foreach ($data as $row) {
-                $rows .= '<tr>' .
-                         '<td>' . $i++ . '</td>' .
-                         '<td>' . $row->tanggal . '</td>' .
-                         '<td>' . $row->nama . '</td>' .
-                         '<td>' . $row->label_id . '</td>' .
-                         '<td>' . $row->nominal_masuk . '</td>' .
-                         '<td>' . $row->nominal_keluar . '</td>' .
-                         '</tr>';
-            }
-    
-            // Generate the footer
-            $footer = '</tbody>' .
-                      '</table>';
-    
-            // Concatenate the header, rows, and footer
-            $output .= $header . $rows . $footer;
-    
-            // Add a page break if there is more than one page
-            if (!$data->isEmpty() && $data->count() > 20) {
-                $output .= '<pagebreak>';
-            }
-        }
-
-        //download
-        // return response($output)
-        // $pdf = PDF::loadview('pegawai_pdf',['pegawai'=>$pegawai]);
-        return response($data)
-            ->header('Content-Type', 'application/pdf')
-            // ->header('Content-Disposition', 'attachment; filename=' . $fileName);
-            ->header('Content-Disposition', 'inline; filename=' . $fileName);
-
+        // dd($data);
+        return $this->templatePDF2($data, $monthName, $dataStartDate, $dataEndDate);
     }   
 
     /**
@@ -226,7 +293,8 @@ class DownloadController extends Controller
         }, 'subquery')
         ->orderByRaw("MIN(subquery.tanggal) ASC, MIN(subquery.created_at) ASC")
         ->join('labels', 'labels.id', '=', 'subquery.label_id')
-        ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
+        ->select('subquery.tanggal', 'subquery.name', 'labels.name as labels_name')
+        // ->select(DB::raw("DATE_FORMAT(subquery.tanggal, '%W, %d-%m-%Y') as tanggal"), 'subquery.name', 'labels.name as labels_name')
         ->selectRaw("SUM(CASE WHEN subquery.tipe = 'masuk' THEN subquery.nominal ELSE 0 END) AS nominal_masuk")
         ->selectRaw("SUM(CASE WHEN subquery.tipe = 'keluar' THEN subquery.nominal ELSE 0 END) AS nominal_keluar")
         ->groupBy('subquery.id', 'subquery.name', 'subquery.label_id', 'labels.name')
