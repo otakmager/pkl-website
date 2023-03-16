@@ -211,8 +211,8 @@ class DownloadController extends Controller
                     }
                     $i++;        
                     $dataBig[] = $this->getDataMasuk($startDateOfMonth, $endDateOfMonth, $labels);
-                    $dataStartDate[] = $startDateOfMonth;
-                    $dataEndDate[] = $endDateOfMonth;
+                    $dataStartDate[] = Carbon::parse($startDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
+                    $dataEndDate[] = Carbon::parse($endDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
                 }
                 break;
             case "tkeluar":
@@ -244,8 +244,8 @@ class DownloadController extends Controller
                     }
                     $i++;        
                     $dataBig[] = $this->getDataKeluar($startDateOfMonth, $endDateOfMonth, $labels);
-                    $dataStartDate[] = $startDateOfMonth;
-                    $dataEndDate[] = $endDateOfMonth;
+                    $dataStartDate[] = Carbon::parse($startDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
+                    $dataEndDate[] = Carbon::parse($endDateOfMonth)->locale('id')->isoFormat("D MMMM Y");
                 }
                 break;
             default: 
