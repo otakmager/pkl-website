@@ -6,6 +6,7 @@ use App\Http\Controllers\LabelController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MAkunController;
 use App\Http\Controllers\TMasukController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TKeluarController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\DashboardController;
@@ -112,3 +113,10 @@ Route::get('/download/template/export/pdf', [DownloadController::class, 'templat
 */
 Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax');
 Route::resource('/makun', MAkunController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Pengaturan Profile Akun Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
