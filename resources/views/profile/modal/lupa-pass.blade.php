@@ -12,7 +12,7 @@
                 <div class="modal-body">       
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4 id="txt-visible">Sembunyikan Data</h4>
+                            <h4 id="txt-visible">Fitur Mati</h4>
                             <div class="card-header-action">
                                 <label class="switch">
                                     <input type="checkbox" id="btn-visible"/>
@@ -22,17 +22,19 @@
                         </div>
                     </div>       
                     <div class="form-group">
-                        <label>Password Lama</label>
-                        <input type="password" class="form-control" id="oldpassword" name="oldpassword" minlength="5" maxlength="255" required>
+                        <label>Pertanyaan Pemulihan</label>
+                        <select class="form-control mx-1" name="soal[]" id="soal">
+                            <option value="" selected disabled>Pilih Pertanyaan Pemulihan</option>
+                            <option value="a">Siapa nama orang yang kamu kenal pertama kali saat masih kecil?</option>
+                            <option value="b">Apa nama hewan peliharaanmu pertama kali?</option>
+                            <option value="c">Apa merek mobil/sepeda motor pertama yang kamu miliki?</option>
+                            <option value="d">Siapa nama panggilan teman masa kecilmu?</option>
+                            <option value="e">Apa makanan favorit Anda saat masih kecil?</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>Password Baru</label>
-                        <input type="password" class="form-control" id="newpassword" name="newpassword" minlength="5" maxlength="255" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Konfirmasi Password</label>
-                        <input type="password" class="form-control" id="renewpassword" name="renewpassword" minlength="5" maxlength="255" required>
-                        <span id="edit-rpw-error" class="text-danger"></span>
+                        <label>Jawaban</label>
+                        <input type="text" class="form-control" id="jawaban" name="jawaban" minlength="3" maxlength="255">
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">

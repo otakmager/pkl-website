@@ -15,7 +15,7 @@
     </td>
     <td class="text-center">
         @if ($user->level === 'pimpinan')
-            <a href="javascript:void(0)" id="btn-setting-admin" data-id="{{ $user->id }}" class="btn btn-icon icon-left btn-warning btn-sm"><i class="fas fa-screwdriver-wrench"></i> Pengaturan Akun</a>
+            <a href="/profile" id="btn-setting-admin" data-id="{{ $user->id }}" class="btn btn-icon icon-left btn-warning btn-sm"><i class="fas fa-screwdriver-wrench"></i> Pengaturan Akun</a>
         @else
             <a href="javascript:void(0)" id="btn-reset-user" data-id="{{ $user->id }}" class="btn btn-icon icon-left btn-warning btn-sm" ><i class="fas fa-key"></i> Reset Pass</a>
             <a href="javascript:void(0)" id="btn-del-user" data-id="{{ $user->id }}" class="btn btn-icon icon-left btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</a>        
