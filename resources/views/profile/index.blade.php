@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="{{ asset('css/toggle.css') }}">
     <style>
         .mylabel {
             color: #000000;

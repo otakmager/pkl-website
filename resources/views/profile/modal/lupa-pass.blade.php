@@ -9,7 +9,18 @@
             </div>
             <form id="editForm">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEdit">
-                <div class="modal-body">              
+                <div class="modal-body">       
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h4 id="txt-visible">Sembunyikan Data</h4>
+                            <div class="card-header-action">
+                                <label class="switch">
+                                    <input type="checkbox" id="btn-visible"/>
+                                    <span class="slider round"></span>
+                                  </label>
+                            </div>
+                        </div>
+                    </div>       
                     <div class="form-group">
                         <label>Password Lama</label>
                         <input type="password" class="form-control" id="oldpassword" name="oldpassword" minlength="5" maxlength="255" required>

@@ -17,7 +17,7 @@
                 <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::check() ? auth()->user()->name : 'UserNotLoginYet' }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="features-profile.html" class="dropdown-item has-icon"> <i class="far fa-user"></i> Profile</a>
+                <a href="/profile" class="dropdown-item has-icon"> <i class="far fa-user"></i> Profile</a>
                 <form action="/logout" method="post" id="header_logout">
                     @csrf
                     <a href="javascript:{}" onclick="document.getElementById('header_logout').submit();"
