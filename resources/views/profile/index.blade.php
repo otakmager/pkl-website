@@ -35,7 +35,7 @@
                             <div class="col-lg-9 col-md-9 col-12 mb-3">
                                 <form id="form-akun">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" id="form-token">
-                                    <input type="text" name="userid" id="userid" hidden value="x">
+                                    <input type="text" name="username" id="username" hidden value="x">
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Nama Lengkap</label>
                                         <div class="col-sm-12 col-md-9">

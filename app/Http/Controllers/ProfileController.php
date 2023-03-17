@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -9,5 +11,126 @@ class ProfileController extends Controller
     public function index(){
 
         return view('profile.index');
+    }
+
+    /**
+     * Update name, email, and image to DB.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, User $user)
+    {
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token'    => 'required',
+            'username'  => 'required',
+            'name'      => 'required',
+            'email'     => 'required',
+            'image'     => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //update post
+        $user->update([
+            'name'     => $request->name,
+            'email'     => $request->email,
+            'image'     => $request->image,
+        ]);
+
+        //return response
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Diubah!',
+                'data' => $user,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Diubah!',
+            ]);
+        }    
+    }
+    
+    /**
+     * Reset password and then update to DB.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function resetPass(Request $request, User $user)
+    {
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token'        => 'required',
+            'username'      => 'required',
+            'oldPassword'   => 'required',
+            'newPassword'   => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails() || ($request->oldpassword != $request->newpassword)) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        //update post
+        $user->update([
+            'password'   => Hash::make($request->newpassword)
+        ]);
+
+        //return response
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password Berhasil Diubah!',
+                'data' => $user,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password Gagal Diubah!',
+            ]);
+        }    
+    }
+
+    /**
+     * Delete image profile and delete from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function deletePhoto(Request $request, User $user){
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token' => 'required',
+            'username' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $username = $request->input('username');
+        $checkUser = User::findOrFail($username);
+        if($checkUser){
+            $user->update([
+                'image'   => NULL,
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto Profile Berhasil Dihapus!',
+            ]);
+        }else{
+            return response()->json($validator->errors(), 422);
+        }
     }
 }
