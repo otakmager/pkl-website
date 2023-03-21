@@ -29,9 +29,9 @@ use App\Http\Controllers\SampahKeluarController;
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -119,4 +119,4 @@ Route::resource('/makun', MAkunController::class);
 | Pengaturan Profile Akun Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index')->middleware('auth');
