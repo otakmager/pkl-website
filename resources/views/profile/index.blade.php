@@ -24,10 +24,17 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-12 text-center mb-3">
-                                <img alt="image"
-                                    src="{{ asset('img/avatar.png') }}"
+                                @if (!empty($data->image))
+                                    <img alt="image"
+                                    src="{{ asset('storage/' . $data->image) }}"
                                     class="rounded-circle mr-1"
                                     style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
+                                @else  
+                                    <img alt="image"
+                                        src="{{ asset('img/avatar.png') }}"
+                                        class="rounded-circle mr-1"
+                                        style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
+                                @endif
                                 <form id="form-img" class="mt-4 pt-1">
                                     <button class="btn btn-danger">Hapus Gambar</button>
                                 </form>
@@ -39,13 +46,13 @@
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Nama Lengkap</label>
                                         <div class="col-sm-12 col-md-9">
-                                            <input type="text" class="form-control" name="name" id="name" placeholder="nama lengkap" required>
+                                            <input type="text" class="form-control" name="name" id="name" placeholder="nama lengkap" required value="{{ $data['name'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Email</label>
                                         <div class="col-sm-12 col-md-9">
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="email" required>
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="email" required value="{{ $data['email'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">

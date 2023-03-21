@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function index(){
-
-        return view('profile.index');
+    public function index()
+    {
+        $data = [
+            'name' => auth()->user()->name,
+            'username' => auth()->user()->username,
+            'email' => auth()->user()->email,
+            'image' => auth()->user()->image,
+            'image' => auth()->user()->image,
+        ];
+        return view('profile.index', [
+            'data' => $data,
+        ]);
     }
 
     /**
