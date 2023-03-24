@@ -28,27 +28,8 @@
         .namaCV{
             font-size: 14pt;
         }
-        @media print {
-            .table-responsive {
-                overflow-x: auto !important;
-                min-height: 0 !important;
-            }
-            .table {
-                width: 100%;
-                max-width: 100%;
-                margin-bottom: 1rem;
-                background-color: transparent;
-            }
-            .table td,
-            .table th {
-                padding: 0.75rem;
-                vertical-align: top;
-                border-top: 1px solid #dee2e6;
-            }
-            .table thead th {
-                vertical-align: bottom;
-                border-bottom: 2px solid #dee2e6;
-            }
+        .page-break {
+            page-break-after: always;
         }
 
     </style>
@@ -56,7 +37,7 @@
 </head>
 <body>
     @foreach ($dataBig as $index => $dataMed)
-    <div class="myPage" style="min-height: 750px">
+    <div id="myPage" style="min-height: 750px">
         <!-- Header Start -->
         <div class="container mt-3" id="my-header">
             <div class="row">
@@ -86,7 +67,7 @@
         </div>
         <!-- Header End -->
 
-        <!-- Data Start -->
+        <!-- Data Start -->                
         <div class="container mt-3 mb-5">
             <div class="row align-items-center mx-auto">
                 <table class="my-tb">
@@ -99,8 +80,9 @@
                             <th class="my-tb" style="max-width: 200px">Nominal Masuk</th>
                             <th class="my-tb" style="max-width: 200px">Nominal Keluar</th>
                         </tr>
-                    </thead>                                        
-                    <tbody>
+                    </thead>
+                    @if (count($dataMed) > 0)                                        
+                    <tbody>                          
                         @php $i = 1; @endphp
                         @foreach ($dataMed as $data)
                         <tr>
@@ -124,13 +106,26 @@
                             </td>
                         </tr>
                         @endforeach
+                    </tbody>
+                    @else
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="text-center fw-bold">Tidak Ada Data</td>
+                        </tr>
                     </tbody>      
+                    @endif
                 </table>            
             </div>
         </div>
         <!-- Data End -->
     </div>
+
+    <!-- Page Break Start -->
+    @if ($index !== (count($dataBig)-1))
+    <div id="breakPage" class="page-break"></div>
+    @endif
     @endforeach
+    <!-- Page Break End -->
 
     <!-- Script Start -->    
     <script src="{{ asset('library/bootstrap-5.3/js/bootstrap.min.js') }}"></script>

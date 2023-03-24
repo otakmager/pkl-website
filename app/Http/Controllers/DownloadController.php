@@ -261,6 +261,8 @@ class DownloadController extends Controller
         // $pdf = Pdf::loadView('login.index');
         // return $pdf->stream();
 
+        // return $dataBig;
+
         ini_set('max_execution_time', 300);
         // Generate HTML
         $html = view('pdfTemplate.export', [
