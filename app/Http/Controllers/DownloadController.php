@@ -264,7 +264,7 @@ class DownloadController extends Controller
         ini_set('max_execution_time', 300);
         // Generate HTML
         $html = view('pdfTemplate.export', [
-            'title' => "Laporan Keuangan",
+            'title' => $fileName,
             'dataBig' => $dataBig,
             'monthName' => $monthName,
             'dataStartDate' => $dataStartDate,
@@ -280,30 +280,11 @@ class DownloadController extends Controller
         // (Optional) Set paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
 
-        // Set options for the PDF layout
-        $dompdf->set_option('isRemoteEnabled', true);
-        $dompdf->set_option('isPhpEnabled', true);
-        $dompdf->set_option('isHtml5ParserEnabled', true);
-        $dompdf->set_option('isFontSubsettingEnabled', true);
-
         // Render PDF
         $dompdf->render();
 
-        // Stream PDF to browser
-        return $dompdf->stream();
-        
-        // $pdf = Pdf::loadView('login.index');
-        // $pdf = PDF::loadview('pdfTemplate.export', [
-        //     'title' => "Laporan Keuangan",
-        //     'dataBig' => $dataBig,
-        //     'monthName' => $monthName,
-        //     'dataStartDate' => $dataStartDate,
-        //     'dataEndDate' => $dataEndDate,
-        // ]);
-        // return $pdf->stream();
-        // // return $pdf->download('invoice.pdf');
-
-        // return $this->templatePDF2($dataBig, $monthName, $dataStartDate, $dataEndDate);
+        // Stream PDF to browser (true = auto download || false = preview pdf)
+        $dompdf->stream($fileName, array('Attachment' => false));
     }   
 
     /**

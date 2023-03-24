@@ -73,12 +73,12 @@
         <div class="container mt-2">
             <table class="table">
                 <tr>
-                    <td class="myinfo">Laporan Bulan</td>
+                    <td class="myinfo" style="max-width: 75px">Laporan Bulan</td>
                     <td class="myinfo">&nbsp;:&nbsp;</td>
                     <td class="myinfo">{{ $monthName[$index] }}</td>
                 </tr>
                 <tr>
-                    <td class="myinfo">Rentang tanggal</td>
+                    <td class="myinfo" style="max-width: 75px">Rentang tanggal</td>
                     <td class="myinfo">&nbsp;:&nbsp;</td>
                     <td class="myinfo">{{ $dataStartDate[$index] }} &ndash; {{ $dataEndDate[$index] }}</td>
                 </tr>
