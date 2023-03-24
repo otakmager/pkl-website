@@ -10,13 +10,16 @@ use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
 use Illuminate\Http\Request;
-use Dompdf\Options;
-use Dompdf\Dompdf;
-use PDF;
+// use Dompdf\Options;
+// use Dompdf\Dompdf;
+// use PDF;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
+// use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App;
+use Dompdf\Dompdf;
 
 class DownloadController extends Controller
 {
@@ -139,7 +142,7 @@ class DownloadController extends Controller
         $monthName = [];
         $dataBig = [];
         $dataStartDate = [];
-        $dataendDate = [];
+        $dataEndDate = [];
 
         $startDate = Carbon::parse($str_date);
         $endDate = Carbon::parse($end_date);
@@ -253,20 +256,54 @@ class DownloadController extends Controller
         } 
         // dd($monthName);
         // dd($dataBig);
-        return $this->templatePDF2($dataBig, $monthName, $dataStartDate, $dataEndDate);
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML('<h1>Test</h1>');
+        // $pdf = Pdf::loadView('login.index');
+        // return $pdf->stream();
 
-        // Get Data
-        $data = null;
-        if($formatLaporan == "semua"){
-            $data = $this->getAllData($str_date, $end_date, $labels);
-        }else if($formatLaporan == "tmasuk"){
-            $data = $this->getDataMasuk($str_date, $end_date, $labels);
-        }else if($formatLaporan == "tkeluar"){
-            $data = $this->getDataKeluar($str_date, $end_date, $labels);
-        }
+        ini_set('max_execution_time', 300);
+        // Generate HTML
+        $html = view('pdfTemplate.export', [
+            'title' => "Laporan Keuangan",
+            'dataBig' => $dataBig,
+            'monthName' => $monthName,
+            'dataStartDate' => $dataStartDate,
+            'dataEndDate' => $dataEndDate,
+        ])->render();
 
-        // dd($data);
-        return $this->templatePDF2($data, $monthName, $dataStartDate, $dataEndDate);
+        // Instantiate Dompdf
+        $dompdf = new Dompdf();
+
+        // Load HTML
+        $dompdf->loadHtml($html);
+
+        // (Optional) Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Set options for the PDF layout
+        $dompdf->set_option('isRemoteEnabled', true);
+        $dompdf->set_option('isPhpEnabled', true);
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+        $dompdf->set_option('isFontSubsettingEnabled', true);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Stream PDF to browser
+        return $dompdf->stream();
+        
+        // $pdf = Pdf::loadView('login.index');
+        // $pdf = PDF::loadview('pdfTemplate.export', [
+        //     'title' => "Laporan Keuangan",
+        //     'dataBig' => $dataBig,
+        //     'monthName' => $monthName,
+        //     'dataStartDate' => $dataStartDate,
+        //     'dataEndDate' => $dataEndDate,
+        // ]);
+        // return $pdf->stream();
+        // // return $pdf->download('invoice.pdf');
+
+        // return $this->templatePDF2($dataBig, $monthName, $dataStartDate, $dataEndDate);
     }   
 
     /**

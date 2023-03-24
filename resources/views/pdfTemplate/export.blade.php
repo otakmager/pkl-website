@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ asset('library/bootstrap-5.3/css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('library/bootstrap-5.3/css/bootstrap.min.css') }}"> --}}
+    <?= '<style>' . file_get_contents("library/bootstrap-5.3/css/bootstrap.min.css") . '</style>' ?>
     <style>
         * {
             color: #000;
@@ -16,7 +17,40 @@
         table.my-tb, th.my-tb, td.my-tb {
             border: 1px solid black;
             padding: 10px;
+            font-size: 8pt;
         }
+        td.myinfo {
+            font-size: 11pt;
+        }
+        .address{
+            font-size: 8pt;
+        }
+        .namaCV{
+            font-size: 14pt;
+        }
+        @media print {
+            .table-responsive {
+                overflow-x: auto !important;
+                min-height: 0 !important;
+            }
+            .table {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 1rem;
+                background-color: transparent;
+            }
+            .table td,
+            .table th {
+                padding: 0.75rem;
+                vertical-align: top;
+                border-top: 1px solid #dee2e6;
+            }
+            .table thead th {
+                vertical-align: bottom;
+                border-bottom: 2px solid #dee2e6;
+            }
+        }
+
     </style>
     <title>{{ $title }}</title>
 </head>
@@ -25,28 +59,28 @@
     <div class="myPage" style="min-height: 750px">
         <!-- Header Start -->
         <div class="container mt-3" id="my-header">
-            <div class="row text-center align-items-center justify-content-center">
-                <div class="col-1 align-items-center">
-                    <img src="{{ asset('img/logo.png') }}" width="110" height="50">
+            <div class="row">
+                <div class="col-3">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(base_path('public/img/logo.png'))); }}" width="50" height="30">
                 </div>
                 <div class="col-9">
-                    <div class="row"><h2>CV Berkah Makmur</h2></div>
-                    <div class="row"><p>Perum Argokiloso, Gang Bima Sakti Blok A. No. 19 Rt 01/ 06, Ngijo Tasikmadu, Karanganyar</p></div>
+                    <div class="row"><h2 class="namaCV">CV Berkah Makmur</h2></div>
+                    <div class="row"><p class="address">Perum Argokiloso, Gang Bima Sakti Blok A. No. 19 Rt 01/ 06, Ngijo Tasikmadu, Karanganyar</p></div>
                 </div>
             </div>
             <hr class="my-hr">
         </div>
         <div class="container mt-2">
-            <table>
+            <table class="table">
                 <tr>
-                    <td>Laporan Bulan</td>
-                    <td>&nbsp;:&nbsp;</td>
-                    <td>{{ $monthName[$index] }}</td>
+                    <td class="myinfo">Laporan Bulan</td>
+                    <td class="myinfo">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $monthName[$index] }}</td>
                 </tr>
                 <tr>
-                    <td>Rentang tanggal</td>
-                    <td>&nbsp;:&nbsp;</td>
-                    <td>{{ $dataStartDate[$index] }} &ndash; {{ $dataEndDate[$index] }}</td>
+                    <td class="myinfo">Rentang tanggal</td>
+                    <td class="myinfo">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $dataStartDate[$index] }} &ndash; {{ $dataEndDate[$index] }}</td>
                 </tr>
             </table>
         </div>
@@ -54,16 +88,16 @@
 
         <!-- Data Start -->
         <div class="container mt-3 mb-5">
-            <div class="row align-items-center">
+            <div class="row align-items-center mx-auto">
                 <table class="my-tb">
                     <thead>
                         <tr class="text-center">
-                            <th class="my-tb" style="width: 50px">No.</th>
-                            <th class="my-tb" style="width: 240px">Tanggal</th>
-                            <th class="my-tb" style="width: 400px">Nama</th>
-                            <th class="my-tb" style="width: 200px">Label</th>
-                            <th class="my-tb" style="width: 200px">Nominal Masuk</th>
-                            <th class="my-tb" style="width: 200px">Nominal Keluar</th>
+                            <th class="my-tb" style="max-width: 50px">No.</th>
+                            <th class="my-tb" style="max-width: 240px; min-width: 110px">Tanggal</th>
+                            <th class="my-tb" style="max-width: 400px">Nama</th>
+                            <th class="my-tb" style="max-width: 200px">Label</th>
+                            <th class="my-tb" style="max-width: 200px">Nominal Masuk</th>
+                            <th class="my-tb" style="max-width: 200px">Nominal Keluar</th>
                         </tr>
                     </thead>                                        
                     <tbody>
