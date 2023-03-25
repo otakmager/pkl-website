@@ -3,20 +3,6 @@
 namespace App\Exports;
 // use Carbon\Carbon;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use App\Models\TMasuk;
-use App\Models\TKeluar;
-use App\Models\Label;
-use App\Models\Dana;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class LapKeuDriverExport implements WithMultipleSheets
