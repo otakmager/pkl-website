@@ -36,8 +36,9 @@
     <title>{{ $title }}</title>
 </head>
 <body>
-    @php $saldo = $saldoAwal; @endphp
+    @php $saldo = intval($saldoAwal); @endphp
     @foreach ($dataBig as $index => $dataMed)
+    @php $totalMasuk = 0; $totalKeluar = 0; @endphp
     <div id="myPage" style="min-height: 750px">
         <!-- Header Start -->
         <div class="container mt-3" id="my-header">
@@ -128,17 +129,22 @@
                 <tr>
                     <td class="myinfo" style="width: 100px">Saldo Awal</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
-                    <td class="myinfo">@currency($saldo)</td>
+                    @if ($saldo >= 0)
+                    <td class="myinfo">@currency($saldo)</td>                        
+                    @else                        
+                    @php $temp = -$saldo; @endphp
+                    <td class="myinfo">-@currency($temp)</td>
+                    @endif
                 </tr>
                 <tr>
                     <td class="myinfo" style="width: 100px">Total Pemasukan</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
-                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                    <td class="myinfo">@currency($totalMasuk)</td>
                 </tr>
                 <tr>
                     <td class="myinfo" style="width: 100px">Total Pengeluaran</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
-                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                    <td class="myinfo">@currency($totalKeluar)</td>
                 </tr>
                 <tr>
                     <td class="myinfo" style="width: 100px">Saldo Akhir</td>

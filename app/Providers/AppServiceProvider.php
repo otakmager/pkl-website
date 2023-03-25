@@ -29,13 +29,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {   
         // Currency Format
-        Blade::directive('currency', function ( $expression ) { 
-            if($expression >= 0){
-                return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
+        Blade::directive('currency', function ( $expression ) {
+            if(is_numeric($expression)){
+                if($expression >= 0){
+                    return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
+                }else{
+                    $dana = -($expression);
+                    return "-Rp<?php echo number_format($dana,0,',','.'); ?>"; 
+                }
             }else{
-                $dana = -$expression;
-                return "-Rp<?php echo number_format($dana,0,',','.'); ?>"; 
-            }
+                return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
+            }            
         });
 
         //Set Date and Time Zone
