@@ -16,14 +16,14 @@
         }
         table.my-tb, th.my-tb, td.my-tb {
             border: 1px solid black;
-            padding: 10px;
+            padding: 5px;
             font-size: 8pt;
         }
         td.myinfo {
-            font-size: 11pt;
+            font-size: 10pt;
         }
         .address{
-            font-size: 8pt;
+            font-size: 9pt;
         }
         .namaCV{
             font-size: 14pt;
@@ -40,27 +40,29 @@
     <div id="myPage" style="min-height: 750px">
         <!-- Header Start -->
         <div class="container mt-3" id="my-header">
-            <div class="row">
-                <div class="col-3">
-                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(base_path('public/img/logo.png'))); }}" width="50" height="30">
-                </div>
-                <div class="col-9">
-                    <div class="row"><h2 class="namaCV">CV Berkah Makmur</h2></div>
-                    <div class="row"><p class="address">Perum Argokiloso, Gang Bima Sakti Blok A. No. 19 Rt 01/ 06, Ngijo Tasikmadu, Karanganyar</p></div>
-                </div>
-            </div>
-            <hr class="my-hr">
+            <table class="mb-0">
+                <tr>
+                    <td>
+                        <img class="mb-2" src="data:image/png;base64,{{ base64_encode(file_get_contents(base_path('public/img/logo.png'))); }}" width="60" height="40">
+                    </td>
+                    <td class="text-center">
+                        <div class="row"><h2 class="namaCV">CV Berkah Makmur</h2></div>
+                        <div class="row"><p class="address">Perum Argokiloso, Gang Bima Sakti Blok A. No. 19 Rt 01/ 06, Ngijo Tasikmadu, Karanganyar</p></div>
+                    </td>
+                </tr>
+            </table>
+            <hr class="my-hr mt-0">
         </div>
         <div class="container mt-2">
             <table class="table">
                 <tr>
-                    <td class="myinfo" style="max-width: 75px">Laporan Bulan</td>
-                    <td class="myinfo">&nbsp;:&nbsp;</td>
+                    <td class="myinfo" style="width: 100px">Laporan Bulan</td>
+                    <td class="myinfo" style="width: 15px">&nbsp;:&nbsp;</td>
                     <td class="myinfo">{{ $monthName[$index] }}</td>
                 </tr>
                 <tr>
-                    <td class="myinfo" style="max-width: 75px">Rentang tanggal</td>
-                    <td class="myinfo">&nbsp;:&nbsp;</td>
+                    <td class="myinfo" style="width: 100px">Rentang tanggal</td>
+                    <td class="myinfo" style="width: 15px">&nbsp;:&nbsp;</td>
                     <td class="myinfo">{{ $dataStartDate[$index] }} &ndash; {{ $dataEndDate[$index] }}</td>
                 </tr>
             </table>
@@ -68,17 +70,17 @@
         <!-- Header End -->
 
         <!-- Data Start -->                
-        <div class="container mt-3 mb-5">
-            <div class="row align-items-center mx-auto">
+        <div class="d-flex align-item-center mt-3 mb-5 mx-5">
+            <div class="row">
                 <table class="my-tb">
                     <thead>
                         <tr class="text-center">
-                            <th class="my-tb" style="max-width: 50px">No.</th>
-                            <th class="my-tb" style="max-width: 240px; min-width: 110px">Tanggal</th>
-                            <th class="my-tb" style="max-width: 400px">Nama</th>
-                            <th class="my-tb" style="max-width: 200px">Label</th>
-                            <th class="my-tb" style="max-width: 200px">Nominal Masuk</th>
-                            <th class="my-tb" style="max-width: 200px">Nominal Keluar</th>
+                            <th class="my-tb" style="width: 15px">No.</th>
+                            <th class="my-tb" style="width: 100px">Tanggal</th>
+                            <th class="my-tb" style="width: 125px">Nama</th>
+                            <th class="my-tb" style="width: 80px">Label</th>
+                            <th class="my-tb" style="width: 50px">Nominal Masuk</th>
+                            <th class="my-tb" style="width: 50px">Nominal Keluar</th>
                         </tr>
                     </thead>
                     @if (count($dataMed) > 0)                                        
@@ -118,6 +120,33 @@
             </div>
         </div>
         <!-- Data End -->
+
+        <!-- Additional Info Start -->
+        <div class="container mt-2">
+            <table class="table">
+                <tr>
+                    <td class="myinfo" style="width: 100px">Saldo Awal</td>
+                    <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                </tr>
+                <tr>
+                    <td class="myinfo" style="width: 100px">Total Pemasukan</td>
+                    <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                </tr>
+                <tr>
+                    <td class="myinfo" style="width: 100px">Total Pengeluaran</td>
+                    <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                </tr>
+                <tr>
+                    <td class="myinfo" style="width: 100px">Saldo Akhir</td>
+                    <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
+                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- Additional Info End -->
     </div>
 
     <!-- Page Break Start -->
