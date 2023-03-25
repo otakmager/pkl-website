@@ -36,6 +36,7 @@
     <title>{{ $title }}</title>
 </head>
 <body>
+    @php $saldo = $saldoAwal; @endphp
     @foreach ($dataBig as $index => $dataMed)
     <div id="myPage" style="min-height: 750px">
         <!-- Header Start -->
@@ -127,7 +128,7 @@
                 <tr>
                     <td class="myinfo" style="width: 100px">Saldo Awal</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
-                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                    <td class="myinfo">@currency($saldo)</td>
                 </tr>
                 <tr>
                     <td class="myinfo" style="width: 100px">Total Pemasukan</td>

@@ -30,7 +30,12 @@ class AppServiceProvider extends ServiceProvider
     {   
         // Currency Format
         Blade::directive('currency', function ( $expression ) { 
-            return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
+            if($expression >= 0){
+                return "Rp<?php echo number_format($expression,0,',','.'); ?>"; 
+            }else{
+                $dana = -$expression;
+                return "-Rp<?php echo number_format($dana,0,',','.'); ?>"; 
+            }
         });
 
         //Set Date and Time Zone

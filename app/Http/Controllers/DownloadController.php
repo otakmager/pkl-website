@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
+use App\Models\Dana;
 use Illuminate\Http\Request;
 // use Dompdf\Options;
 // use Dompdf\Dompdf;
@@ -254,14 +255,9 @@ class DownloadController extends Controller
             default: 
                 break;
         } 
-        // dd($monthName);
-        // dd($dataBig);
-        // $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML('<h1>Test</h1>');
-        // $pdf = Pdf::loadView('login.index');
-        // return $pdf->stream();
-
-        // return $dataBig;
+        $saldoAwal = Dana::sum('uang') 
+                    + TMasuk::where('tanggal', '<', $str_date)->sum('nominal') 
+                    - TKeluar::where('tanggal', '<', $str_date)->sum('nominal');
 
         ini_set('max_execution_time', 300);
         // Generate HTML
@@ -271,6 +267,7 @@ class DownloadController extends Controller
             'monthName' => $monthName,
             'dataStartDate' => $dataStartDate,
             'dataEndDate' => $dataEndDate,
+            'saldoAwal' => $saldoAwal,
         ])->render();
 
         // Instantiate Dompdf
