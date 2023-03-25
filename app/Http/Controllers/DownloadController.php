@@ -255,6 +255,7 @@ class DownloadController extends Controller
             default: 
                 break;
         } 
+        // return $dataBig;
         $saldoAwal = Dana::sum('uang') 
                     + TMasuk::where('tanggal', '<', $str_date)->sum('nominal') 
                     - TKeluar::where('tanggal', '<', $str_date)->sum('nominal');

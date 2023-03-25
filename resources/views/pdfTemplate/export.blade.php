@@ -38,7 +38,14 @@
 <body>
     @php $saldo = intval($saldoAwal); @endphp
     @foreach ($dataBig as $index => $dataMed)
-    @php $totalMasuk = 0; $totalKeluar = 0; @endphp
+    @php $totalMasuk = 0; $totalKeluar = 0; $pendapatan = 0; $saldoAkhir = $saldo; $data = json_decode($dataMed, true);@endphp
+    @foreach ($data as $item)
+        @php
+            $totalMasuk += intval($item['nominal_masuk']);
+            $totalKeluar += intval($item['nominal_keluar']);
+            $pendapatan = $totalMasuk - $totalKeluar;
+        @endphp
+    @endforeach
     <div id="myPage" style="min-height: 750px">
         <!-- Header Start -->
         <div class="container mt-3" id="my-header">
@@ -124,10 +131,10 @@
         <!-- Data End -->
 
         <!-- Additional Info Start -->
-        <div class="container mt-2">
+        <div class="container mt-2 d-block" style="page-break-inside: avoid;">
             <table class="table">
                 <tr>
-                    <td class="myinfo" style="width: 100px">Saldo Awal</td>
+                    <td class="myinfo" style="width: 140px">Saldo Awal</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
                     @if ($saldo >= 0)
                     <td class="myinfo">@currency($saldo)</td>                        
@@ -137,19 +144,38 @@
                     @endif
                 </tr>
                 <tr>
-                    <td class="myinfo" style="width: 100px">Total Pemasukan</td>
+                    <td class="myinfo" style="width: 140px">Total Pemasukan</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
                     <td class="myinfo">@currency($totalMasuk)</td>
                 </tr>
                 <tr>
-                    <td class="myinfo" style="width: 100px">Total Pengeluaran</td>
+                    <td class="myinfo" style="width: 140px">Total Pengeluaran</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
                     <td class="myinfo">@currency($totalKeluar)</td>
                 </tr>
                 <tr>
-                    <td class="myinfo" style="width: 100px">Saldo Akhir</td>
+                    <td class="myinfo" style="width: 140px">Pendapatan Bulan Ini</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
-                    <td class="myinfo">{{ $monthName[$index] }}</td>
+                    @if ($pendapatan >= 0)
+                    <td class="myinfo">@currency($pendapatan)</td>                        
+                    @else                        
+                    @php $temp = -$pendapatan; @endphp
+                    <td class="myinfo">-@currency($temp)</td>
+                    @endif
+                </tr>
+                @php                    
+                    $saldo = $saldo + $pendapatan;
+                    $saldoAkhir = $saldoAkhir + $pendapatan;
+                @endphp
+                <tr>
+                    <td class="myinfo" style="width: 140px">Saldo Akhir</td>
+                    <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
+                    @if ($saldoAkhir >= 0)
+                    <td class="myinfo">@currency($saldoAkhir)</td>                        
+                    @else                        
+                    @php $temp = -$saldoAkhir; @endphp
+                    <td class="myinfo">-@currency($temp)</td>
+                    @endif
                 </tr>
             </table>
         </div>
