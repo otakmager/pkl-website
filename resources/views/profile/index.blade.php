@@ -25,12 +25,12 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-12 text-center mb-3">
                                 @if (!empty($data->image))
-                                    <img alt="image"
+                                    <img alt="image" id="foto-profie"
                                     src="{{ asset('storage/' . $data->image) }}"
                                     class="rounded-circle mr-1"
                                     style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
                                 @else  
-                                    <img alt="image"
+                                    <img alt="image" id="foto-profie"
                                         src="{{ asset('img/avatar.png') }}"
                                         class="rounded-circle mr-1"
                                         style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
@@ -88,7 +88,7 @@
 @push('scripts')
     <!-- JS Libraies -->
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-    
+
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/profile/profile.js') }}"></script>
 @endpush

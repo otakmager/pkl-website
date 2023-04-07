@@ -97,7 +97,7 @@ class ProfileController extends Controller
         if ($validator->fails() || ($request->newpassword != $request->renewpassword) ) {
             return response()->json([
                 'success' => false,
-                'message' => 'Password Gagal Diubah Data Tidak Sesuai!',
+                'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
             ]);
         }
         if ($request->newpassword != $user->password) {
@@ -107,7 +107,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        //update post
+        //update password
         $user->update([
             'password'   => Hash::make($request->newpassword)
         ]);
@@ -143,21 +143,35 @@ class ProfileController extends Controller
 
         //check if validation fails
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Menghapus Foto Profile, Data Tidak Sesuai!',
+            ]);
+        }
+        if (auth()->user()->username != $request->username) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Menghapus Foto Profile, Username Tidak Sesuai!',
+            ]);
         }
 
-        $username = $request->input('username');
-        $checkUser = User::findOrFail($username);
-        if($checkUser){
-            $user->update([
-                'image'   => NULL,
-            ]);
+        //update image
+        $user->update([
+            'image'   => NULL
+        ]);
+
+        //return response
+        if ($user) {
             return response()->json([
                 'success' => true,
-                'message' => 'Foto Profile Berhasil Dihapus!',
+                'message' => 'Foto Profile Berhasil Diubah!',
+                'data' => $user,
             ]);
-        }else{
-            return response()->json($validator->errors(), 422);
-        }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Foto Profile Gagal Diubah!',
+            ]);
+        } 
     }
 }

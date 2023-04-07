@@ -63,4 +63,52 @@ $(document).ready(function () {
             },
         });
     });
+    // ====================================================================================
+    // 3. Delete Photo
+    // ====================================================================================
+    $("#form-img").on("submit", function (e) {
+        e.preventDefault();
+        if ($("#newpassword").val() != $("#renewpassword").val()) return false;
+        let token = $('input[name="_token"][id="form-token"]').val();
+        let username = $("#username").val();
+        let data = {
+            username: username,
+            _token: token,
+        };
+        console.log("start");
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": token,
+            },
+        });
+        $.ajax({
+            url: "profile/deletePhoto/" + username,
+            type: "PUT",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    swal({
+                        title: "Sukses!",
+                        text: data.message,
+                        icon: "success",
+                        timer: 10000,
+                    });
+                    $("#foto-profie").attr("src", "/img/avatar.png");
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: data.message,
+                        icon: "error",
+                        timer: 10000,
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mengubah data!");
+            },
+        });
+    });
+    // ====================================================================================
+    // ====================================================================================
 });
