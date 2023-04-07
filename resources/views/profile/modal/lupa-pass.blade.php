@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm">
+            <form id="editFormLupaPass">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEdit">
                 <div class="modal-body">       
                     <div class="card card-primary">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" name="btnedit" id="btnedit">Simpan</button>
+                    <button type="submit" class="btn btn-primary" name="btnedit" id="btneditLupaPass">Simpan</button>
                 </div>
             </form>
         </div>

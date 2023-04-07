@@ -120,3 +120,4 @@ Route::resource('/makun', MAkunController::class);
 |--------------------------------------------------------------------------
 */
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index')->middleware('auth');
+Route::put('/profile/resetPass/{username}', [ProfileController::class, 'resetPass'])->name('profile.resetPass')->middleware('auth');

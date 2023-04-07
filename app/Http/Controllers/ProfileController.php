@@ -90,11 +90,21 @@ class ProfileController extends Controller
             'username'      => 'required',
             'oldPassword'   => 'required',
             'newPassword'   => 'required',
+            'renewPassword'   => 'required',
         ]);
 
         //check if validation fails
-        if ($validator->fails() || ($request->oldpassword != $request->newpassword)) {
-            return response()->json($validator->errors(), 422);
+        if ($validator->fails() || ($request->newpassword != $request->renewpassword) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password Gagal Diubah Data Tidak Sesuai!',
+            ]);
+        }
+        if ($request->newpassword != $user->password) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password Gagal Diubah, Password Lama Salah!',
+            ]);
         }
 
         //update post

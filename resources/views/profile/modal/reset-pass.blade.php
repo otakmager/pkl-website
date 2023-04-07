@@ -7,8 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEdit">
+            <form id="editFormPass">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEditPass">
                 <div class="modal-body">              
                     <div class="form-group">
                         <label>Password Lama</label>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" name="btnedit" id="btnedit">Update</button>
+                    <button type="submit" class="btn btn-primary" name="btnedit" id="btneditPass">Update</button>
                 </div>
             </form>
         </div>

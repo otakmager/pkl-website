@@ -87,6 +87,8 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+    
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/profile/profile.js') }}"></script>
 @endpush
