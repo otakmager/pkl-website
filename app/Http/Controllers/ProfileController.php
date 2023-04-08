@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    /**
+     * Open view
+     *
+     * @return view
+     */
     public function index()
     {
         $data = [

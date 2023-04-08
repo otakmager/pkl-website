@@ -122,3 +122,4 @@ Route::resource('/makun', MAkunController::class);
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index')->middleware('auth');
 Route::put('/profile/resetPass/{username}', [ProfileController::class, 'resetPass'])->name('profile.resetPass')->middleware('auth');
 Route::put('/profile/deletePhoto/{username}', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto')->middleware('auth');
+Route::put('/profile/update/{username}', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');

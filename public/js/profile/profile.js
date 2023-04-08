@@ -75,7 +75,6 @@ $(document).ready(function () {
             username: username,
             _token: token,
         };
-        console.log("start");
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": token,
@@ -94,6 +93,58 @@ $(document).ready(function () {
                         timer: 10000,
                     });
                     $("#foto-profie").attr("src", "/img/avatar.png");
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: data.message,
+                        icon: "error",
+                        timer: 10000,
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mengubah data!");
+            },
+        });
+    });
+    // ====================================================================================
+    // 4. Update Data
+    // ====================================================================================
+    $("#form-akun").on("submit", function (e) {
+        e.preventDefault();
+        if ($("#newpassword").val() != $("#renewpassword").val()) return false;
+        let token = $('input[name="_token"][id="form-token"]').val();
+        let username = $("#username").val();
+        let data = {
+            username: username,
+            name: $("#name").val(),
+            email: $("#email").val(),
+            image: $("foto").val(),
+            _token: token,
+        };
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": token,
+            },
+        });
+        $.ajax({
+            url: "profile/update/" + username,
+            type: "PUT",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    swal({
+                        title: "Sukses!",
+                        text: data.message,
+                        icon: "success",
+                        timer: 10000,
+                    });
+                    $("#name").val(data.name);
+                    $("#email").val(data.email);
+                    $("#foto-profie").attr("src", "/img/" + data.image);
+                    $("#foto-header").attr("src", "/img/" + data.image);
+                    $("foto").val("");
                 } else {
                     swal({
                         title: "Gagal!",
