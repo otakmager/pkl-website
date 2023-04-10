@@ -123,3 +123,5 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::put('/profile/resetPass/{username}', [ProfileController::class, 'resetPass'])->name('profile.resetPass')->middleware('auth');
 Route::put('/profile/deletePhoto/{username}', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto')->middleware('auth');
 Route::put('/profile/update/{username}', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+Route::get('/profile/recovInfo/{username}', [ProfileController::class, 'recovInfo'])->name('profile.recovInfo')->middleware('auth');
+Route::put('/profile/updateRecov/{username}', [ProfileController::class, 'updateRecov'])->name('profile.updateRecov')->middleware('auth');

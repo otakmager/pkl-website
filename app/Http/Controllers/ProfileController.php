@@ -179,4 +179,120 @@ class ProfileController extends Controller
             ]);
         } 
     }
+
+    
+
+    /**
+     * Get recovery info
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function recovInfo(Request $request, User $user)
+    {
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token'    => 'required',
+            'username'  => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error, Data Tidak Sesuai!',
+            ]);
+        }
+        if (auth()->user()->username != $request->username) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error, Username Tidak Sesuai!',
+            ]);
+        }
+
+        //check data
+        if(is_null($user->soal)){
+            $data = [
+                'isAda' => false,
+                'soal' => NULL,
+                'jawaban' => NULL,
+            ];
+        }else{
+            $data = [
+                'isAda' => true,
+                'soal' => $user->soal,
+                'jawaban' => $user->jawaban,
+            ];
+        }
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Bisa diproses!',
+            'data' => $data,
+        ]);   
+    }
+
+    /**
+     * Update recovery method (soal+jawaban)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRecov(Request $request, User $user){
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token' => 'required',
+            'username' => 'required',
+            'flag' => 'required',
+            'soal' => 'required',
+            'jawaban' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Update, Data Tidak Sesuai!',
+            ]);
+        }
+        if (auth()->user()->username != $request->username) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Update, Username Tidak Sesuai!',
+            ]);
+        }
+
+        $isSuccess = false;
+        //update data recovery
+        if($request->flag == "NULL"){
+            $user->update([
+                'soal'   => NULL,
+                'jawaban'   => NULL,
+            ]);
+            $isSuccess = true;
+        }else if($request->flag == "NOT NULL"){
+            $user->update([
+                'soal'   => intval($request->soal),
+                'jawaban'   => $request->jawaban,
+            ]);
+            $isSuccess = true;
+        }        
+
+        //return response
+        if ($user && $isSuccess) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Metode Pemulihan Berhasil Diubah!',
+                'data' => $user,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Metode Pemulihan Gagal Diubah!',
+            ]);
+        } 
+    }
 }
