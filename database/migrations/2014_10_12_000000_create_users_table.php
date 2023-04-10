@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('level');
             $table->boolean('status')->default(1);
             $table->string('image')->nullable();
+            $table->integer('soal')->nullable();
+            $table->string('jawaban')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
