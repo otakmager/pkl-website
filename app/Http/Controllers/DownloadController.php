@@ -269,6 +269,7 @@ class DownloadController extends Controller
             'dataStartDate' => $dataStartDate,
             'dataEndDate' => $dataEndDate,
             'saldoAwal' => $saldoAwal,
+            'thisDate' => Carbon::now()->format('d F Y'),
         ])->render();
 
         // Instantiate Dompdf

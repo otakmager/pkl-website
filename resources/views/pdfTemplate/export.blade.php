@@ -14,13 +14,17 @@
             border: 2px solid black;
             opacity: 0.75;
         }
+        .hr-ttd {
+            border: 0.5px solid black;
+            opacity: 0.75;
+        }
         table.my-tb, th.my-tb, td.my-tb {
             border: 1px solid black;
             padding: 5px;
             font-size: 8pt;
         }
         td.myinfo {
-            font-size: 10pt;
+            font-size: 10.5pt;
         }
         .address{
             font-size: 9pt;
@@ -30,6 +34,11 @@
         }
         .page-break {
             page-break-after: always;
+        }
+        .table-container {
+            float: right;
+            padding: 10px;
+            margin-left: 20px;
         }
 
     </style>
@@ -132,7 +141,8 @@
 
         <!-- Additional Info Start -->
         <div class="container mt-2 d-block" style="page-break-inside: avoid;">
-            <table class="table">
+            <h6>Ringkasan Transaksi {{ $dataStartDate[$index] }} &ndash; {{ $dataEndDate[$index] }}</h6>
+            <table class="table mt-3">
                 <tr>
                     <td class="myinfo" style="width: 140px">Saldo Awal</td>
                     <td class="myinfo" style="width: 15px; border-style:solid">&nbsp;:&nbsp;</td>
@@ -177,7 +187,34 @@
                     <td class="myinfo">-@currency($temp)</td>
                     @endif
                 </tr>
-            </table>
+            </table>            
+
+            <!-- Tanda Tangan Start -->        
+            <div class="container mt-5" style="page-break-inside: avoid;">
+                <div class="table-container">
+                    <table class="table">
+                        <tr>
+                            <td class="myinfo">Karanganyar, {{ $thisDate }}</td>
+                        </tr>
+                        <tr>
+                            <td class="myinfo">Mengetahui</td>
+                        </tr>
+                        <tr>
+                            <td class="myinfo" style="height: 75px">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="myinfo">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="myinfo"><hr class="hr-ttd mt-0 mb-0"></td>
+                        </tr>
+                        <tr>
+                            <td class="myinfo">Pimpinan CV Berkah Makmur</td>
+                        </tr>
+                    </table>
+                </div> 
+            </div>
+            <!-- Tanda Tangan End -->
         </div>
         <!-- Additional Info End -->
     </div>
@@ -188,9 +225,5 @@
     @endif
     @endforeach
     <!-- Page Break End -->
-
-    <!-- Script Start -->    
-    <script src="{{ asset('library/bootstrap-5.3/js/bootstrap.min.js') }}"></script>
-    <!-- Script End -->
 </body>
 </html>
