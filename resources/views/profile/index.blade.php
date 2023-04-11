@@ -74,8 +74,8 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <button class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#modal-pass"><i class="fas fa-key"></i> Ganti Password</button>
-                        <button class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#modal-lupa"><i class="fas fa-unlock-keyhole"></i></i> Fitur Lupa Password</button>
+                        <button class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#modal-pass" id="btn-modal-pass"><i class="fas fa-key"></i> Ganti Password</button>
+                        <button class="btn btn-icon icon-left btn-success py-2" data-toggle="modal" data-target="#modal-lupa" id="btn-modal-lupa"><i class="fas fa-unlock-keyhole"></i></i> Fitur Lupa Password</button>
                     </div>
                 </div>
             </div>

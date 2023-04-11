@@ -22,18 +22,18 @@
                         </div>
                     </div>       
                     <div class="form-group">
-                        <label>Pertanyaan Pemulihan</label>
+                        <label id="label-soal">Pertanyaan Pemulihan</label>
                         <select class="form-control mx-1" name="soal[]" id="soal">
                             <option value="" selected disabled>Pilih Pertanyaan Pemulihan</option>
-                            <option value="a">Siapa nama orang yang kamu kenal pertama kali saat masih kecil?</option>
-                            <option value="b">Apa nama hewan peliharaanmu pertama kali?</option>
-                            <option value="c">Apa merek mobil/sepeda motor pertama yang kamu miliki?</option>
-                            <option value="d">Siapa nama panggilan teman masa kecilmu?</option>
-                            <option value="e">Apa makanan favorit Anda saat masih kecil?</option>
+                            <option value="1">Siapa nama orang yang kamu kenal pertama kali saat masih kecil?</option>
+                            <option value="2">Apa nama hewan peliharaanmu pertama kali?</option>
+                            <option value="3">Apa merek mobil/sepeda motor pertama yang kamu miliki?</option>
+                            <option value="4">Siapa nama panggilan teman masa kecilmu?</option>
+                            <option value="5">Apa makanan favorit Anda saat masih kecil?</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Jawaban</label>
+                        <label id="label-jawaban">Jawaban</label>
                         <input type="text" class="form-control" id="jawaban" name="jawaban" minlength="3" maxlength="255">
                     </div>
                 </div>
