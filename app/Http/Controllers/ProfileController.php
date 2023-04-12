@@ -286,7 +286,6 @@ class ProfileController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Metode Pemulihan Berhasil Diubah!',
-                'data' => $user,
             ]);
         } else {
             return response()->json([

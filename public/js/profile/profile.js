@@ -5,6 +5,7 @@ $(document).ready(function () {
     // Setting Awal
     // ====================================================================================
     $("#soal, #jawaban, #label-soal, #label-jawaban").hide();
+    $("#btn-visible").prop("checked", false);
     // ====================================================================================
     // 1. Validation Reset Password
     // ====================================================================================
@@ -234,25 +235,38 @@ $(document).ready(function () {
     // ====================================================================================
     // 7. Update Fitur Lupa Password
     // ====================================================================================
-    $("#form-akun").on("submit", function (e) {
+    $("#editFormLupaPass").on("submit", function (e) {
         e.preventDefault();
-        if ($("#newpassword").val() != $("#renewpassword").val()) return false;
+        if ($("#soal").val() != "") return false;
+        if ($("#jawaban").val() != "") return false;
         let token = $('input[name="_token"][id="form-token"]').val();
         let username = $("#username").val();
-        let data = {
-            username: username,
-            name: $("#name").val(),
-            email: $("#email").val(),
-            image: $("foto").val(),
-            _token: token,
-        };
+        let data = {};
+        let flag = $("#btn-visible").is(":checked") ? "NOT NULL" : "NULL";
+        if (flag == "NOT NULL") {
+            data = {
+                username: username,
+                flag: flag,
+                soal: $("#soal").val(),
+                jawaban: $("jawaban").val(),
+                _token: token,
+            };
+        } else {
+            data = {
+                username: username,
+                flag: flag,
+                soal: 0,
+                jawaban: 0,
+                _token: token,
+            };
+        }
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": token,
             },
         });
         $.ajax({
-            url: "profile/update/" + username,
+            url: "profile/updateRecov/" + username,
             type: "PUT",
             data: data,
             success: function (data) {
@@ -263,11 +277,9 @@ $(document).ready(function () {
                         icon: "success",
                         timer: 10000,
                     });
-                    $("#name").val(data.name);
-                    $("#email").val(data.email);
-                    $("#foto-profie").attr("src", "/img/" + data.image);
-                    $("#foto-header").attr("src", "/img/" + data.image);
-                    $("foto").val("");
+                    $("#modal-lupa").modal("hide");
+                    $("#editFormLupaPass").trigger("reset");
+                    $("#btn-visible").prop("checked", false);
                 } else {
                     swal({
                         title: "Gagal!",
