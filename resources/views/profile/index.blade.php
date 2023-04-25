@@ -25,12 +25,12 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-12 text-center mb-3">                                
                                 @if (!empty($data['image']))
-                                    <img alt="image" id="foto-profie"
+                                    <img alt="image" id="foto-profile"
                                     src="{{ asset('storage/' . auth()->user()->image) }}"
                                     class="rounded-circle mr-1"
                                     style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
                                 @else  
-                                    <img alt="image" id="foto-profie"
+                                    <img alt="image" id="foto-profile"
                                         src="{{ asset('img/avatar.png') }}"
                                         class="rounded-circle mr-1"
                                         style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">

@@ -107,7 +107,7 @@ $(document).ready(function () {
                         icon: "success",
                         timer: 10000,
                     });
-                    $("#foto-profie").attr("src", "/img/avatar.png");
+                    $("#foto-profile").attr("src", "/img/avatar.png");
                     $("#foto-header").attr("src", "/img/avatar.png");
                 } else {
                     swal({
@@ -157,7 +157,7 @@ $(document).ready(function () {
                     $("#name").val(data.data.name);
                     $("#name-header").text("Hi, " + data.data.name);
                     $("#email").val(data.data.email);
-                    $("#foto-profie").attr(
+                    $("#foto-profile").attr(
                         "src",
                         "/storage/" + data.data.image
                     );
