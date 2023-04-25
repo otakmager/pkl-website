@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editFormLupaPass">
+            <form id="editFormLupaPass" autocomplete="off">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEdit">
                 <div class="modal-body">       
                     <div class="card card-primary">
