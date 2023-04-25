@@ -49,8 +49,13 @@ class ProfileController extends Controller
         //check if validation fails
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }        
+        if (auth()->user()->username != $request->username) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Menghapus Foto Profile, Username Tidak Sesuai!',
+            ]);
         }
-
         if($request->file('image')){
             if($request->oldImage){
                 Storage::delete($request->oldImage);
@@ -99,7 +104,19 @@ class ProfileController extends Controller
         ]);
 
         //check if validation fails
-        if ($validator->fails() || ($request->newpassword != $request->renewpassword) ) {
+        if ($validator->fails() ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
+            ]);
+        }
+        if (auth()->user()->username != $request->username) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Menghapus Foto Profile, Username Tidak Sesuai!',
+            ]);
+        }
+        if ($request->newpassword != $request->renewpassword) {
             return response()->json([
                 'success' => false,
                 'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
