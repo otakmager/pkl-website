@@ -108,6 +108,7 @@ $(document).ready(function () {
                         timer: 10000,
                     });
                     $("#foto-profie").attr("src", "/img/avatar.png");
+                    $("#foto-header").attr("src", "/img/avatar.png");
                 } else {
                     swal({
                         title: "Gagal!",
@@ -131,15 +132,8 @@ $(document).ready(function () {
         if ($("#newpassword").val() != $("#renewpassword").val()) return false;
         let token = $('input[name="_token"][id="form-token"]').val();
         let username = $("#username").val();
-        // let data = {
-        //     username: username,
-        //     name: $("#name").val(),
-        //     email: $("#email").val(),
-        //     image: $("#image").val(),
-        //     _token: token,
-        // };
-        let formData = new FormData(this); // Menggunakan FormData untuk mengirim data form
-        formData.append("_token", token); // Menambahkan token CSRF ke dalam FormData
+        let formData = new FormData(this);
+        formData.append("_token", token);
 
         $.ajaxSetup({
             headers: {
@@ -148,13 +142,10 @@ $(document).ready(function () {
         });
         $.ajax({
             url: "profile/update/" + username,
-            type: "POST", // Menggunakan uppercase "POST" untuk method
-            data: formData, // Menggunakan FormData sebagai data form
-            contentType: false, // Menyatakan bahwa content type tidak diatur secara otomatis
-            processData: false, // Menyatakan bahwa data tidak diolah secara otomatis
-
-            // type: "PUT",
-            // data: data,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function (data) {
                 if (data.success) {
                     swal({
@@ -166,9 +157,14 @@ $(document).ready(function () {
                     $("#name").val(data.data.name);
                     $("#name-header").text("Hi, " + data.data.name);
                     $("#email").val(data.data.email);
-                    $("#foto-profie").attr("src", "/img/" + data.data.image);
-                    $("#foto-header").attr("src", "/img/" + data.data.image);
-                    // $("#image").val("");
+                    $("#foto-profie").attr(
+                        "src",
+                        "/storage/" + data.data.image
+                    );
+                    $("#foto-header").attr(
+                        "src",
+                        "/storage/" + data.data.image
+                    );
                 } else {
                     swal({
                         title: "Gagal!",

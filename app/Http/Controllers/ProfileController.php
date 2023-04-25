@@ -52,46 +52,43 @@ class ProfileController extends Controller
                 'success' => false,
                 'message' => 'Gagal Perbarui Data, Data Tidak Sesuai dan Pastikan Gambar Harus Kurang dari 2 MB!',
             ]);
-        }     
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Berhasil Diubah x!',
-            'data' => [
-                'name' => $request->name,
-                'email' => $request->email,
-                'imageAuth' => auth()->user()->image,
-                'image' => $request->image,
-            ],
-        ]);   
+        }       
         if (auth()->user()->username != $request->username) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal Perbarui Data, Username Tidak Sesuai!',
             ]);
         }
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
-            }
-            $validatedData['image'] = $request->file('image')->store('profile-images');
+        
+        // Store file image ke folder profile-images dan dapatkan path
+        $path = NULL;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->storeAs(
+                'profile-images',
+                'img-' . $request->username . '.' . $request->file('image')->getClientOriginalExtension()
+            );
+            $path = str_replace('\\', '/', $path);
+        } else {
+            $path = auth()->user()->image;
         }
 
         //update user
         $user->update([
             'name'     => $request->name,
             'email'     => $request->email,
-            'image'     => $request->image,
+            'image'     => $path
         ]);
 
         //return response
         if ($user) {
             return response()->json([
                 'success' => true,
-                'message' => 'Data Berhasil Diubah x!',
+                'message' => 'Data Berhasil Diubah!',
                 'data' => [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'image' => auth()->user()->image,
+                    'username' => $user->username,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'image' => $user->image,
                 ],
             ]);
         } else {

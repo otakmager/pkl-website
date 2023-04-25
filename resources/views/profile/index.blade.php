@@ -23,10 +23,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-12 text-center mb-3">
-                                @if (!empty($data->image))
+                            <div class="col-lg-3 col-md-3 col-12 text-center mb-3">                                
+                                @if (!empty($data['image']))
                                     <img alt="image" id="foto-profie"
-                                    src="{{ asset('storage/' . $data->image) }}"
+                                    src="{{ asset('storage/' . auth()->user()->image) }}"
                                     class="rounded-circle mr-1"
                                     style="max-width: 175px; max-width: 175px; min-width: 50px; min-width: 50px;">
                                 @else  
@@ -59,7 +59,7 @@
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Foto profile</label>
                                         <div class="col-sm-12 col-md-9">
                                             <img class="img-preview img-fluid mb-3 col-sm-5">
-                                            <input type="hidden" name="oldImage" value="{{ auth()->user()->image }}">
+                                            <input type="hidden" name="oldImage" value="/storage/{{  auth()->user()->image }}">
                                             <input type="file" accept="image/*" class="form-control" name="image" id="image" onchange="previewImage()">
                                         </div>
                                     </div>

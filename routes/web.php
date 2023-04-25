@@ -120,8 +120,8 @@ Route::resource('/makun', MAkunController::class);
 |--------------------------------------------------------------------------
 */
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index')->middleware('auth');
-Route::put('/profile/resetPass/{username}', [ProfileController::class, 'resetPass'])->name('profile.resetPass')->middleware('auth');
-Route::put('/profile/deletePhoto/{username}', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto')->middleware('auth');
-Route::post('/profile/update/{username}', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
-Route::get('/profile/recovInfo/{username}', [ProfileController::class, 'recovInfo'])->name('profile.recovInfo')->middleware('auth');
-Route::put('/profile/updateRecov/{username}', [ProfileController::class, 'updateRecov'])->name('profile.updateRecov')->middleware('auth');
+Route::put('/profile/resetPass/{user:username}', [ProfileController::class, 'resetPass'])->name('profile.resetPass')->middleware('auth');
+Route::put('/profile/deletePhoto/{user:username}', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto')->middleware('auth');
+Route::post('/profile/update/{user:username}', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+Route::get('/profile/recovInfo/{user:username}', [ProfileController::class, 'recovInfo'])->name('profile.recovInfo')->middleware('auth');
+Route::put('/profile/updateRecov/{user:username}', [ProfileController::class, 'updateRecov'])->name('profile.updateRecov')->middleware('auth');

@@ -11,9 +11,15 @@
         <li class="dropdown"><a href="#"
                 data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" id="foto-header"
+                @if (!empty(auth()->user()->image))
+                    <img alt="image" id="foto-header"
+                    src="{{ asset('storage/' . auth()->user()->image) }}"
+                    class="rounded-circle mr-1">
+                @else
+                    <img alt="image" id="foto-header"
                     src="{{ asset('img/avatar.png') }}"
                     class="rounded-circle mr-1">
+                @endif
                 <div class="d-sm-none d-lg-inline-block" id="name-header">Hi, {{ Auth::check() ? auth()->user()->name : 'UserNotLoginYet' }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
