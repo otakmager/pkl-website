@@ -1,5 +1,15 @@
 "use strict";
+function previewImage() {
+    const image = document.querySelector("#image");
+    const imgPreview = document.querySelector(".img-preview");
 
+    imgPreview.style.display = "block";
+    const ofReader = new FileReader();
+    ofReader.readAsDataURL(image.files[0]);
+    ofReader.onload = function (oFREvent) {
+        imgPreview.src = oFREvent.target.result;
+    };
+}
 $(document).ready(function () {
     // ====================================================================================
     // Setting Awal
@@ -121,13 +131,16 @@ $(document).ready(function () {
         if ($("#newpassword").val() != $("#renewpassword").val()) return false;
         let token = $('input[name="_token"][id="form-token"]').val();
         let username = $("#username").val();
-        let data = {
-            username: username,
-            name: $("#name").val(),
-            email: $("#email").val(),
-            image: $("foto").val(),
-            _token: token,
-        };
+        // let data = {
+        //     username: username,
+        //     name: $("#name").val(),
+        //     email: $("#email").val(),
+        //     image: $("#image").val(),
+        //     _token: token,
+        // };
+        let formData = new FormData(this); // Menggunakan FormData untuk mengirim data form
+        formData.append("_token", token); // Menambahkan token CSRF ke dalam FormData
+
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": token,
@@ -135,8 +148,13 @@ $(document).ready(function () {
         });
         $.ajax({
             url: "profile/update/" + username,
-            type: "PUT",
-            data: data,
+            type: "POST", // Menggunakan uppercase "POST" untuk method
+            data: formData, // Menggunakan FormData sebagai data form
+            contentType: false, // Menyatakan bahwa content type tidak diatur secara otomatis
+            processData: false, // Menyatakan bahwa data tidak diolah secara otomatis
+
+            // type: "PUT",
+            // data: data,
             success: function (data) {
                 if (data.success) {
                     swal({
@@ -145,17 +163,18 @@ $(document).ready(function () {
                         icon: "success",
                         timer: 10000,
                     });
-                    $("#name").val(data.name);
-                    $("#email").val(data.email);
-                    $("#foto-profie").attr("src", "/img/" + data.image);
-                    $("#foto-header").attr("src", "/img/" + data.image);
-                    $("foto").val("");
+                    $("#name").val(data.data.name);
+                    $("#name-header").text("Hi, " + data.data.name);
+                    $("#email").val(data.data.email);
+                    $("#foto-profie").attr("src", "/img/" + data.data.image);
+                    $("#foto-header").attr("src", "/img/" + data.data.image);
+                    // $("#image").val("");
                 } else {
                     swal({
                         title: "Gagal!",
                         text: data.message,
                         icon: "error",
-                        timer: 10000,
+                        timer: 15000,
                     });
                 }
             },

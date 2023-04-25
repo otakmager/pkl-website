@@ -40,7 +40,7 @@
                                 </form>
                             </div>
                             <div class="col-lg-9 col-md-9 col-12 mb-3">
-                                <form id="form-akun">
+                                <form id="form-akun" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" id="form-token">
                                     <input type="text" name="username" id="username" hidden value="{{ $data['username'] }}">
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
@@ -58,7 +58,9 @@
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Foto profile</label>
                                         <div class="col-sm-12 col-md-9">
-                                            <input type="file" class="form-control" name="foto" id="foto">
+                                            <img class="img-preview img-fluid mb-3 col-sm-5">
+                                            <input type="hidden" name="oldImage" value="{{ auth()->user()->image }}">
+                                            <input type="file" accept="image/*" class="form-control" name="image" id="image" onchange="previewImage()">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4 pt-1">
