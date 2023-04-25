@@ -190,11 +190,15 @@ class ProfileController extends Controller
                 'message' => 'Gagal Menghapus Foto Profile, Username Tidak Sesuai!',
             ]);
         }
-
+        //delete in storage
+        if($user->image){
+            Storage::delete($user->image);
+        }
         //update image
         $user->update([
             'image'   => NULL
         ]);
+        
 
         //return response
         if ($user) {
