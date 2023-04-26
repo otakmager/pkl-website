@@ -12,6 +12,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SampahMasukController;
 use App\Http\Controllers\SampahKeluarController;
+use App\Http\Controllers\ForgetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,13 @@ use App\Http\Controllers\SampahKeluarController;
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Forget Password Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/forget-password', [ForgetPasswordController::class, 'index'])->name('forget.index');
 
 /*
 |--------------------------------------------------------------------------

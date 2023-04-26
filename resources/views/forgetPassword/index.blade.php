@@ -26,10 +26,10 @@
             max-height: 70px;
         }
     </style>
-    <title>Login</title>
+    <title>Lupa Password</title>
 </head>
 <body>
-    <!-- Login Page Start -->
+    <!-- Lupa Password Page Start -->
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -38,32 +38,27 @@
                         <img src="{{ asset('img/logo.png') }}" alt="logo" id="logo" />
                     </div>
                     <div class="card-body p-4 p-sm-4">
-                        <h4 class="card-title text-center mb-4">Login</h4>
-                        @if (session()->has('loginError'))
+                        @if (session()->has('lupaError'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('loginError') }}
+                            {{ session('lupaError') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         @endif   
-                        <form action="/login" method="POST">
+                        <form id="form-pass">
                             @csrf
-                            <div class="form-floating mb-2">
+                            <h6 class="text-center mt-2">Masukkan email Anda!</h6>
+                            <div class="form-floating mb-4">
                                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" value="{{ old('email') }}" autofocus required>
                                 <label for="email">Email</label>
                                 @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-                                <label for="password">Password</label>
-                                @error('password')<div class="invalid-feedback">{{ $message }}</div>>@enderror
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <a href="{{ route('forget.index') }}" class="text-decoration-none mt-1 mb-4">Lupa password?</a>
-                            </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Login</button>
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Cek Email</button>
                             </div>
-                            <hr class="my-3" />
+                            <hr class="my-3"/>                            
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ route('login') }}" class="text-decoration-none mt-1 mb-4">Login?</a>
+                            </div>
                         </form>
                     </div>
                 </div>
