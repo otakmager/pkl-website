@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class MAkunController extends Controller
 {
@@ -230,6 +231,9 @@ class MAkunController extends Controller
     public function destroy(User $makun)
     {
         $deletedTUser = User::findOrFail($makun->id);
+        if($deletedTUser->image){
+            Storage::delete($deletedTUser->image);
+        }
         $deletedTUser->delete();
 
         //return response
