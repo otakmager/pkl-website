@@ -252,63 +252,79 @@ $(document).ready(function () {
     // ====================================================================================
     $("#editFormLupaPass").on("submit", function (e) {
         e.preventDefault();
-        if ($("#soal").val() != "") return false;
-        if ($("#jawaban").val() != "") return false;
-        let token = $('input[name="_token"][id="form-token"]').val();
-        let username = $("#username").val();
-        let data = {};
-        let flag = $("#btn-visible").is(":checked") ? "NOT NULL" : "NULL";
-        if (flag == "NOT NULL") {
-            data = {
-                username: username,
-                flag: flag,
-                soal: $("#soal").val(),
-                jawaban: $("jawaban").val(),
-                _token: token,
-            };
+        let isValid = true;
+        let flag = true;
+        if ($("#btn-visible").is(":checked")) {
+            flag = "NOT NULL";
+            if ($("#soal").val() == null) isValid = false;
+            if ($("#jawaban").val() == "") isValid = false;
         } else {
-            data = {
-                username: username,
-                flag: flag,
-                soal: 0,
-                jawaban: 0,
-                _token: token,
-            };
+            flag = "NULL";
         }
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": token,
-            },
-        });
-        $.ajax({
-            url: "profile/updateRecov/" + username,
-            type: "PUT",
-            data: data,
-            success: function (data) {
-                if (data.success) {
-                    swal({
-                        title: "Sukses!",
-                        text: data.message,
-                        icon: "success",
-                        timer: 10000,
-                    });
-                    $("#modal-lupa").modal("hide");
-                    $("#editFormLupaPass").trigger("reset");
-                    $("#btn-visible").prop("checked", false);
-                } else {
-                    swal({
-                        title: "Gagal!",
-                        text: data.message,
-                        icon: "error",
-                        timer: 10000,
-                    });
-                }
-            },
-            error: function (data) {
-                console.log(data);
-                alert("Gagal mengubah data!");
-            },
-        });
+        if (!isValid) {
+            swal({
+                title: "Gagal!",
+                text: "Pertanyaan dan Jawaban Wajib Diisi",
+                icon: "error",
+                timer: 10000,
+            });
+            return false;
+        } else {
+            let token = $('input[name="_token"][id="form-token"]').val();
+            let username = $("#username").val();
+            let data = {};
+            if (flag == "NOT NULL") {
+                data = {
+                    username: username,
+                    flag: flag,
+                    soal: $("#soal").val(),
+                    jawaban: $("#jawaban").val(),
+                    _token: token,
+                };
+            } else {
+                data = {
+                    username: username,
+                    flag: flag,
+                    soal: 0,
+                    jawaban: 0,
+                    _token: token,
+                };
+            }
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": token,
+                },
+            });
+            $.ajax({
+                url: "profile/updateRecov/" + username,
+                type: "PUT",
+                data: data,
+                success: function (data) {
+                    if (data.success) {
+                        swal({
+                            title: "Sukses!",
+                            text: data.message,
+                            icon: "success",
+                            timer: 10000,
+                        });
+                        $("#modal-lupa").modal("hide");
+                        $("#editFormLupaPass").trigger("reset");
+                        $("#btn-visible").prop("checked", false);
+                    } else {
+                        swal({
+                            title: "Gagal!",
+                            text: data.message,
+                            icon: "error",
+                            timer: 10000,
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert("Gagal mengubah data!");
+                },
+            });
+        }
     });
     // ====================================================================================
     // ====================================================================================
