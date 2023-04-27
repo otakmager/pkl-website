@@ -135,10 +135,13 @@ $(document).ready(function () {
     $("#btn-update").on("click", function (e) {
         let token = $('input[name="_token"][id="tokenReset"]').val();
         let email = $("#email").val();
+        let newPassword = $("#newpassword").val();
+        let renewPassword = $("#renewpassword").val();
+        if (newPassword != renewPassword) return false;
         let data = {
             email: email,
-            oldPassword: $("#oldpassword").val(),
-            newPassword: $("#newpassword").val(),
+            newPassword: newPassword,
+            renewPassword: renewPassword,
             _token: token,
         };
         $.ajaxSetup({
