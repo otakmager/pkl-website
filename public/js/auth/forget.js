@@ -123,6 +123,13 @@ $(document).ready(function () {
     $("#newpassword, #renewpassword").on("keyup", function () {
         let pw = $("#newpassword").val();
         let rpw = $("#renewpassword").val();
+        if (pw.length < 5 || pw.length > 255) {
+            $("#edit-pw-error").text(
+                "Minimal 5 karakter & maksimal 255 karakter"
+            );
+        } else {
+            $("#edit-pw-error").text("");
+        }
         if (pw != rpw) {
             $("#edit-rpw-error").text("Konfirmasi password berbeda");
         } else {
@@ -138,6 +145,7 @@ $(document).ready(function () {
         let newPassword = $("#newpassword").val();
         let renewPassword = $("#renewpassword").val();
         if (newPassword != renewPassword) return false;
+        if (newPassword.length < 5 || newPassword.length > 255) return false;
         let data = {
             email: email,
             newPassword: newPassword,

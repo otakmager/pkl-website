@@ -11,6 +11,7 @@
                 <div class="form-group mt-2">
                     <label>Password Baru</label>
                     <input type="password" class="form-control" id="newpassword" name="newpassword" minlength="5" maxlength="255" required>
+                    <span id="edit-pw-error" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-2">
                     <label>Konfirmasi Password</label>
