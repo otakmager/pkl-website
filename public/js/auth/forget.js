@@ -49,14 +49,14 @@ $(document).ready(function () {
                 if (data.success) {
                     $("#alert-soal").attr("hidden", true);
                     $("#isi-alert-soal").text("");
-                    $("#soal").text(data.data.soal);
+                    $("#soal").text(data.soal);
                     $("#modal-soal").modal("show");
                 } else {
                     swal({
                         title: "Gagal!",
                         text: data.message,
                         icon: "error",
-                        timer: 10000,
+                        timer: 20000,
                     });
                 }
             },

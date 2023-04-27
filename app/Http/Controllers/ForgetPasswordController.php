@@ -46,14 +46,61 @@ class ForgetPasswordController extends Controller
     }
 
     public function getSoal(Request $request, User $user){
-        return view('forgetPassword.index');
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token' => 'required',
+            'email'  => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails() ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Tidak Sesuai!',
+            ]);
+        }
+
+        //check data and return response
+        if(is_null($user->soal)){            
+            return response()->json([
+                'success' => false,
+                'message' => 'Opsi pertanyaan pemulihan tidak tersedia. Silakan hubungi admin/pimpinan!',
+            ]);
+        }else{
+            $soal = "";
+            switch($user->soal){
+                case "1": 
+                    $soal = "Siapa nama orang yang kamu kenal pertama kali saat masih kecil?";
+                    break;
+                case "2": 
+                    $soal = "Apa nama hewan peliharaanmu pertama kali?";
+                    break;
+                case "3": 
+                    $soal = "Apa merek mobil/sepeda motor pertama yang kamu miliki?";
+                    break;
+                case "4": 
+                    $soal = "Siapa nama panggilan teman masa kecilmu?";
+                    break;
+                case "5": 
+                    $soal = "Apa makanan favorit Anda saat masih kecil?";
+                    break;
+                default:
+                    $soal = "";
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Silakan jawab pertanyaan pemulihan dengan benar!',
+                'soal' => $soal,
+            ]);
+        }
     }
+
     public function validasaiSoal(Request $request, User $user){
         //define validation rules
         $validator = Validator::make($request->all(), [
-            '_token'        => 'required',
-            'email'      => 'required',
-            'soal'   => 'required',
+            '_token'    => 'required',
+            'email'     => 'required',
+            'soal'      => 'required',
             'jawaban'   => 'required',
         ]);
 
@@ -72,7 +119,7 @@ class ForgetPasswordController extends Controller
                 'message' => 'Validasi Soal Gagal, Data Tidak Sesuai!',
             ]);
         }
-        
+
         //check jawaban
         $isValid = false;
         $message = "Jawaban salah!";
@@ -93,9 +140,9 @@ class ForgetPasswordController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             '_token'        => 'required',
-            'email'      => 'required',
+            'email'         => 'required',
             'newPassword'   => 'required',
-            'renewPassword'   => 'required',
+            'renewPassword' => 'required',
         ]);
 
         //check if validation fails
@@ -122,7 +169,7 @@ class ForgetPasswordController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Password Berhasil Diubah!',
-                'data' => $user,
+                'data'    => $user,
             ]);
         } else {
             return response()->json([
