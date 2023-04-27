@@ -95,7 +95,7 @@ class ForgetPasswordController extends Controller
         }
     }
 
-    public function validasaiSoal(Request $request, User $user){
+    public function validasiSoal(Request $request, User $user){
         //define validation rules
         $validator = Validator::make($request->all(), [
             '_token'    => 'required',
