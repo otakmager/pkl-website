@@ -147,7 +147,7 @@ $(document).ready(function () {
         });
         $.ajax({
             url: "forget-password/reset-pass/" + email,
-            type: "GET",
+            type: "PUT",
             data: data,
             success: function (data) {
                 if (data.success) {
