@@ -149,8 +149,8 @@ class ForgetPasswordController extends Controller
         $validator = Validator::make($request->all(), [
             '_token'        => 'required',
             'email'         => 'required',
-            'newPassword'   => 'required',
-            'renewPassword' => 'required',
+            'newPassword'   => 'required|min:5|max:255',
+            'renewPassword' => 'required|min:5|max:255',
         ]);
 
         //check if validation fails
@@ -160,7 +160,7 @@ class ForgetPasswordController extends Controller
                 'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
             ]);
         }
-        if ($request->newpassword != $request->renewpassword) {
+        if ($request->newPassword != $request->renewPassword) {
             return response()->json([
                 'success' => false,
                 'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
@@ -168,8 +168,9 @@ class ForgetPasswordController extends Controller
         }
 
         //update password
+        $password = Hash::make($request->newPassword);
         $user->update([
-            'password'   => Hash::make($request->newpassword)
+            'password'   => $password,
         ]);
 
         //return response
@@ -177,7 +178,6 @@ class ForgetPasswordController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Password Berhasil Diubah!',
-                'data'    => $user,
             ]);
         } else {
             return response()->json([
