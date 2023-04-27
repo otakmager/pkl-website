@@ -41,6 +41,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 */
 Route::get('/forget-password', [ForgetPasswordController::class, 'index'])->name('forget.index');
 Route::get('/forget-password/cek', [ForgetPasswordController::class, 'cek'])->name('forget.cek');
+Route::get('/forget-password/get-soal/{user:email}', [ForgetPasswordController::class, 'getSoal'])->name('forget.soal');
+Route::get('/forget-password/validasi-soal/{user:email}', [ForgetPasswordController::class, 'validasiSoal'])->name('forget.valid');
+Route::put('/forget-password/reset-pass/{user:email}', [ForgetPasswordController::class, 'resetPass'])->name('forget.reset');
 
 /*
 |--------------------------------------------------------------------------
