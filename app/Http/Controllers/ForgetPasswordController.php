@@ -68,29 +68,37 @@ class ForgetPasswordController extends Controller
             ]);
         }else{
             $soal = "";
+            $hidden = "";
             switch($user->soal){
                 case "1": 
                     $soal = "Siapa nama orang yang kamu kenal pertama kali saat masih kecil?";
+                    $hidden = "1";
                     break;
                 case "2": 
                     $soal = "Apa nama hewan peliharaanmu pertama kali?";
+                    $hidden = "2";
                     break;
                 case "3": 
                     $soal = "Apa merek mobil/sepeda motor pertama yang kamu miliki?";
+                    $hidden = "3";
                     break;
                 case "4": 
                     $soal = "Siapa nama panggilan teman masa kecilmu?";
+                    $hidden = "4";
                     break;
                 case "5": 
                     $soal = "Apa makanan favorit Anda saat masih kecil?";
+                    $hidden = "5";
                     break;
                 default:
                     $soal = "";
+                    $hidden = "";
             }
             return response()->json([
                 'success' => true,
                 'message' => 'Silakan jawab pertanyaan pemulihan dengan benar!',
                 'soal' => $soal,
+                'hidden' => $hidden,
             ]);
         }
     }

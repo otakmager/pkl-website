@@ -50,6 +50,7 @@ $(document).ready(function () {
                     $("#alert-soal").attr("hidden", true);
                     $("#isi-alert-soal").text("");
                     $("#soal").text(data.soal);
+                    $("#soal-hidden").val(data.hidden);
                     $("#modal-soal").modal("show");
                 } else {
                     swal({
