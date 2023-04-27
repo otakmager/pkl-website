@@ -49,11 +49,47 @@ class ForgetPasswordController extends Controller
         return view('forgetPassword.index');
     }
     public function validasaiSoal(Request $request, User $user){
-        return view('forgetPassword.index');
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            '_token'        => 'required',
+            'email'      => 'required',
+            'soal'   => 'required',
+            'jawaban'   => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails() ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi Soal & Jawaban Gagal, Data Tidak Sesuai!',
+            ]);
+        }
+
+        //check soal
+        if($request->soal != $user->soal){
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi Soal Gagal, Data Tidak Sesuai!',
+            ]);
+        }
+        
+        //check jawaban
+        $isValid = false;
+        $message = "Jawaban salah!";
+        if(strtolower($request->jawaban) == strtolower($user->jawaban)){
+            $isValid = true;
+            $message = "Validasi Berhasil!";
+        }
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'isValid' => $isValid,
+            'message' => $message,
+        ]);
     }
 
     public function resetPass(Request $request, User $user){
-        
         //define validation rules
         $validator = Validator::make($request->all(), [
             '_token'        => 'required',

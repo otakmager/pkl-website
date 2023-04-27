@@ -89,7 +89,7 @@ $(document).ready(function () {
             data: data,
             success: function (data) {
                 if (data.success) {
-                    if (data.data.isValid) {
+                    if (data.isValid) {
                         $("#alert-soal").attr("hidden", true);
                         $("#isi-alert-soal").text("");
                         $("#modal-soal").modal("hide");
