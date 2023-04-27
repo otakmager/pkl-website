@@ -6,13 +6,14 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-lupa" hidden>
-                <div id="isi-alert-pertanyaan"></div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-soal" hidden>
+                <div id="isi-alert-soal"></div>
             </div>
             <form id="form-soal" autocomplete="off">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenSoal">
                 <div class="form-group mt-2">
                     <label id="label-soal"><h5>Pertanyaan Pemulihan</h5></label>
+                    <input type="hidden" name="soal-hidden" id="soal-hidden">
                     <p id="soal">-</p>
                 </div>
                 <div class="form-group mt-2">

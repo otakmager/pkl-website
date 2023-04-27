@@ -30,25 +30,148 @@ $(document).ready(function () {
     // 2. Buka Modal Soal
     // ====================================================================================
     $("#btn-soal").on("click", function (e) {
-        $("#modal-soal").modal("show");
+        let token = $('input[name="_token"][id="tokenSoal"]').val();
+        let email = $("#email").val();
+        let data = {
+            email: email,
+            _token: token,
+        };
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": token,
+            },
+        });
+        $.ajax({
+            url: "forget-password/get-soal/" + email,
+            type: "GET",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    $("#alert-soal").attr("hidden", true);
+                    $("#isi-alert-soal").text("");
+                    $("#soal").text(data.data.soal);
+                    $("#modal-soal").modal("show");
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: data.message,
+                        icon: "error",
+                        timer: 10000,
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mendapatkan data!");
+            },
+        });
     });
     // ====================================================================================
     // 3. Buka Modal Ganti Password
     // ====================================================================================
     $("#btn-kirim").on("click", function (e) {
-        $("#modal-soal").modal("hide");
-        $("#soal").text("-");
-        $("#jawaban").val();
-        $("#modal-reset").modal("show");
+        let token = $('input[name="_token"][id="tokenSoal"]').val();
+        let email = $("#email").val();
+        let data = {
+            email: email,
+            soal: $("#soal-hidden").val(),
+            jawaban: $("#jawaban").val(),
+            _token: token,
+        };
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": token,
+            },
+        });
+        $.ajax({
+            url: "forget-password/validasi-soal/" + email,
+            type: "GET",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    if (data.data.isValid) {
+                        $("#alert-soal").attr("hidden", true);
+                        $("#isi-alert-soal").text("");
+                        $("#modal-soal").modal("hide");
+                        $("#soal").text("-");
+                        $("#soal-hidden").val();
+                        $("#jawaban").val();
+                        $("#modal-reset").modal("show");
+                    } else {
+                        $("#alert-soal").removeAttr("hidden");
+                        $("#isi-alert-soal").text(data.message);
+                    }
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: data.message,
+                        icon: "error",
+                        timer: 10000,
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mendapatkan data!");
+            },
+        });
     });
     // ====================================================================================
-    // 4. Ganti Password
+    // 4. Validation Reset Password
+    // ====================================================================================
+    $("#newpassword, #renewpassword").on("keyup", function () {
+        let pw = $("#newpassword").val();
+        let rpw = $("#renewpassword").val();
+        if (pw != rpw) {
+            $("#edit-rpw-error").text("Konfirmasi password berbeda");
+        } else {
+            $("#edit-rpw-error").text("");
+        }
+    });
+    // ====================================================================================
+    // 5. Ganti Password
     // ====================================================================================
     $("#btn-update").on("click", function (e) {
-        $("#newpassword").val();
-        $("#renewpassword").val();
-        $("#edit-rpw-error").text("");
-        $("#modal-reset").modal("hide");
+        let token = $('input[name="_token"][id="tokenReset"]').val();
+        let email = $("#email").val();
+        let data = {
+            email: email,
+            oldPassword: $("#oldpassword").val(),
+            newPassword: $("#newpassword").val(),
+            _token: token,
+        };
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": token,
+            },
+        });
+        $.ajax({
+            url: "forget-password/reset-pass/" + email,
+            type: "GET",
+            data: data,
+            success: function (data) {
+                if (data.success) {
+                    $("#newpassword").val();
+                    $("#renewpassword").val();
+                    $("#edit-rpw-error").text("");
+                    $("#modal-reset").modal("hide");
+                    $("#modal-opsi").modal("hide");
+                    $("#email").val();
+                    window.location.replace("/login");
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: data.message,
+                        icon: "error",
+                        timer: 10000,
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Gagal mendapatkan data!");
+            },
+        });
     });
     // ====================================================================================
     // ====================================================================================
