@@ -14,12 +14,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.success) {
                     $("#alert-lupa").attr("hidden", true);
-                    swal({
-                        title: "Sukses!",
-                        text: data.message,
-                        icon: "success",
-                        timer: 10000,
-                    });
+                    $("#modal-opsi").modal("show");
                 } else {
                     $("#alert-lupa").removeAttr("hidden");
                     $("#isi-lupa").text(data.message);
@@ -30,6 +25,30 @@ $(document).ready(function () {
                 alert("Gagal mendapatkan data!");
             },
         });
+    });
+    // ====================================================================================
+    // 2. Buka Modal Soal
+    // ====================================================================================
+    $("#btn-soal").on("click", function (e) {
+        $("#modal-soal").modal("show");
+    });
+    // ====================================================================================
+    // 3. Buka Modal Ganti Password
+    // ====================================================================================
+    $("#btn-kirim").on("click", function (e) {
+        $("#modal-soal").modal("hide");
+        $("#soal").text("-");
+        $("#jawaban").val();
+        $("#modal-reset").modal("show");
+    });
+    // ====================================================================================
+    // 4. Ganti Password
+    // ====================================================================================
+    $("#btn-update").on("click", function (e) {
+        $("#newpassword").val();
+        $("#renewpassword").val();
+        $("#edit-rpw-error").text("");
+        $("#modal-reset").modal("hide");
     });
     // ====================================================================================
     // ====================================================================================
