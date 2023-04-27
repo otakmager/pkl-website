@@ -40,6 +40,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::get('/forget-password', [ForgetPasswordController::class, 'index'])->name('forget.index');
+Route::get('/forget-password/cek', [ForgetPasswordController::class, 'cek'])->name('forget.cek');
 
 /*
 |--------------------------------------------------------------------------

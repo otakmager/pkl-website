@@ -38,19 +38,15 @@
                         <img src="{{ asset('img/logo.png') }}" alt="logo" id="logo" />
                     </div>
                     <div class="card-body p-4 p-sm-4">
-                        @if (session()->has('lupaError'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('lupaError') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-lupa" hidden>
+                            <div id="isi-lupa"></div>
                         </div>
-                        @endif   
                         <form id="form-pass">
                             @csrf
                             <h6 class="text-center mt-2">Masukkan email Anda!</h6>
                             <div class="form-floating mb-4">
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" value="{{ old('email') }}" autofocus required>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com" autofocus required>
                                 <label for="email">Email</label>
-                                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="d-grid">
                                 <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Cek Email</button>
@@ -64,11 +60,19 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Login Page End -->
+    </div>    
+    @include('forgetPassword.modal.opsi-recov')
+    @include('forgetPassword.modal.soal')
+    <!-- Lupa Password Page End -->
 
     <!-- Script Start -->    
+    <!-- JS Libraies -->
+    <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-5.3/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('js/auth/forget.js') }}"></script>
     <!-- Script End -->
 </body>
 </html>
