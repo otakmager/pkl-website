@@ -114,6 +114,16 @@ $(document).ready(function () {
         let jenis = $("#jenis").val();
         let formatLaporan = $("#format-laporan").val();
         let label = $("#label").val();
+        if (!Array.isArray(label) || label.length === 0) {
+            console.log("here");
+            swal({
+                title: "Gagal!",
+                text: "Minimal harus ada 1 label yang dipilih! Buatlah label terlebih dahulu.",
+                icon: "error",
+                timer: 10000,
+            });
+            return false;
+        }
         let token = $('input[name="_token"][id="tokenCommon"]').val();
 
         // Set URL
