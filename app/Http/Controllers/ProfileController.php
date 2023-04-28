@@ -112,9 +112,9 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             '_token'        => 'required',
             'username'      => 'required',
-            'oldPassword'   => 'required',
-            'newPassword'   => 'required',
-            'renewPassword'   => 'required',
+            'oldPassword'   => 'required|min:5|max:255',
+            'newPassword'   => 'required|min:5|max:255',
+            'renewPassword'   => 'required|min:5|max:255',
         ]);
 
         //check if validation fails

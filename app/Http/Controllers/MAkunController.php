@@ -82,7 +82,7 @@ class MAkunController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
-            'email' => 'required|unique:users|email',
+            'email' => 'required|unique:users|email:dns',
             'password' => 'required|min:5|max:255',
         ], [
             'name.required' => 'Nama tidak boleh kosong',
