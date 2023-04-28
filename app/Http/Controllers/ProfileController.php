@@ -130,13 +130,13 @@ class ProfileController extends Controller
                 'message' => 'Gagal Menghapus Foto Profile, Username Tidak Sesuai!',
             ]);
         }
-        if ($request->newpassword != $request->renewpassword) {
+        if ($request->newPassword != $request->renewPassword) {
             return response()->json([
                 'success' => false,
                 'message' => 'Password Gagal Diubah, Data Tidak Sesuai!',
             ]);
         }
-        if ($request->newpassword != $user->password) {
+        if (!password_verify($request->oldPassword, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Password Gagal Diubah, Password Lama Salah!',
@@ -145,7 +145,7 @@ class ProfileController extends Controller
 
         //update password
         $user->update([
-            'password'   => Hash::make($request->newpassword)
+            'password'   => Hash::make($request->newPassword)
         ]);
 
         //return response
