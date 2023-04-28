@@ -379,11 +379,15 @@ $(document).ready(function () {
             success: function (data) {
                 $("#editModal").modal("show");
                 $("#edituang").val(data.uang);
+                bacaDana();
             },
             error: function () {
                 alert("Tidak dapat menampilkan data!");
             },
         });
+    });
+    $("#edituang").on("change, input, keyup", function () {
+        bacaDana();
     });
     // ====================================================================================
     // 3. Update Data
@@ -504,4 +508,24 @@ function uncheckedVisible() {
 }
 function isCheckedVisible() {
     return $("#btn-visible").is(":checked");
+}
+
+// Keterbacaan edit uang
+function bacaDana() {
+    let edituang = parseFloat($("#edituang").val());
+    if (isNaN(edituang)) {
+        edituang = 0;
+    }
+    console.log("ya");
+    if (edituang == 0) {
+        $("#tanda").attr("hidden", true);
+        $("#myuang").text("Rp0");
+    } else if (edituang < 0) {
+        edituang = Math.abs(edituang);
+        $("#tanda").attr("hidden", false);
+        $("#myuang").text("Rp" + formatNumber(edituang));
+    } else {
+        $("#tanda").attr("hidden", true);
+        $("#myuang").text("Rp" + formatNumber(edituang));
+    }
 }

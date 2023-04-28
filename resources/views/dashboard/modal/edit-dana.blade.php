@@ -9,10 +9,15 @@
             </div>
             <form id="editForm">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenEdit">
-                <div class="modal-body">                    
+                <div class="modal-body" style="background: #f5f5f5">         
                     <div class="form-group">
                         <label>Dana Awal</label>
                         <input type="number" class="form-control" id="edituang" name="uang" required>
+                    </div>
+                    <div class="form-group" style="font-size: 30px">
+                        <label>Tertulis:</label>
+                        <strong id="tanda">-</strong><strong id="myuang">Rpxxx.xxx.xxx</strong>,00                      
+                        <p style="font-size: 16px">Tips: Gunakan tanda '-' jika dana negatif</p>    
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
