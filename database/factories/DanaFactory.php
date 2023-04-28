@@ -17,7 +17,7 @@ class DanaFactory extends Factory
     public function definition()
     {
         return [
-            'uang' => -4575123,
+            'uang' => 0,
         ];
     }
 }
