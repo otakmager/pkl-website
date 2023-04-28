@@ -25,10 +25,6 @@
                 <a class="nav-link"
                     href="{{ url('tkeluar') }}"><i class="fas fa-basket-shopping"></i> <span>Transaksi Keluar</span></a>
             </li>
-            {{-- <li class="nav-item {{ Request::is('sampah')? 'active' : '' }}">
-                <a class="nav-link"
-                    href="{{ url('sampah') }}"><i class="far fa-trash-can"></i> <span>Sampah</span></a>
-            </li> --}}
             <li class="nav-item dropdown {{ (Request::is('sampah-masuk') || Request::is('sampah-keluar')) ? 'active' : '' }}">
                 <a href="#"
                     class="nav-link has-dropdown"><i class="far fa-trash-can"></i> <span>Sampah</span></a>
@@ -43,6 +39,7 @@
                     </li>
                 </ul>
             </li>
+            @can('pimpinan')
             <li class="menu-header">Fitur Lainnya</li>
             <li class="nav-item {{ Request::is('label')? 'active' : '' }}">
                 <a class="nav-link"
@@ -56,6 +53,7 @@
                 <a class="nav-link"
                     href="{{ url('makun') }}"><i class="far fa-user"></i> <span>Manajemen Akun</span></a>
             </li>
+            @endcan
         </ul>
 
         <div class="hide-sidebar-mini mt-3 mb-3 p-3">

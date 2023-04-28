@@ -50,81 +50,81 @@ Route::put('/forget-password/reset-pass/{user:email}', [ForgetPasswordController
 | Redirect Routes
 |--------------------------------------------------------------------------
 */
-Route::redirect('/', '/dashboard');
-Route::redirect('/sampah', '/sampah-masuk');
+Route::redirect('/', '/dashboard')->middleware('auth');
+Route::redirect('/sampah', '/sampah-masuk')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/dashboard/dashboardData', [DashboardController::class, 'dashboardData']);
-Route::resource('/dana', DanaController::class);
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard/dashboardData', [DashboardController::class, 'dashboardData'])->middleware('pimpinan');
+Route::resource('/dana', DanaController::class)->middleware('pimpinan');
 /*
 |--------------------------------------------------------------------------
 | TMasuk Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/tmasuk/tmasuk_ajax', [TMasukController::class, 'tmasuk_ajax'])->name('tmasuk.ajax');
-Route::resource('/tmasuk', TMasukController::class);
+Route::get('/tmasuk/tmasuk_ajax', [TMasukController::class, 'tmasuk_ajax'])->name('tmasuk.ajax')->middleware('auth');
+Route::resource('/tmasuk', TMasukController::class)->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | TKeluar Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/tkeluar/tkeluar_ajax', [TKeluarController::class, 'tkeluar_ajax'])->name('tkeluar.ajax');
-Route::resource('/tkeluar', TKeluarController::class);
+Route::get('/tkeluar/tkeluar_ajax', [TKeluarController::class, 'tkeluar_ajax'])->name('tkeluar.ajax')->middleware('auth');
+Route::resource('/tkeluar', TKeluarController::class)->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Label Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/label/label_ajax', [LabelController::class, 'label_ajax'])->name('label.ajax');
-Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->name('label.sum');
-Route::resource('/label', LabelController::class);
+Route::get('/label/label_ajax', [LabelController::class, 'label_ajax'])->name('label.ajax')->middleware('pimpinan');
+Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->name('label.sum')->middleware('pimpinan');
+Route::resource('/label', LabelController::class)->middleware('pimpinan');
 /*
 |--------------------------------------------------------------------------
 | Sampah Masuk Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/sampah-masuk/sampah_ajax', [SampahMasukController::class, 'sampah_ajax'])->name('sampah-masuk.ajax');
-Route::get('/sampah-masuk', [SampahMasukController::class, 'index'])->name('sampah-masuk.index');
-Route::delete('/sampah-masuk/{id}', [SampahMasukController::class, 'destroy'])->name('sampah-masuk.destroy');
-Route::put('/sampah-masuk/{id}', [SampahMasukController::class, 'restore'])->name('sampah-masuk.restore');
-Route::post('/sampah-masuk/dsome/', [SampahMasukController::class, 'destroySelectedData'])->name('sampah-masuk.destroy-some');
-Route::post('/sampah-masuk/rsome/', [SampahMasukController::class, 'restoreSelectedData'])->name('sampah-masuk.restore-some');
-Route::delete('/sampah/masuk/delete-all', [SampahMasukController::class, 'destoryAll'])->name('sampah-masuk.destroy-all');
-Route::put('/sampah/masuk/restore-all', [SampahMasukController::class, 'restoreAll'])->name('sampah-masuk.restore-all');
+Route::get('/sampah-masuk/sampah_ajax', [SampahMasukController::class, 'sampah_ajax'])->name('sampah-masuk.ajax')->middleware('auth');
+Route::get('/sampah-masuk', [SampahMasukController::class, 'index'])->name('sampah-masuk.index')->middleware('auth');
+Route::delete('/sampah-masuk/{id}', [SampahMasukController::class, 'destroy'])->name('sampah-masuk.destroy')->middleware('auth');
+Route::put('/sampah-masuk/{id}', [SampahMasukController::class, 'restore'])->name('sampah-masuk.restore')->middleware('auth');
+Route::post('/sampah-masuk/dsome/', [SampahMasukController::class, 'destroySelectedData'])->name('sampah-masuk.destroy-some')->middleware('auth');
+Route::post('/sampah-masuk/rsome/', [SampahMasukController::class, 'restoreSelectedData'])->name('sampah-masuk.restore-some')->middleware('auth');
+Route::delete('/sampah/masuk/delete-all', [SampahMasukController::class, 'destoryAll'])->name('sampah-masuk.destroy-all')->middleware('auth');
+Route::put('/sampah/masuk/restore-all', [SampahMasukController::class, 'restoreAll'])->name('sampah-masuk.restore-all')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Sampah Keluar Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/sampah-keluar/sampah_ajax', [SampahKeluarController::class, 'sampah_ajax'])->name('sampah-keluar.ajax');
-Route::get('/sampah-keluar', [SampahKeluarController::class, 'index'])->name('sampah-keluar.index');
-Route::delete('/sampah-keluar/{id}', [SampahKeluarController::class, 'destroy'])->name('sampah-keluar.destroy');
-Route::put('/sampah-keluar/{id}', [SampahKeluarController::class, 'restore'])->name('sampah-keluar.restore');
-Route::post('/sampah-keluar/dsome/', [SampahKeluarController::class, 'destroySelectedData'])->name('sampah-keluar.destroy-some');
-Route::post('/sampah-keluar/rsome/', [SampahKeluarController::class, 'restoreSelectedData'])->name('sampah-keluar.restore-some');
-Route::delete('/sampah/keluar/delete-all', [SampahKeluarController::class, 'destoryAll'])->name('sampah-keluar.destroy-all');
-Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restoreAll'])->name('sampah-keluar.restore-all');
+Route::get('/sampah-keluar/sampah_ajax', [SampahKeluarController::class, 'sampah_ajax'])->name('sampah-keluar.ajax')->middleware('auth');
+Route::get('/sampah-keluar', [SampahKeluarController::class, 'index'])->name('sampah-keluar.index')->middleware('auth');
+Route::delete('/sampah-keluar/{id}', [SampahKeluarController::class, 'destroy'])->name('sampah-keluar.destroy')->middleware('auth');
+Route::put('/sampah-keluar/{id}', [SampahKeluarController::class, 'restore'])->name('sampah-keluar.restore')->middleware('auth');
+Route::post('/sampah-keluar/dsome/', [SampahKeluarController::class, 'destroySelectedData'])->name('sampah-keluar.destroy-some')->middleware('auth');
+Route::post('/sampah-keluar/rsome/', [SampahKeluarController::class, 'restoreSelectedData'])->name('sampah-keluar.restore-some')->middleware('auth');
+Route::delete('/sampah/keluar/delete-all', [SampahKeluarController::class, 'destoryAll'])->name('sampah-keluar.destroy-all')->middleware('auth');
+Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restoreAll'])->name('sampah-keluar.restore-all')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Download Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/download', [DownloadController::class, 'index'])->name('download.index');
-Route::get('/download/format/excel', [DownloadController::class, 'downloadExcel'])->name('download-excel');
-Route::get('/download/format/pdf', [DownloadController::class, 'downloadPDF'])->name('download-pdf');
-Route::get('/download/template/export/pdf', [DownloadController::class, 'templatePDF'])->name('template-pdf');
+Route::get('/download', [DownloadController::class, 'index'])->name('download.index')->middleware('pimpinan');
+Route::get('/download/format/excel', [DownloadController::class, 'downloadExcel'])->name('download-excel')->middleware('pimpinan');
+Route::get('/download/format/pdf', [DownloadController::class, 'downloadPDF'])->name('download-pdf')->middleware('pimpinan');
+Route::get('/download/template/export/pdf', [DownloadController::class, 'templatePDF'])->name('template-pdf')->middleware('pimpinan');
 
 /*
 |--------------------------------------------------------------------------
 | Manajemen Akun Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax');
-Route::resource('/makun', MAkunController::class);
+Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax')->middleware('pimpinan');
+Route::resource('/makun', MAkunController::class)->middleware('pimpinan');
 
 /*
 |--------------------------------------------------------------------------

@@ -11,11 +11,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(){        
-        // For development
-        return view('dashboard.dashboard-admin');
-
-        // For production
+    public function index(){
         if(auth()->user()->level === 'pimpinan'){
             return view('dashboard.dashboard-admin');
         }else{
