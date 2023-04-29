@@ -50,7 +50,7 @@ class ProfileController extends Controller
             'email' => ':attribute harus valid.',
             'unique' => ':attribute telah digunakan.',
             'image' => ':attribute harus berupa gambar.',
-            'max' => ':attribute tidak boleh lebih besar dari :max kilobita.',
+            'max' => ':attribute tidak boleh lebih besar dari 2 MB.',
         ]);
 
         //check if validation fails        

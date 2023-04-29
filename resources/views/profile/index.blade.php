@@ -59,6 +59,7 @@
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Foto profile</label>
                                         <div class="col-sm-12 col-md-9">
+                                            <span id="edit-image-error" class="text-danger"></span>
                                             <img class="img-preview img-fluid mb-3 col-sm-5">
                                             <input type="hidden" name="oldImage" value="/storage/{{  auth()->user()->image }}">
                                             <input type="file" accept="image/*" class="form-control" name="image" id="image" onchange="previewImage()">

@@ -149,6 +149,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.success) {
                     $("#edit-email-error").text("");
+                    $("#edit-image-error").text("");
                     swal({
                         title: "Sukses!",
                         text: data.message,
@@ -177,6 +178,9 @@ $(document).ready(function () {
                     });
                     if (data.errors["email"]) {
                         $("#edit-email-error").text(data.errors["email"]);
+                    }
+                    if (data.errors["image"]) {
+                        $("#edit-image-error").text(data.errors["image"]);
                     }
                 }
             },
