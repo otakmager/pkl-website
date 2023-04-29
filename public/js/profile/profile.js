@@ -148,6 +148,7 @@ $(document).ready(function () {
             processData: false,
             success: function (data) {
                 if (data.success) {
+                    $("#edit-email-error").text("");
                     swal({
                         title: "Sukses!",
                         text: data.message,
@@ -174,6 +175,9 @@ $(document).ready(function () {
                         icon: "error",
                         timer: 15000,
                     });
+                    if (data.errors["email"]) {
+                        $("#edit-email-error").text(data.errors["email"]);
+                    }
                 }
             },
             error: function (data) {

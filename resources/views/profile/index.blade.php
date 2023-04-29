@@ -53,6 +53,7 @@
                                         <label class="mylabel col-form-label text-md-right col-12 col-md-3 col-lg-3 mt-1">Email</label>
                                         <div class="col-sm-12 col-md-9">
                                             <input type="email" class="form-control" name="email" id="email" placeholder="email" required value="{{ $data['email'] }}">
+                                            <span id="edit-email-error" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4 d-flex align-item-center justify-content-center">
