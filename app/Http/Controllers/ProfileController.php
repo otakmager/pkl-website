@@ -57,7 +57,7 @@ class ProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal Perbarui Data, Data Tidak Sesuai atau Pastikan Gambar Harus Kurang dari 2 MB!',
+                'message' => 'Gagal Perbarui Data, Data Tidak Sesuai atau Pastikan Gambar Harus Kurang dari 2 MB dan Email Belum Dipakai oleh Orang Lain!',
                 'errors' => $validator->errors(),
             ]);
         } 
