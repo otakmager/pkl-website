@@ -157,14 +157,16 @@ $(document).ready(function () {
                     $("#name").val(data.data.name);
                     $("#name-header").text("Hi, " + data.data.name);
                     $("#email").val(data.data.email);
-                    $("#foto-profile").attr(
-                        "src",
-                        "/storage/" + data.data.image
-                    );
-                    $("#foto-header").attr(
-                        "src",
-                        "/storage/" + data.data.image
-                    );
+                    if (data.data.image != null) {
+                        $("#foto-profile").attr(
+                            "src",
+                            "/storage/" + data.data.image
+                        );
+                        $("#foto-header").attr(
+                            "src",
+                            "/storage/" + data.data.image
+                        );
+                    }
                 } else {
                     swal({
                         title: "Gagal!",
