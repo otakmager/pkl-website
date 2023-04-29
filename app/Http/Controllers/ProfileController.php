@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,17 +43,24 @@ class ProfileController extends Controller
             '_token'    => 'required',
             'username'  => 'required',
             'name'      => 'required',
-            'email'     => 'required',
+            'email'     => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'image'     => 'image|file|max:2048',
+        ], [
+            'required' => ':attribute harus diisi.',
+            'email' => ':attribute harus valid.',
+            'unique' => ':attribute telah digunakan.',
+            'image' => ':attribute harus berupa gambar.',
+            'max' => ':attribute tidak boleh lebih besar dari :max kilobita.',
         ]);
 
-        //check if validation fails
+        //check if validation fails        
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal Perbarui Data, Data Tidak Sesuai dan Pastikan Gambar Harus Kurang dari 2 MB!',
+                'message' => 'Gagal Perbarui Data, Data Tidak Sesuai atau Pastikan Gambar Harus Kurang dari 2 MB!',
+                'errors' => $validator->errors(),
             ]);
-        }       
+        } 
         if (auth()->user()->username != $request->username) {
             return response()->json([
                 'success' => false,
