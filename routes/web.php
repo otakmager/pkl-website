@@ -81,7 +81,7 @@ Route::resource('/tkeluar', TKeluarController::class)->middleware('auth');
 */
 Route::get('/label/label_ajax', [LabelController::class, 'label_ajax'])->name('label.ajax')->middleware('pimpinan');
 Route::get('/label/label_sum/{label}', [LabelController::class, 'label_sum'])->name('label.sum')->middleware('pimpinan');
-Route::resource('/label', LabelController::class)->middleware('pimpinan');
+Route::resource('/label', LabelController::class)->middleware(['auth', 'pimpinan']);
 /*
 |--------------------------------------------------------------------------
 | Sampah Masuk Routes
@@ -113,7 +113,7 @@ Route::put('/sampah/keluar/restore-all', [SampahKeluarController::class, 'restor
 | Download Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/download', [DownloadController::class, 'index'])->name('download.index')->middleware('pimpinan');
+Route::get('/download', [DownloadController::class, 'index'])->name('download.index')->middleware(['auth', 'pimpinan']);
 Route::get('/download/format/excel', [DownloadController::class, 'downloadExcel'])->name('download-excel')->middleware('pimpinan');
 Route::get('/download/format/pdf', [DownloadController::class, 'downloadPDF'])->name('download-pdf')->middleware('pimpinan');
 Route::get('/download/template/export/pdf', [DownloadController::class, 'templatePDF'])->name('template-pdf')->middleware('pimpinan');
@@ -124,7 +124,7 @@ Route::get('/download/template/export/pdf', [DownloadController::class, 'templat
 |--------------------------------------------------------------------------
 */
 Route::get('/makun/makun_ajax', [MAkunController::class, 'makun_ajax'])->name('makun.ajax')->middleware('pimpinan');
-Route::resource('/makun', MAkunController::class)->middleware('pimpinan');
+Route::resource('/makun', MAkunController::class)->middleware(['auth', 'pimpinan']);
 
 /*
 |--------------------------------------------------------------------------
