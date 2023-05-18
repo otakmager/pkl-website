@@ -47,7 +47,7 @@
             </li>
             <li class="nav-item {{ Request::is('download')? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('download') }}"><i class="fas fa-file-arrow-down"></i> <span>Download</span></a>
+                    href="{{ url('download') }}"><i class="fas fa-file-arrow-down"></i> <span>Laporan</span></a>
             </li>
             <li class="nav-item {{ Request::is('makun')? 'active' : '' }}">
                 <a class="nav-link"
