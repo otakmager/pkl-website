@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'CV Berkah Makmur',
             'username' => 'berkahmakmurofficial',
-            'email' => 'dimazwahyuardiyanto@gmail.com',
+            'email' => 'cvberkahmakmur@gmail.com',
             'password' => bcrypt('password'),
             'level' => 'pimpinan',
             'status' => 1,
