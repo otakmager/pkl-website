@@ -105,7 +105,7 @@ class MAkunController extends Controller
         //create user
         $user = User::create([
             'name'     => $request->name, 
-            'username'   => Hash::make("user" . $request->name . Str::random(16)),
+            'username'   => fake()->unique()->userName(),
             'email'   => $request->email,
             'password'   => Hash::make($request->password),
             'level' => 'user',
