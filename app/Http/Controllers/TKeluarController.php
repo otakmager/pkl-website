@@ -104,7 +104,7 @@ class TKeluarController extends Controller
             'label_id'   => $request->label,
             'nominal'   => $request->nominal,
             'tanggal'   => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
-            'slug'   => Hash::make("tkeluar" . $request->label . Str::random(16) . $request->tanggal),
+            'slug'   => Str::slug("tkeluar" . $request->label . Str::random(16) . $request->tanggal),
         ]);
 
         //return response

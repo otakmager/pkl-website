@@ -16,8 +16,8 @@ class TKeluarFactory extends Factory
      */
     public function definition()
     {
-        $startDate = Carbon::createFromDate(2022, 10, 17);
-        $endDate = Carbon::createFromDate(2023, 4, 18);
+        $startDate = Carbon::createFromDate(2022, 12, 25);
+        $endDate = Carbon::createFromDate(2023, 6, 1);
         return [
             'name' => fake()->words(mt_rand(1,3), true),
             'slug' => fake()->unique()->slug(),
