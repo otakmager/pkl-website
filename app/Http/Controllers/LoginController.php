@@ -57,7 +57,7 @@ class LoginController extends Controller
                     $label->delete();
                 }else{
                     // Delete data permanent
-                    $deletedTMasuk->forceDelete();
+                    $deletedTKeluar->forceDelete();
                 }
             }
 

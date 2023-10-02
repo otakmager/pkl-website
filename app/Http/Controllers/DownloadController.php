@@ -269,7 +269,7 @@ class DownloadController extends Controller
             'dataStartDate' => $dataStartDate,
             'dataEndDate' => $dataEndDate,
             'saldoAwal' => $saldoAwal,
-            'thisDate' => Carbon::now()->format('d F Y'),
+            'thisDate' => Carbon::now()->locale('id')->isoFormat("D MMMM Y"),
         ])->render();
 
         // Instantiate Dompdf

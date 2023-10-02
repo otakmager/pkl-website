@@ -318,7 +318,7 @@ $(document).ready(function () {
     // ====================================================================================
     // 6. Change Status Aktif
     // ====================================================================================
-    $(document).on("change", "#status", function () {
+    $(document).on("change", "#status-user", function () {
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('input[name="_token"][id="tokenEdit"]').val(),
