@@ -180,7 +180,13 @@ class TMasukController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data Berhasil Diubah!',
-                'data' => $tmasuk,
+                'data' => [
+                    'id' => $tmasuk->id,
+                    'name' => $tmasuk->name,
+                    'label' => $tmasuk->label->name,
+                    'nominal' => $tmasuk->nominal,
+                    'tanggal' => $tmasuk->tanggal,
+                ],
             ]);
         } else {
             return response()->json([

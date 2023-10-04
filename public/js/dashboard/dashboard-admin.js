@@ -72,7 +72,7 @@ $(document).ready(function () {
                             value = value.toString();
                             value = value.split(/(?=(?:...)*$)/);
                             value = value.join(".");
-                            return "Pemasukan: Rp " + value + ",00";
+                            return "Nominal: Rp " + value + ",00";
                         },
                     },
                 },

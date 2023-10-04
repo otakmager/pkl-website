@@ -179,7 +179,13 @@ class TKeluarController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data Berhasil Diubah!',
-                'data' => $tkeluar,
+                'data' => [
+                    'id' => $tkeluar->id,
+                    'name' => $tkeluar->name,
+                    'label' => $tkeluar->label->name,
+                    'nominal' => $tkeluar->nominal,
+                    'tanggal' => $tkeluar->tanggal,
+                ],
             ]);
         } else {
             return response()->json([

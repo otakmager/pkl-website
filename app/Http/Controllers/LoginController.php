@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TMasuk;
 use App\Models\TKeluar;
 use App\Models\Label;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -17,6 +18,11 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
+
+        $user = User::where('email', $credential['email'])->first();
+        if ($user && $user->status === 0) {
+            return back()->with('loginError', 'Akun Anda tidak aktif. Silakan hubungi administrator.');
+        }
         
         if(Auth::attempt($credential)){
             $request->session()->regenerate();
